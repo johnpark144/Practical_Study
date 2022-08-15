@@ -1,0 +1,37 @@
+.color-primary{
+    color:rgb(255, 10, 100)
+}
+
+.font-50{
+    font-size: 50px;
+}
+
+.select-style1{
+    height: 30px;
+    font-size: 20px;
+    color: darkblue;
+}
+
+
+/* .tb td : tb에있는 모든 하위 td에 적용할때 */
+.tb-head>tr>td{
+    border: 1px solid #000;
+    font-size: 14px;
+    font-weight: bold;
+    color:rebeccapurple;
+}
+
+.tb-body>tr>td{
+    border: 1px solid #000;
+}
+
+
+
+/* 전체 p태그에 적용 (클래스가 아니니 . 없이)*/
+p{ 
+    background: yellowgreen;
+    color: darkcyan;
+}
+
+/* 고유한 id에게만 적용 (앞에 #을붙여야 ID를의미)*/
+#p1 {background: goldenrod; color: darkgreen;}
