@@ -1,2 +1,3 @@
-# Basic_practice--JS-Python
-This is practice codes
+# Basic_study_practice-and-frame
+
+This is for study, practice and frame codes to develope 
