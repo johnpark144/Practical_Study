@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <style>
+        hr {
+            border: solid 10px darkblue;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <!-- 그리드, 레이아웃 -->
+    <h3>그리드 grid, 레이아웃 layout 참고 (비율) </h3>
+    <!-- class col-md에 숫자는 화면의 비율을의미 (총합:12),lg는 large, md는 midium, sm은 small-->
+    <div class="row">
+        <!-- 화면 사이즈별로 다르게 설정가능(pc,스마트폰,태블릿 처럼) -->
+        <div class="col-lg-3 col-md-4 col-sm-6" style="background-color: red;">
+            A
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6" style="background-color: yellow;">
+            B
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-12" style="background-color: blue;">
+            C
+        </div>
+    </div>
+
+    <!-- 디스플레이 -->
+    <hr>
+    <h3> 디스플레이 display (보이게 안보이게 가능)</h3>
+    <div class="row">
+        <!-- 화면 사이즈별로 보이게 안보이게가능(pc,스마트폰,태블릿 처럼) -->
+        <div class="col-md-4 d-md-none d-lg-block" style="background-color: red;">
+            A
+        </div>
+        <div class="col-md-4 d-sm-none d-md-block" style="background-color: yellow;">
+            B
+        </div>
+        <div class="col-md-4 d-none d-sm-block" style="background-color: blue;">
+            C
+        </div>
+    </div>
+
+
+    <!-- 폼컨트롤 -->
+    <hr>
+    <h3> 폼컨트롤 form control </h3>
+    <input class="form-control form-control-lg" type="text" placeholder=" 폼컨트롤 form-control"
+        aria-label=".form-control-lg example">
+    <input class="form-control" type="text" placeholder="Disabled input" aria-label="Disabled input example" disabled>
+
+
+    <!-- 셀렉트 -->
+    <hr>
+    <h3> 셀렉트 select </h3>
+    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+        <option selected>셀렉트 select</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+    </select>
+    <select class="form-select" multiple aria-label="multiple select example">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+    </select>
+
+
+    <!-- 체크박스와 라디오버튼 -->
+    <hr>
+    <h3> 체크박스와 라디오버튼 checks radios </h3>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault">
+            Default checkbox
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+            Checked checkbox
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+        <label class="form-check-label" for="flexRadioDefault1">
+            Default radio
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+        <label class="form-check-label" for="flexRadioDefault2">
+            Default checked radio
+        </label>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+        <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label>
+    </div>
+
+
+    <!-- 범위 -->
+    <hr>
+    <h3> 범위 Range </h3>
+    <label for="customRange1" class="form-label">Example range</label>
+    <input type="range" class="form-range" id="customRange1">
+
+
+    <!-- 입력 그룹 -->
+    <hr>
+    <h3> 입력 그룹 Input group </h3>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username"
+            aria-describedby="basic-addon2">
+        <span class="input-group-text" id="basic-addon2">@example.com</span>
+    </div>
+
+    <!-- 플로팅 라벨 -->
+    <hr>
+    <h3> 플로팅 라벨 Floating labels (텍스트창에 라벨보이게)</h3>
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+    </div>
+
+    <!-- 유효성 검사 -->
+    <hr>
+    <h3> 유효성 검사 Validation </h3>
+    <form class="row g-3">
+        <div class="col-md-4">
+            <label for="validationServer01" class="form-label">First name</label>
+            <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="validationServer02" class="form-label">Last name</label>
+            <input type="text" class="form-control is-valid" id="validationServer02" value="Otto" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="validationServerUsername" class="form-label">Username</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                <input type="text" class="form-control is-invalid" id="validationServerUsername"
+                    aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required>
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                    Please choose a username.
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="validationServer03" class="form-label">City</label>
+            <input type="text" class="form-control is-invalid" id="validationServer03"
+                aria-describedby="validationServer03Feedback" required>
+            <div id="validationServer03Feedback" class="invalid-feedback">
+                Please provide a valid city.
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label for="validationServer04" class="form-label">State</label>
+            <select class="form-select is-invalid" id="validationServer04" aria-describedby="validationServer04Feedback"
+                required>
+                <option selected disabled value="">Choose...</option>
+                <option>...</option>
+            </select>
+            <div id="validationServer04Feedback" class="invalid-feedback">
+                Please select a valid state.
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label for="validationServer05" class="form-label">Zip</label>
+            <input type="text" class="form-control is-invalid" id="validationServer05"
+                aria-describedby="validationServer05Feedback" required>
+            <div id="validationServer05Feedback" class="invalid-feedback">
+                Please provide a valid zip.
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3"
+                    aria-describedby="invalidCheck3Feedback" required>
+                <label class="form-check-label" for="invalidCheck3">
+                    Agree to terms and conditions
+                </label>
+                <div id="invalidCheck3Feedback" class="invalid-feedback">
+                    You must agree before submitting.
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+        </div>
+    </form>
+
+    <!-- 아코디언-->
+    <hr>
+    <h3> 아코디언 Accordion </h3>
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    Accordion Item #1
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Hello
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Accordion Item #2
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Bye
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Accordion Item #3
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    Lol
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 경고창-->
+    <hr>
+    <h3> 경고창 Alerts </h3>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+        </symbol>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+        </symbol>
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path
+                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+        </symbol>
+    </svg>
+
+    <div class="alert alert-primary d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+            <use xlink:href="#info-fill" />
+        </svg>
+        <div>
+            An example alert with an icon
+        </div>
+    </div>
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
+        <div>
+            An example success alert with an icon
+        </div>
+    </div>
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div>
+            An example warning alert with an icon
+        </div>
+    </div>
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div>
+            An example danger alert with an icon
+        </div>
+    </div>
+
+    <!-- 배지-->
+    <hr>
+    <h3> 배지 Badges </h3>
+    <button type="button" class="btn btn-primary">
+        Notifications <span class="badge bg-secondary">4</span>
+    </button>
+    <button type="button" class="btn btn-primary position-relative">
+        Inbox
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            99+
+            <span class="visually-hidden">unread messages</span>
+        </span>
+    </button>
+    <button type="button" class="btn btn-primary position-relative">
+        Profile
+        <span
+            class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+            <span class="visually-hidden">New alerts</span>
+        </span>
+    </button>
+
+    <!-- 브레드크럼-->
+    <hr>
+    <h3> 브레드크럼 Breadcrumb </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Home</li>
+        </ol>
+    </nav>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+    </nav>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+    </nav>
+
+    <!-- 버튼-->
+    <hr>
+    <h3> 버튼 Buttons </h3>
+    <button type="button" class="btn btn-primary">Primary</button>
+    <button type="button" class="btn btn-secondary">Secondary</button>
+    <button type="button" class="btn btn-success">Success</button>
+    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-warning">Warning</button>
+    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-light">Light</button>
+    <button type="button" class="btn btn-dark">Dark</button>
+    <button type="button" class="btn btn-link">Link</button>
+
+    <!-- 버튼 그룹-->
+    <hr>
+    <h3> 버튼 그룹 Button group </h3>
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary">1</button>
+        <button type="button" class="btn btn-primary">2</button>
+
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Dropdown
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 카드-->
+    <hr>
+    <h3> 카드 Cards </h3>
+    <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+        <div class="card-header">Header</div>
+        <div class="card-body">
+            <h5 class="card-title">Light card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 캐러셀-->
+    <hr>
+    <h3> 캐러셀 Carousel </h3>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://jacoblee.io/content/images/size/w960/2022/02/4e105f96750899.5eb54f337fb8e-4.png"
+                    class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://www.kindpng.com/picc/m/171-1718210_html-dialog-element-taking-full-advantage-of-javascript.png"
+                    class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://velog.velcdn.com/images/qlwb7187/post/a3079e91-0ad6-42ff-9d09-c677851bae83/C%EC%96%B8%EC%96%B4.png"
+                    class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- 닫기 버튼-->
+    <hr>
+    <h3> 닫기 버튼 Close button </h3>
+    <button type="button" class="btn-close" aria-label="Close"></button>
+
+    <!-- 콜랩스-->
+    <hr>
+    <h3> 콜랩스 Collapse </h3>
+    <p>
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+            aria-controls="collapseExample">
+            Hello
+        </a>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+            aria-expanded="false" aria-controls="collapseExample">
+            Hello
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            Bye
+        </div>
+    </div>
+
+    <!-- 드랍다운-->
+    <hr>
+    <h3> 드랍다운 Dropdowns </h3>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Action
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Separated link</a></li>
+        </ul>
+    </div>
+
+    <div class="btn-group dropend">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropright
+        </button>
+        <ul class="dropdown-menu">
+        </ul>
+    </div>
+
+    <!-- 목록 그룹-->
+    <hr>
+    <h3> 목록 그룹 List group </h3>
+    <div class="list-group">
+        <a class="list-group-item list-group-item-action active" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small>3 days ago</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small>And some small print.</small>
+        </a>
+        <a class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small class="text-muted">And some muted small print.</small>
+        </a>
+        <a class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small class="text-muted">And some muted small print.</small>
+        </a>
+    </div>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+            First checkbox
+        </li>
+        <li class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+            Second checkbox
+        </li>
+        <li class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+            Third checkbox
+        </li>
+        <li class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+            Fourth checkbox
+        </li>
+        <li class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+            Fifth checkbox
+        </li>
+    </ul>
+
+    <!-- 모달-->
+    <hr>
+    <h3> 모달 Modal </h3>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        모달기능 확인
+    </button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    모달기능
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 내비게이션바-->
+    <hr>
+    <h3> 내비게이션바 Navbar </h3>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand">Navbar</a>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- 오프캔버스-->
+    <hr>
+    <h3> 오프캔버스 Offcanvas </h3>
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+        aria-controls="offcanvasExample">
+        오프캔버스 기능 확인
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                오프캔버스 기능
+            </div>
+            <div class="dropdown mt-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown">
+                    Dropdown button
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 페이지네이션-->
+    <hr>
+    <h3> 페이지네이션 Pagination </h3>
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+            <li class="page-item"><a class="page-link">1</a></li>
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">2</span>
+            </li>
+            <li class="page-item"><a class="page-link">3</a></li>
+            <li class="page-item">
+                <a class="page-link">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- 플레이스홀더-->
+    <hr>
+    <h3> 플레이스홀더 Placeholders (로딩중) </h3>
+    <p class="placeholder-glow">
+        <span class="placeholder col-12"></span>
+    </p>
+
+    <p class="placeholder-wave">
+        <span class="placeholder col-12"></span>
+    </p>
+
+
+    <!-- 팝오버-->
+    <hr>
+    <h3> 팝오버 Popovers </h3>
+    <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" title="Popover title"
+        data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+
+    <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover"
+        data-bs-placement="top" data-bs-content="Top popover">
+        Popover on top
+    </button>
+    <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover"
+        data-bs-placement="right" data-bs-content="Right popover">
+        Popover on right
+    </button>
+
+    <script>
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
+
+    <!-- 프로그레스-->
+    <hr>
+    <h3> 프로그레스 Progress (로딩중)</h3>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100">25%</div>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+            aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+    </div>
+
+    <!-- 스크롤스파이, 오버플로우-->
+    <hr>
+    <h3> 스크롤스파이 Scrollspy, 오버플로우 Overflow(안에스크롤만들기) </h3>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="bd-example" style="size: 100;">
+                <div class="row">
+                    <div class="col-4">
+                        <nav id="navbar-example3" style="height: 20rem; width: 20rem;"
+                            class="navbar navbar-light bg-light flex-column align-items-stretch p-3">
+                            <a class="navbar-brand">Navbar</a>
+                            <nav class="nav nav-pills flex-column">
+                                <a class="nav-link active" href="#item-1">Item 1</a>
+                                <nav class="nav nav-pills flex-column">
+                                    <a class="nav-link ms-3 my-1 active" href="#item-1-1">Item 1-1</a>
+                                    <a class="nav-link ms-3 my-1" href="#item-1-2">Item 1-2</a>
+                                </nav>
+                                <a class="nav-link" href="#item-2">Item 2</a>
+                                <a class="nav-link" href="#item-3">Item 3</a>
+                                <nav class="nav nav-pills flex-column">
+                                    <a class="nav-link ms-3 my-1" href="#item-3-1">Item 3-1</a>
+                                    <a class="nav-link ms-3 my-1" href="#item-3-2">Item 3-2</a>
+                                </nav>
+                            </nav>
+                        </nav>
+                    </div>
+                    <div class="col-8" style="overflow:auto; height: 20rem; width: 20rem;">
+                        <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-offset="0"
+                            class="scrollspy-example-2" tabindex="0">
+                            <h4 id="item-1">Item 1</h4>
+                            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the
+                                page, the appropriate navigation link is highlighted. It's repeated throughout the
+                                component example. We keep adding some more example copy here to emphasize the scrolling
+                                and highlighting.</p>
+                            <h5 id="item-1-1">Item 1-1</h5>
+                            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the
+                                page, the appropriate navigation link is highlighted. It's repeated throughout the
+                                component example. We keep adding some more example copy here to emphasize the scrolling
+                                and highlighting.</p>
+                            <h5 id="item-1-2">Item 1-2</h5>
+                            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the
+                                page, the appropriate navigation link is highlighted. It's repeated throughout the
+                                component example. We keep adding some more example copy here to emphasize the scrolling
+                                and highlighting.</p>
+                            <h4 id="item-2">Item 2</h4>
+                            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the
+                                page, the appropriate navigation link is highlighted. It's repeated throughout the
+                                component example. We keep adding some more example copy here to emphasize the scrolling
+                                and highlighting.</p>
+                            <h4 id="item-3">Item 3</h4>
+                            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the
+                                page, the appropriate navigation link is highlighted. It's repeated throughout the
+                                component example. We keep adding some more example copy here to emphasize the scrolling
+                                and highlighting.</p>
+                            <h5 id="item-3-1">Item 3-1</h5>
+                            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the
+                                page, the appropriate navigation link is highlighted. It's repeated throughout the
+                                component example. We keep adding some more example copy here to emphasize the scrolling
+                                and highlighting.</p>
+                            <h5 id="item-3-2">Item 3-2</h5>
+                            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the
+                                page, the appropriate navigation link is highlighted. It's repeated throughout the
+                                component example. We keep adding some more example copy here to emphasize the scrolling
+                                and highlighting.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 스피너-->
+    <hr>
+    <h3> 스피너 Spinners (로딩중) </h3>
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+
+
+    <!-- 토스트-->
+    <hr>
+    <h3> 토스트 Toasts </h3>
+    <button type="button" class="btn btn-primary" id="liveToastBtn">토스트 기능확인</button>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="..." class="rounded me-2" alt="...">
+                <strong class="me-auto">Bootstrap</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var toastTrigger = document.getElementById('liveToastBtn')
+        var toastLiveExample = document.getElementById('liveToast')
+        if (toastTrigger) {
+            toastTrigger.addEventListener('click', function () {
+                var toast = new bootstrap.Toast(toastLiveExample)
+
+                toast.show()
+            })
+        }
+    </script>
+
+
+    <!-- 툴팁-->
+    <hr>
+    <h3> 툴팁 Tooltips </h3>
+
+    <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
+        title="Tooltip on top">
+        Tooltip on top
+    </button>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="Tooltip on right">
+        Tooltip on right
+    </button>
+    <a href="#" data-bs-toggle="tooltip" title="" data-bs-original-title="Default tooltip">inline links</a>
+
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+
+    <!-- 컬러 링크-->
+    <hr>
+    <h3 id="Colored_links"> 컬러 링크 Colored links </h3>
+    <a href="#Colored_links" class="link-primary">Primary link</a>
+    <a href="#Colored_links" class="link-secondary">Secondary link</a>
+    <a href="#Colored_links" class="link-success">Success link</a>
+    <a href="#Colored_links" class="link-danger">Danger link</a>
+    <a href="#Colored_links" class="link-warning">Warning link</a>
+    <a href="#Colored_links" class="link-info">Info link</a>
+    <a href="#Colored_links" class="link-light">Light link</a>
+    <a href="#Colored_links" class="link-dark">Dark link</a>
+
+    <!-- 스택-->
+    <hr>
+    <h3> 스택 Stacks (컴포넌트 레이아웃을 빠르고 쉽게 만들기 위한 약칭도우미) </h3>
+    <div class="vstack gap-3">
+        <div class="bg-light border">First item</div>
+        <div class="bg-light border">Second item</div>
+        <div class="bg-light border">Third item</div>
+    </div>
+    <div class="hstack gap-3">
+        <div class="bg-light border">First item</div>
+        <div class="bg-light border">Second item</div>
+        <div class="bg-light border">Third item</div>
+    </div>
+
+    <!-- 확장형 링크-->
+    <hr>
+    <h3 id="Stretched_link"> 확장형 링크 Stretched link (카드안에 어딜 눌러도 링크가됨) </h3>
+    <div class="card" style="width: 18rem;">
+        <img src="https://jacoblee.io/content/images/size/w960/2022/02/4e105f96750899.5eb54f337fb8e-4.png"
+            class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Python</h5>
+            <p class="card-text">Python is a high-level, interpreted, general-purpose programming language. Its design
+                philosophy emphasizes code readability with the use of significant indentation.</p>
+            <a href="#Stretched_link" class="btn btn-primary stretched-link">Go somewhere</a>
+        </div>
+    </div>
+
+    <!-- 세로줄-->
+    <hr>
+    <h3> 세로줄 Vertical rule </h3>
+    <div class="d-flex" style="height: 100px;">
+        Left side
+        <div class="vr"></div>
+        Right side
+    </div>
+
+    <div class="hstack gap-3">
+        <div class="bg-light border">First item</div>
+        <div class="bg-light border ms-auto">Second item</div>
+        <div class="vr"></div>
+        <div class="bg-light border">Third item</div>
+    </div>
+
+
+    <!-- 플렉스-->
+    <hr>
+    <h3> 플렉스 Flex</h3>
+
+    <div class="d-flex justify-content-start"><span>AAA</span><span>BBB</span><span>CCC</span></div>
+    <div class="d-flex justify-content-end"><span>AAA</span><span>BBB</span><span>CCC</span></div>
+    <div class="d-flex justify-content-center"><span>AAA</span><span>BBB</span><span>CCC</span></div>
+    <div class="d-flex justify-content-between"><span>AAA</span><span>BBB</span><span>CCC</span></div>
+    <div class="d-flex justify-content-around"><span>AAA</span><span>BBB</span><span>CCC</span></div>
+    <div class="d-flex justify-content-evenly"><span>AAA</span><span>BBB</span><span>CCC</span></div>
+
+    <!-- 플로트-->
+    <hr>
+    <h3> 플로트 Float</h3>
+    <div class="float-start">Float start on all viewport sizes</div><br>
+    <div class="float-end">Float end on all viewport sizes</div><br>
+    <div class="float-none">Don't float on all viewport sizes</div>
+
+    <div class="float-sm-start">Float start on viewports sized SM (small) or wider</div><br>
+    <div class="float-md-start">Float start on viewports sized MD (medium) or wider</div><br>
+    <div class="float-lg-start">Float start on viewports sized LG (large) or wider</div><br>
+    <div class="float-xl-start">Float start on viewports sized XL (extra-large) or wider</div><br>
+
+    <!-- 불투명도-->
+    <hr>
+    <h3> 불투명도 Opacity</h3>
+    <div class="opacity-100">100</div>
+    <div class="opacity-75">75</div>
+    <div class="opacity-50">50</div>
+    <div class="opacity-25">25</div>
+
+    <!-- 위치-->
+    <hr>
+    <h3> 위치 Position</h3>
+    <div class="position-relative">
+        <div class="position-absolute top-0 start-0">A</div>
+        <div class="position-absolute top-0 start-50 translate-middle-x">B</div>
+        <div class="position-absolute top-0 end-0">C</div>
+        <div class="position-absolute top-50 start-0 translate-middle-y">D</div>
+        <div class="position-absolute top-50 start-50 translate-middle">E</div>
+        <div class="position-absolute top-50 end-0 translate-middle-y">F</div>
+        <div class="position-absolute bottom-0 start-0">G</div>
+        <div class="position-absolute bottom-0 start-50 translate-middle-x">H</div>
+        <div class="position-absolute bottom-0 end-0">I</div>
+    </div>
+
+    <!-- 그림자-->
+    <hr>
+    <h3> 그림자 Shadows</h3>
+    <div class="shadow-none p-3 mb-5 bg-light rounded">No shadow</div>
+<div class="shadow-sm p-3 mb-5 bg-body rounded">Small shadow</div>
+<div class="shadow p-3 mb-5 bg-body rounded">Regular shadow</div>
+<div class="shadow-lg p-3 mb-5 bg-body rounded">Larger shadow</div>
+
+    <!-- 텍스트 -->
+    <hr>
+    <h3> 텍스트 Text</h3>
+
+    <p class="text-break">mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm</p>
+</body>
+
+</html>
