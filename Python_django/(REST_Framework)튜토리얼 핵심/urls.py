@@ -1,33 +1,26 @@
-from django.contrib import admin
+############ 일반장고FBV, api_view 장식자(FBV) ##############
 from django.urls import path
+from .views import article_list, article_detail
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('article/', article_list),
+    path('detail/<int:pk>', article_detail),
 ]
 
-############ 일반장고FBV, api_view 장식자(FBV) ##############
-# from django.urls import path
-# from .views import article_list, article_detail
-
-# urlpatterns = [
-#     path('article/', article_list),
-#     path('detail/<int:pk>', article_detail),
-# ]
-
 ########### APIView (CBV) #################################
-# from django.urls import path
-# from .views import ArticleAPIview, ArticleDetails
-# urlpatterns = [
-#     path('article/', ArticleAPIview.as_view()),
-#     path('detail/<int:id>', ArticleDetails.as_view()),
-# ]
+from django.urls import path
+from .views import ArticleAPIview, ArticleDetails
+urlpatterns = [
+    path('article/', ArticleAPIview.as_view()),
+    path('detail/<int:id>', ArticleDetails.as_view()),
+]
 
 ########### Generic 뷰(CBV) & Mixins ######################
-# from django.urls import path
-# from .views import GenericAPIView
-# urlpatterns = [
-#     path('generic/article/<int:id>', GenericAPIView.as_view()),
-# ]
+from django.urls import path
+from .views import GenericAPIView
+urlpatterns = [
+    path('generic/article/<int:id>', GenericAPIView.as_view()),
+]
 
 ########## APIView (CBV), Generic 뷰(CBV), model ViewSet #####
 from django.urls import path, include
