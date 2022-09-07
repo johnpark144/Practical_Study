@@ -1,0 +1,132 @@
+{% extends 'instagram/frame.html' %}   <!--  connect to frame.html -->
+{% block content %}
+
+{% load static %}  <!--get_media_prefix를 위해 적어줘야함 -->
+    <!-- 왼쪽 -->
+    <div
+        style="display: flex; flex-direction: row; text-align: center; justify-content: center; padding-top: 58px; background: #fafafa;">
+        <!-- div를 가로 방향으로, 텍스트와 내용들을 가운데로 -->
+        <div style="width: 400px; min-width: 550px; height: 1000px; margin-right: 400px;">
+            <!-- 여기부터 피드박스 -->
+            {% for feed in feeds %}
+            <div style="border: solid 1px lightgray; background: #ffffff;" class="d-block">
+                <div class="d-flex bd-highlight mb-3" style=" align-items: center;">
+                    <div class="box" style="background: #BDBDBD; margin-left: 5px;"><img class="profile"
+                            src="{% get_media_prefix %}{{ feed.profile_image }}"> <!-- get_media_prefix는 settings.py에서 정의한 media_url을 출력 -->
+                    </div>
+                    <div class="p-2 bd-highlight" style="height: 50px; line-height : 17px;">
+                        <div style="text-align: left;">
+                            {{ feed.nickname }}
+                        </div>
+                        <div>
+                            sadasdasdasdas
+                        </div>
+                    </div>
+                    <div class="ms-auto p-2 bd-highlight material-icons">
+                        more_horiz
+                    </div>
+                </div>
+                <img style="height: 400px; width: 100%; margin-top: -16px;" src="{% get_media_prefix %}{{ feed.image }}"><!-- get_media_prefix는 주소 앞부분을 채워주기 위해 -->
+
+                <div style="margin-left: 5px;" class="d-flex bd-highlight">
+                    <div class="p-2 w-100 bd-highlight" style="text-align: left;">
+                    <span id="favorite_{{ feed.id }}" feed_id="{{ feed.id }}" class="favorite material-icons" style="color: #b92626; cursor: pointer;"> <!--cursor: pointer;는 마우스커서를 손가락 모양으로 바꿔줌-->
+                        {% if feed.is_liked %}
+                        favorite
+                        {% else %}
+                        favorite_border
+                        {% endif %}
+                    </span>
+                        <span class="material-icons"> chat_bubble_outline </span>
+                        <span class="material-icons">send_outlined</span>
+                    </div>
+                    <div class="p-2 flex-shrink-1 bd-highlight">
+                        <span id="bookmark_{{ feed.id }}" feed_id="{{ feed.id }}" class="bookmark material-icons" style="cursor: pointer;">
+                            {% if bookmark.is_marked %}
+                            bookmark
+                            {% else %}
+                            bookmark_border
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div style="margin-left: 20px; text-align: left; font-size: 13px;"> 영환이 <b>외 {{ feed.like_count }}명</b>이
+                    좋아합니다 </div>
+                <div style="margin-left: 20px; text-align: left;"><b>{{ feed.nickname }}</b> {{ feed.content }}</div>
+                
+                <div id="reply_list_{{ feed.id }}">
+                    {% for reply in feed.reply_list %}
+                    <div style="margin-left: 20px; text-align: left;"><b>{{ reply.nickname }}</b> {{ reply.reply_content }} </div>
+                    {% endfor %}
+                </div>
+                
+                <hr>
+                <div class="input-group mb-3" style="top: -15px; height: 6px; align-items: center;">
+                    <span class="material-icons">sentiment_satisfied_alt</span>
+                    <input id="reply_{{ feed.id }}" type="text" class="form-control " placeholder="comment..."
+                        style="box-shadow: none; border:0 solid;">
+                    <!-- box-shadow: none;은 클릭했을때 파란색 테두리없애기 border:0 solid는 일반 테두리 없애기 -->
+                    <button feed_id="{{ feed.id }}" class="upload_reply btn btn-outline-secondary" type="button" id="button-addon2"
+                        style="border:0 solid;">Post</button>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- 여기까지 피드박스 -->
+        </div>
+
+        <!-- 오른쪽 -->
+        <!-- 내아이디 -->
+        <div class="d-none d-lg-block" style="width: 350px; height: 1000px; position: fixed; left: 62%; z-index: 0;">
+            <div class="d-flex bd-highlight mb-3" style=" align-items: center;">
+                <div class="box" style="width: 70px; height: 70px;"><img class="profile"
+                        src="{% get_media_prefix %}{{ user.profile_image }}">
+                </div>
+                <div class="p-2 bd-highlight"
+                    style="margin-left: 10px; height: 50px; line-height : 17px; text-align: left;">
+                    <div style="font-weight: bold;">
+                        {{ user.nickname }}
+                    </div>
+                    <div style="color: gray;">
+                        {{ user.name }}
+                    </div>
+                </div>
+                <div class="ms-auto p-2 bd-highlight" style="color: #318abe; font-weight: bold;">
+                    전환
+                </div>
+            </div>
+            <!-- 회원님을 위한 추천 -->
+            <div style="display: flex; flex-direction:row; justify-content:space-between">
+                <div style="font-weight: bold; color:gray;">
+                    회원님을 위한 추천
+                </div>
+                <div>
+                    <a href="#" style="font-weight: bold; color:black; text-decoration: none;">모두보기</a>
+                </div>
+            </div>
+            <!-- 추천 아이디 -->
+            <div class="d-flex bd-highlight mb-3" style=" align-items: center;">
+                <div class="box" style="width: 35px; height: 35px;"><img class="profile"
+                        src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/849/997e6b299c1aa09cc1b298b8b037fed9_res.jpeg">
+                </div>
+                <div class="p-2 bd-highlight"
+                    style="margin-left: 10px; height: 50px; line-height : 17px; text-align: left;">
+                    <div style="font-weight: bold;">
+                        Jenny12
+                    </div>
+                    <div style="color: gray; font-size: 14px;">
+                        samuel님외에 -명이 팔로우합니다
+                    </div>
+                </div>
+                <div class="ms-auto p-2 bd-highlight" style="color: #318abe; font-weight: bold;">
+                    팔로우
+                </div>
+            </div>
+
+            <div style="color: lightgray;">Introduce Help public relations center API Jobs <br>privacy policy terms
+                location language</div>
+            <br>
+            <div style="color: lightgray;">© 2022 INSTAGRAM FROM META</div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <a href=" {% url 'tasks' %}"> <-- back </a>
+</div>
+
+<div class="card-body">
+    <form method="post" action="">
+        {% csrf_token %}
+        {{form.as_p}}  <!-- TaskCreate 제네릭뷰에서 fields = '__all__'이기때문에, models에 Task form를 불러와서 사용  -->
+        <input class="button" type="submit", value="Submit">
+    </form>
+</div>
+
+{% endblock content %}

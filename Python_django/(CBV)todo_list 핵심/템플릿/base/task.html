@@ -1,0 +1,25 @@
+{% extends 'base/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <div>
+        <a href=" {% url 'tasks' %}">
+            <-- back </a>
+            {% if task.complete %}
+            <i><s><h1>{{ task }}</h1></s></i>
+            {% else %}
+            <h1>{{task}}</h1>
+            {% endif %}
+            
+    </div>
+</div>
+
+<div>
+    <form style="margin-top: 10px;" method="post" action="">
+        <a style="margin: 15px;" href="{% url 'task-update' task.id %}">Edit</a>
+        <a class="delete-link" href="{% url 'task-delete' task.id %}"> x </a>
+    </form>
+    <p style="margin-left: 20px;">{{task.description}}</p>
+</div>
+
+{% endblock content %}

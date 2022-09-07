@@ -1,0 +1,92 @@
+{% extends 'instagram/frame.html' %}
+<!--  connect to frame.html -->
+{% block content %}
+
+{% load static %}
+<!-- {% get_media_prefix %}사용을 위해  -->
+<div style="display: flex; flex-direction:row; justify-content: center; padding-top: 60px; background: #fafafa;">
+    <div style="width: 300px;">
+        <div class="box" style="width:175px; height: 175px; margin-right: 10px; margin: 20px 60px;">
+            <img class="profile" src="{% get_media_prefix %}{{ user.profile_image }}">
+        </div>
+    </div>
+    <div style="width: 700px;">
+        <div style="display: flex; flex-direction: row; margin: 20px 0;">
+            <div style="margin-right: 40px; font-size: 26px;">
+                <b>{{ user.nickname}}</b>
+            </div>
+
+            <button id="button_profile_upload" style="margin-right: 40px;">
+                프로필 사진 편집
+            </button>
+            <input type="file" id="input_fileupload" onchange="profile_upload()" style="display: none;" />
+            <!-- onchange는 변화가 생길떄 안에 함수실행 -->
+
+            <span class="material-icons" style="margin-right: 40px;">
+                settings
+            </span>
+        </div>
+        <div style="text-align:left; margin-bottom:20px;">
+            게시물 92 팔로워 122 팔로잉 231
+        </div>
+        <div>
+            <b>{{ user.name}}</b>
+        </div>
+    </div>
+</div>
+
+<div style="border-top: solid 1px lightgray; width: 100%;">
+    <div style="display: flex; flex-direction:row; justify-content: center;">
+        <div id="button_feed_list" style="color: black; border-top: solid 1px black; margin: 0 30px; cursor: pointer;">
+            <span class="material-icons">grid_on</span> 게시물
+        </div>
+        <div id="button_like_feed_list" style="color: lightgray; margin: 0 30px; cursor: pointer;">
+            <span class="material-icons">favorite_border</span>좋아요
+        </div>
+        <div id="button_bookmark_feed_list" style="color: lightgray; margin: 0 30px; cursor: pointer;">
+            <span class="material-icons">turned_in_not</span> 북마크
+        </div>
+    </div>
+</div>
+<br>
+
+<div id="feed_list" style="width: 100%; min-width: 1000px; display: flex; justify-content: center;">
+    <div style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap; width: 1000px;">
+        <!--  flex-wrap: wrap;은 자동 줄바꿈 -->
+        {% for feed in feed_list %}
+        <div style="width: 300px; height: 300px; margin: 4px;">
+            <div style="height:300px; line-height:300px; vertical-align:middle;" >
+                <img style="width: 100%;" src="{% get_media_prefix %}{{ feed.image }}">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="like_feed_list"  style="width: 100%; min-width: 1000px; display: none; justify-content: center;">
+    <div style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap; width: 1000px;">
+        <!--  flex-wrap: wrap;은 자동 줄바꿈 -->
+        {% for feed in like_feed_list %}
+        <div style="width: 300px; height: 300px; margin: 4px;">
+            <div style="height:300px; line-height:300px; vertical-align:middle;" >
+                <img style="width: 100%;" src="{% get_media_prefix %}{{ feed.image }}">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="bookmark_feed_list" style="width: 100%; min-width: 1000px; display: none; justify-content: center;">
+    <div style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap; width: 1000px;">
+        <!--  flex-wrap: wrap;은 자동 줄바꿈 -->
+        {% for feed in bookmark_feed_list %}
+        <div style="width: 300px; height: 300px; margin: 4px;">
+            <div style="height:300px; line-height:300px; vertical-align:middle;" >
+                <img style="width: 100%;" src="{% get_media_prefix %}{{ feed.image }}">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

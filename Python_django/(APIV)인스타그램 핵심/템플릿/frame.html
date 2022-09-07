@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--  Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <!-- Material Icon -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons&style=outlined" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- {% load static %}위해 -->
+    {% load static %}
+
+
+    <title>Instagram</title>
+    <style>
+        /* 동그란 프로필 */
+        .box {        
+            width: 40px;
+            height: 40px;
+            border-radius: 70%;
+            overflow: hidden;
+        }
+
+        .profile {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 여기까지 */
+
+        /* 모달 */
+        .modal_overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+        }
+
+        .modal_window {
+            background: white;
+            backdrop-filter: blur(13.5px);
+            -webkit-backdrop-filter: blur(13.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 800px;
+            height: 600px;
+            position: relative;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* 여기까지 */
+    </style>
+</head>
+
+<body>
+    <!-- 네비바 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light"
+    style="position: fixed; width: 95%; z-index: 99;"> <!-- z-index는 높을수록 더앞쪽에 보임 -->
+        <!--position: fixed;는 고정시킴-->
+        <div class="container-fluid" style="flex-wrap:nowrap;">
+            <!-- flex-wrap:nowrap;은 아이콘 안넘어가게 min-width: 1000px; 창을 최소한줄인게 100px -->
+            <div class="d-flex justify-content-between">
+                <a class="navbar-brand" href="/main"><img style="width: 100px;"
+                        src="http://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png"></a>
+            </div>
+            <div class="d-flex justify-content-between" id="navbarSupportedContent">
+                <input class="form-control me-2" style="width: 350px;" type="search" placeholder="Search"
+                    aria-label="Search">
+            </div>
+            <div class="d-flex justify-content-between">
+                <a href="/main" style="margin-right: 10px; font-size: 28px; color: black; text-decoration: none;" class="material-icons">
+                    home
+                </a>
+                <a href="#" id="nav_bar_add_box" class="material-icons"
+                    style="font-size: 28px; color: black; text-decoration: none; margin-right: 10px;">
+                    <!-- text-decoration: none;는 하이퍼링크 및줄없애기-->
+                    add_circle_outline
+                </a>
+    
+    
+                <div class="dropdown">
+                    <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="box" style="width:28px; height:28px; margin-right: 10px;">
+                            <img class="profile" src="{% get_media_prefix %}{{ user.profile_image }}">
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu" style="left: -100px;"  aria-labelledby="dropdownMenuButton2" >
+                        <li><a class="dropdown-item active" href="/content/profile">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+    </nav>
+    
+ <!-- Contents Start -->
+ {% block content %}
+ {% endblock %}
+ <!-- Contents End -->
+ 
+
+ <!-- 첫번쨰 모달 -->
+    <!-- 검은 배경 -->
+    <div id="first_modal" class="modal_overlay" style="z-index: 100;">  
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div></div>
+            <!-- 하얀창 -->
+            <div class="modal_window" style="margin-left: 40px;">        
+                <div style="text-align: center;">
+                    새 이미지 업로드
+                </div>
+                <div class="img_upload_space" style="width: 778px; height: 540px; margin-top: 10px; border-top: solid 1px lightgray;"></div>
+            </div>
+            <a href="#" class="material-icons modal_close" style="color: lightgrey; margin-right: 30px; text-decoration: none;">close</a>
+        </div>
+    </div>
+
+    <!-- 두번쨰 모달 -->
+    <!-- 검은 배경 -->
+    <div id="second_modal" class="modal_overlay" style="z-index: 100;">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div></div>
+            <!-- 하얀창 -->
+            <div class="modal_window" style="margin-left: 40px;">         
+                <div style="text-align: center;">
+                    새 이미지 업로드
+                </div>
+                <div style="display: flex; flex-direction: row; border-top: solid 1px lightgray;">
+                    <div class="img_upload_space" style="width: 500px; height: 540px; margin-top: 10px;">
+                    </div>
+                    <div style="border-left: solid 1px lightgray;">
+                        <div>
+                            <textarea id="input_feed_content" class="form-control" id="exampleFormControlTextarea1" rows="5" style="width: 276px; height: 500px; border:0 solid; margin-top: 10px;"></textarea>
+                        </div>
+                        <div>
+                            <button id="feed_create_button" type="button" class="btn btn-primary" style="width: 100%;">Post</button>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+            <a href="#" class="material-icons modal_close" style="color: lightgrey; margin-right: 30px; text-decoration: none;">close</a>
+        </div>
+    </div>
+</body>
+
+<!-- Jquery -->
+<script>
+    let files;
+
+    // 첫번째 모달 (jquery 버전)
+    $('#nav_bar_add_box').click(function () {         // (id)# nav_bar_add_box를 클릭했을떄 (eventlistener('click')으로도 사용가능)
+        $('#first_modal').css({
+            display: 'flex'
+        })// (id).first_modal의 css의 display를 flex로 바꿔라
+        $(document.body).css({
+            overflow: 'hidden'
+        })// document.body는 현 html문서에서 body를 표상(그냥 body랑 비슷함),
+        //document.body의 css의 overflow를 감춰라, 즉 스크롤을 잠궈라 (overflowY로 Y축만 잠구기도 가능)
+    });
+    // 첫번째 모달 (JS eventlistener 버전)
+    // const buttonAddFeed = document.getElementById("nav_bar_add_box");   //현 html문서의 id 를 가져와서 상수에 저장
+    // const modal = document.getElementById("first_modal");
+    // buttonAddFeed.addEventListener("click", e => {
+    //     modal.style.display = "flex";
+    //     document.body.style.overflow ="hidden";
+    // });
+
+    // 모달 닫기
+        $('.modal_close').click(function () {
+            $('.modal_overlay').css({   // 첫번째 모달 두번쨰 모달 공통 class
+                display: 'none'
+            })
+            $(document.body).css({
+                overflow: 'visible'
+            })
+            $('.img_upload_space').css({
+                "background-image": 'none',
+                "background-color": "white",
+            })
+        });
+
+    // 모달에서 이미지업로드
+    $('.img_upload_space')
+            .on("dragover", dragOver)// 마우스가 들어올때(dragover될때) dragOver함수실행
+            .on("dragleave", dragOver) // 마우스가 떠날때dragleave될때)도 dragOver함수실행
+            .on("drop", uploadFiles);// 떨구면 uploadFiles함수실행
+
+        function dragOver(e) {
+            e.stopPropagation(); //현재 이벤트의 기본 동작을 중단
+            e.preventDefault(); // 현재 이벤트가 상위로 전파 방지
+            if (e.type == "dragover") { //e.type(이벤트 타입)이 dragover일떄
+                $(e.target).css({   // e.target(이벤트타겟)은 여기서 .img_upload_space를 의미
+                    "background-color": "black",
+                    "outline-offset": "-20px"
+                });
+            } else {    //이벤트 타입이 dragleave일떄
+                $(e.target).css({
+                    "background-color": "white",
+                    "outline-offset": "-10px"
+                });
+            }
+        }
+
+        function uploadFiles(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            e.dataTransfer = e.originalEvent.dataTransfer;  // 파일을 올리는부분
+            files = e.dataTransfer.files;   // 다른 기능들을위해 files를 위에 전역변수로 선언함
+            console.log("파일"+files[0].name);
+
+            if (files.length > 1) { // 파일을 한번에 많이 첨부하면
+                alert('하나만 올려라.');
+                return;
+            }
+
+            if (files[0].type.match(/image.*/)) {   // 파일의 종류가 이미지라면
+                $('#first_modal').css({
+                    display: 'none'
+                });
+                $('#second_modal').css({
+                    display: 'flex'
+                });
+
+                $('.img_upload_space').css({
+                    "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",  // 첨부한 이미지를 화면에 출력
+                    "outline": "none",
+                    "background-size": "100%",
+                    "background-repeat":"no-repeat", // 작은그림이라도 바둑판식으로 나오지않고 하나만 나오게
+                    "background-position":"center", // 이미지를 중앙에
+                });
+            } else { // 파일의 종류가 이미지가 아니면
+                alert('이미지가 아닙니다.');
+                return;
+            }
+        }
+
+    // 이미지를 서버에 전송(Ajax)
+        $('#feed_create_button').click(function () {
+            alert("공유하기");
+
+            let file = files[0];
+            let image = files[0].name;
+            let content = $('#input_feed_content').val(); // $('#input_feed_content')의 내용을 벨류인 val()로 가지고와서 변수에 입력
+            
+            let fd = new FormData();    // Json형식으로 데이터를 전송해야하기 떄문에
+            fd.append('file', file);
+            fd.append('image', image);
+            fd.append('content', content);
+
+            fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');   // 보안을 위한 csrf_token
+
+            $.ajax({    // https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=mk1126sj&logNo=221073866070 참고
+                url:"/content/upload",
+                data: fd,
+                method: "POST",
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    console.log("성공");
+                },
+                error: function(request, status, error){
+                    console.log("에러");
+                },
+                complete: function(){
+                    console.log("완료");
+                    location.replace("/main");  // 다 처리한후 main으로가라(모달창 닫게하면서, 업로드된것 확인하려고)
+                }
+            })
+        });
+        
+
+    // 프로필 사진 업로드
+    $('#button_profile_upload').click(function () { 
+        $('#input_fileupload').click();
+    });// Id #button_profile_upload가 클릭될때 Id # input_fileupload클릭시켜서 그안에 onchange에 있는 profile_upload()함수를 실행시킴
+
+    function profile_upload() {
+        let file = $('#input_fileupload')[0].files[0]; //  Id # input_fileupload안에 파일을 file 변수에 저장
+        let email = '{{ user.email }}'; // 현재 접속한 유저의 email을 변수에 저장
+
+        let fd = new FormData();
+
+        fd.append('file', file);
+        fd.append('email', email);
+        fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');   // 보안을 위한 csrf_token
+
+        $.ajax({    // https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=mk1126sj&logNo=221073866070 참고
+            url: "/user/upload_profile",
+            data: fd,
+            method: "POST",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log("성공");
+            },
+            error: function (request, status, error) {
+                console.log("에러");
+            },
+            complete: function () {
+                console.log("완료");
+                location.replace("/content/profile");  // 다 처리한후갈곳
+            }
+        })
+    };
+
+    // 댓글달기
+    $('.upload_reply').click(function(e){   // upload_reply를가진 클래스가 클릭됬을때의 (e는 그때의 이벤트)
+
+        let feed_id = e.target.attributes.getNamedItem('feed_id')
+        .value;// 그 이벤트 타겟의 attributes들중 feed_id라는 이름의 value(쓰여져있는텍스트)를 가져와서 feed_id변수에 담음
+        let reply_id = 'reply_'+feed_id; // feed_id는 버튼의 attribute, reply_id 는텍스트의 attribute
+        let reply_content = $('#'+reply_id).val(); // 버튼의 feed_id숫자와 같은 reply_id의 value(쓰여져있는텍스트)를 가져와서 reply_content변수의 담아라
+
+        console.log(reply_content)
+        if(reply_content.length <= 0){  // 댓글이 입력되지 않으면 (댓글의 길이가 0이면)
+            alert("댓글을 입력하세요")
+            return 0;
+        }
+
+        $.ajax({    // https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=mk1126sj&logNo=221073866070 참고
+            url:"/content/uploadReply",
+            data: {
+                'feed_id' : feed_id,
+                'reply_content' : reply_content,
+                'csrfmiddlewaretoken' : '{{ csrf_token }}',
+            },
+            method: "POST",
+            success: function(data){
+                console.log("성공");
+                $('#reply_list_'+feed_id).append("<div style='margin-left: 20px; text-align: left;'><b>{{ user.nickname }}</b> "+ reply_content
+                    +" </div>") // 댓글달기 성공했을때 댓글다는 부분에 '<div...</div>'를 새로고침 없이 바로보여줌
+            },
+            error: function(request, status, error){
+                console.log("에러");
+                location.replace("/main"); 
+            },
+            complete: function(){
+                console.log("완료");
+                $('#'+reply_id).val("") // 완료후 댓글 다는부분은 공백으로
+
+            }
+        })
+    })
+
+    // 좋아요
+    $('.favorite').click(function(e){
+        let feed_id = e.target.attributes.getNamedItem('feed_id').value
+        let favorite_id = e.target.id;
+        let favorite_text = $.trim($('#' + favorite_id).html()) // $.trim()은 공백을 trim해주고, html()은 태그안에 내용
+        console.log(favorite_text);
+
+        if(favorite_text == 'favorite'){
+            ($('#' + favorite_id).html('favorite_border'));
+        }else{
+            ($('#' + favorite_id).html('favorite'));
+
+        }
+    
+    $.ajax({    // https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=mk1126sj&logNo=221073866070 참고
+            url:"/content/togleLike",
+            data: {
+                'feed_id' : feed_id,
+                'favorite_text' : favorite_text,
+                'csrfmiddlewaretoken' : '{{ csrf_token }}',
+            },
+            method: "POST",
+            success: function(data){
+                console.log("성공");
+            },
+            error: function(request, status, error){
+                console.log("에러");
+                location.replace("/main"); 
+            },
+            complete: function(){
+                console.log("완료");
+            }
+        })
+    });
+
+    
+    // 북마크
+    $('.bookmark').click(function(e){
+        let feed_id = e.target.attributes.getNamedItem('feed_id').value
+        let bookmark_id = e.target.id;
+        let bookmark_text = $.trim($('#' + bookmark_id).html()) // $.trim()은 공백을 trim해주고, html()은 태그안에 내용
+        console.log(bookmark_text);
+
+        if(bookmark_text == 'bookmark'){
+            ($('#' + bookmark_id).html('bookmark_border'));
+        }else{
+            ($('#' + bookmark_id).html('bookmark'));
+
+        }
+    
+    $.ajax({    // https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=mk1126sj&logNo=221073866070 참고
+            url:"/content/togleBookmark",
+            data: {
+                'feed_id' : feed_id,
+                'bookmark_text' : bookmark_text,
+                'csrfmiddlewaretoken' : '{{ csrf_token }}',
+            },
+            method: "POST",
+            success: function(data){
+                console.log("성공");
+            },
+            error: function(request, status, error){
+                console.log("에러");
+                // location.replace("/main"); 
+            },
+            complete: function(){
+                console.log("완료");
+            }
+        })
+    });
+
+    // 프로필에 게시물, 좋아요, 북마크
+
+    $('#button_feed_list').click(function () {
+        $('#feed_list').css({ 
+            display: 'flex',
+        })
+        $('#button_feed_list').css({ 
+            'color': 'black',
+            'border-top': 'solid 1px black',
+        })
+
+        $('#like_feed_list').css({ 
+            display: 'none'
+        })
+        $('#button_like_feed_list').css({ 
+            'color': 'lightgray',
+            'border-top': 'solid 0',
+        })
+
+        $('#bookmark_feed_list').css({ 
+            display: 'none'
+        })
+        $('#button_bookmark_feed_list').css({ 
+            'color': 'lightgray',
+            'border-top': 'solid 0',
+        })     
+    });
+
+    $('#button_like_feed_list').click(function () {
+        $('#feed_list').css({ 
+            display: 'none'
+        })
+        $('#button_feed_list').css({ 
+            'color': 'lightgray',
+            'border-top': 'solid 0',
+        })
+
+        $('#like_feed_list').css({ 
+            display: 'flex'
+        })
+        $('#button_like_feed_list').css({ 
+            'color': 'black',
+            'border-top': 'solid 1px black',
+        })
+
+        $('#bookmark_feed_list').css({ 
+            display: 'none'
+        })
+        $('#button_bookmark_feed_list').css({ 
+            'color': 'lightgray',
+            'border-top': 'solid 0',
+        })      
+    });
+
+    $('#button_bookmark_feed_list').click(function () {
+        $('#feed_list').css({ 
+            display: 'none'
+        })
+        $('#button_feed_list').css({ 
+            'color': 'lightgray',
+            'border-top': 'solid 0',
+        })
+
+        $('#like_feed_list').css({ 
+            display: 'none'
+        })
+        $('#button_like_feed_list').css({ 
+            'color': 'lightgray',
+            'border-top': 'solid 0',
+        })
+
+        $('#bookmark_feed_list').css({ 
+            display: 'flex'
+        })
+        $('#button_bookmark_feed_list').css({ 
+            'color': 'black',
+            'border-top': 'solid 1px black',
+        })
+    });
+
+
+</script>
+</html>
