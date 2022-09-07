@@ -1,6 +1,12 @@
 from rest_framework import serializers
 from .models import Article
 
+class ArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        # fields = ['id','title','author','email']
+        fields = '__all__'
+
 # ModelSerializer를 사용하지않고 수동작성
 # class ArticleSerializer(serializers.Serializer):
 #     title = serializers.CharField(max_length=100)
@@ -18,9 +24,3 @@ from .models import Article
 #         instance.date = validated_data.get('date', instance.date)
 #         instance.save()
 #         return instance
-
-class ArticleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Article
-        # fields = ['id','title','author','email']
-        fields = '__all__'
