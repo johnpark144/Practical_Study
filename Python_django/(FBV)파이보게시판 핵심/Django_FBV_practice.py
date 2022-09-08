@@ -238,7 +238,7 @@
 #   {% for field in form %}     // 하나하나 소환하며 폼 생성
 #       <div class="fieldwrapper">
 #           {{ field.errors }}
-#           {{ field.lavel_tag }}{{ field }}
+#           {{ field.label_tag }}{{ field }}
 #       </div>
 #    {% endfor %}
 
