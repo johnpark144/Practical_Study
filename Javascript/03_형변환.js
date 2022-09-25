@@ -24,4 +24,4 @@ console.log(
     Boolean(""),
     Boolean(" ")
 )
-// 12345 NaN 1 0 0 NaN
+// false true false true
