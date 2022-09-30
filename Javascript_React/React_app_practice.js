@@ -141,7 +141,12 @@ function App() {
 
 // ################################################################################### 단위변환기 (State 연습 from 노마드강의) ##############
 
-function Super_Converter() {
+
+function KmToMiles(){
+//  ... 비슷해서 생략 ...
+}
+
+function MinutesToHours() {
   const [amount, setAmount] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const onChange = (e) => {
@@ -152,10 +157,8 @@ function Super_Converter() {
     flipped ? setAmount(amount*60) : setAmount(amount/60);
     setFlipped((current) => !current);
   }
-
   return <>
     <div>
-      <h1 className='hi'>Super Converter</h1>
       <label htmlFor='minutes'>Minutes</label>
       <div>
         <input
@@ -182,6 +185,28 @@ function Super_Converter() {
       <button onClick={onFlip}>Flip</button>
     </div>
   </>
+}
+
+function App() {
+//  ... 생략 ...
+  const [index, setIndex] = useState(0);
+    
+  const onSelect = (e) =>{
+    setIndex(e.target.value) // index를 밑에서 받아온 option value로
+  }
+  return (
+    //  ... 생략 ...
+      <h1>Super Converter</h1>
+      <select onChange={onSelect}> // 옵션 선택시 onChange가 발생하여 onSelect 함수실행 
+        <option value="0">select what to convert</option>
+        <option value="1">Minutes & Hours</option>
+        <option value="2">Km & Miles</option>
+      </select>
+      {index === '0' ? <p>select what to convert</p> : null} // index의 변경에 따라 
+      {index === '1' ? <MinutesToHours /> : null}
+      {index === '2' ? <KmToMiles /> : null}
+    //  ... 생략 ...
+  )
 }
 // ################################################################################### State의 객체와 배열 ###########################
 
