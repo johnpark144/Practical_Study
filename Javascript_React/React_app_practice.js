@@ -19,9 +19,9 @@ function App() {
     )
 }
 // ####### PROP (속성) #######################################################################################################
-function Header(props) {
+function Header(props) {      // function Nav({ title }) 로 써도됨 (props.title)
     return <header>
-        <h1><a href='/'>{props.title}</a></h1>
+        <h1><a href='/'>{props.title}</a></h1>  // 만약 인자를 ({ title })로 받은경우 props.title이 아닌 그냥 title
     </header> // {}는 JS 표현식으로 취급
 }
 function App() {
@@ -31,7 +31,7 @@ function App() {
 }
 
 // ############################################################################################# 리스트 PROP ##################
-function Nav(props) {      // function Nav({ topics }) 로 써도됨 (props.topics)
+function Nav(props) {
     const lis = []
     for (let i = 0; i < props.topics.length; i++) {
         let t = props.topics[i];
