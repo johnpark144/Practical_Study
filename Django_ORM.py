@@ -42,7 +42,7 @@ SELECT "events_event"."id", "events_event"."epic_id","events_event"."details", "
 >>> UserParent.objects.filter(user_id__in=Subquery(users.values('id')))
 <QuerySet [<UserParent: UserParent object (2)>, <UserParent: UserParent object (5)>, <UserParent: UserParent object (8)>]>
 
-############### 필드값끼리 비교 ######################################################################################
+############### 필드값끼리 비교 #####################################################################################
 >>>User.objects.create_user(email="guido@example.com", username="Guido", first_name="Guido", last_name="Guido")
 >>>User.objects.filter(last_name=F("first_name"))  # 'F'는 Field로써 저것은 Field에 first_name, 즉 last_name과 first_name이 같은것을 불러옴
 <QuerySet [<User: Guido>]>
