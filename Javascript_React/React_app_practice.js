@@ -138,6 +138,51 @@ function App() {
         </div>
     );
 }
+
+// ################################################################################### 단위변환기 (State 연습 from 노마드강의) ##############
+
+function Super_Converter() {
+  const [amount, setAmount] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const onChange = (e) => {
+    setAmount(e.target.value);
+  };
+  const reset = () => setAmount(0);
+  const onFlip = () => {
+    flipped ? setAmount(amount*60) : setAmount(amount/60);
+    setFlipped((current) => !current);
+  }
+
+  return <>
+    <div>
+      <h1 className='hi'>Super Converter</h1>
+      <label htmlFor='minutes'>Minutes</label>
+      <div>
+        <input
+          value={flipped ? amount*60 : amount}
+          id='minutes'
+          placeholder='Minutes'
+          type="number"
+          onChange={onChange}
+          disabled={flipped}
+        />
+      </div>
+      <label htmlFor='hours'>Hours</label>
+      <div>
+        <input
+          value={flipped ? amount : amount/60}
+          id='hours'
+          placeholder='Hours'
+          type="number"
+          onChange={onChange}
+          disabled={!flipped}
+        />
+      </div>
+      <button onClick={reset}>Reset</button>
+      <button onClick={onFlip}>Flip</button>
+    </div>
+  </>
+}
 // ################################################################################### State의 객체와 배열 ###########################
 
 // const [value, setValue] = useState(Primitive);           ex) string, number, bigint, boolean, undefined, symbol, null 인경우
