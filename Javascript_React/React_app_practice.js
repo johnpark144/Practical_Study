@@ -31,7 +31,7 @@ function App() {
 }
 
 // ############################################################################################# 리스트 PROP ##################
-function Nav(props) {
+function Nav(props) {      // function Nav({ topics }) 로 써도됨 (props.topics)
     const lis = []
     for (let i = 0; i < props.topics.length; i++) {
         let t = props.topics[i];
