@@ -118,6 +118,13 @@ function b(){
 t.addEventListener('submit', b) // 이벤트 리스너는 on을붙이지 않고 이벤트이름, 함수를 적어줌 (위 이벤트핸들러를 덮어쓰지않음)
 t.removeEventListener('submit', b) // 이벤트 리스너 지우기
 
+// ###### classList(클래스 확인,삽입,토글) ##########################################################################################################
+let t = document.body.children[0]
+t.classList // 변수안에 존재하는 클래스들을 리스트로 확인가능
+t.classList.add('image-selected'); // 인자로 받은 클래스를 삽입
+t.classList.toggle('image-selected'); // 인자로 받은 클래스가 없으면 넣고, 있으면 뺴는 기능
+
+
 // ########## AJAX (브라우저에서 페이지를 이동않고 http request를보내 처리하는기술)###############################################################
 
 let request = new XMLHttpRequest(); // HttpRequest를 보내기위한 새로운 객체 생성
@@ -169,11 +176,6 @@ request.onreadystatechange = function a(){
 }
 request.open('GET','./json_data.txt');
 request.send();
-// ###### classList(클래스 확인,삽입,토글) ##########################################################################################################
-let t = document.body.children[0]
-t.classList // 변수안에 존재하는 클래스들을 리스트로 확인가능
-t.classList.add('image-selected'); // 인자로 받은 클래스를 삽입
-t.classList.toggle('image-selected'); // 인자로 받은 클래스가 없으면 넣고, 있으면 뺴는 기능
 
 // ###### try, catch, finally ##################################################################################################################
 try{
