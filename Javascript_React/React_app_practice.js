@@ -420,7 +420,7 @@ import styles from './Hello.module.css'; // 전체 적용되는 css가아니고 
 export default function Hello() {
     return (
         <>
-            <h1 className={styles.box}>Hello</h1>   {/* 해당component에 특화된 class적용 */}
+            <h1 className={styles.box}>Hello</h1>   {/* CSS가 그대로 적용되는 랜덤 클래스이름 만들어줌 (해당 태그에 특화된 class) */}
             <World />
         </>
     );
