@@ -461,9 +461,9 @@ export default function DayList() {
     )) // 현재 1일차거만 모은 리스트(페이지)
     return (
         <>
-            {dummy.days.map(day => ( //배열 하나하나를 day라는 인자로
+            {dummy.days.map(day => ( //배열 하나하나를 day라는 인자로 // day인자 배열안애 만약 id가없는경우 map((day, idx)=>(...)) 형식처럼 두번째인자에 idx줄수있음
                 <li key={day.id}> Day {day.day} </li>
-                // day.day Key 즉 value 1,2,3...을출력 // Map함수로 1,2,3...을 Day1, Day2, Day3으로 동시에 출력하게함
+                // Map이나 for문 사용하는경우 key 값 필요 //day.day Key 즉 value 1,2,3...을출력 // Map함수로 1,2,3...을 Day1, Day2, Day3으로 동시에 출력하게함
             ))}
             {wordList.map(word => (
                 <span key={day.id}> {word.eng} : {word.kor} </span>
