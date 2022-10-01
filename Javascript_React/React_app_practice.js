@@ -217,9 +217,8 @@ function App() {
 // 일반적인 방법으로 useState실행
 
 // const [value, setValue] = useState(Object);              ex) object, array 인경우
-// 1) newValue = {...value} (복제)
-// 2) newValue의 값변경
-// 3) setValue(newValue)
+// 방법1. 1) newValue = {...value} (복제)    ->    2) newValue의 값변경    ->    3) setValue(newValue)
+// 방법2. 1) setValue((currentValue) => [...currentValue, (값변경)]) 
 
 // ############ Create ##################################################################################################################
 function Create(props) {
