@@ -24,6 +24,9 @@ function Header(props) {      // function Nav({ title }) 로 써도됨 (props.ti
         <h1><a href='/'>{props.title}</a></h1>  // 만약 인자를 ({ title })로 받은경우 props.title이 아닌 그냥 title
     </header> // {}는 JS 표현식으로 취급
 }
+Header.propTypes = {
+    title: PropTypes.string.isRequired, // PropTypes.string만쓰면 문자열와야되는데 비워둘순있음(PropTypes 종류 참고)
+}
 function App() {
     return (
         <Header title="React"></Header> // Header함수에 props 인자에 들어감
