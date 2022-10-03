@@ -610,6 +610,13 @@ export default function DayList() {
             });
     }, [])// 빈배열[]인경우 렌더링후 한번만 실행(실행되야 json정보를 가져오도록), 매개변수로 배열[count]를 전달하면 [count]가 변경될때만 함수실행
 
+// async와 await를 이용한 방법
+//     async () => {
+//     const res = await fetch(`http://localhost:3001/days`);
+//     const json = await res.json(); // async와 await를 이용하면 then을 안써도됨
+//     setDays(json.data);
+//   }
+
     return (
         <ul className='list_day'>
             {days.map(day => (
