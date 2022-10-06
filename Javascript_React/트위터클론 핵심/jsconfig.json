@@ -1,7 +1,0 @@
-// src밖 폴더에 둘것 (src기준으로 절대경로)
-{
-    "compilerOptions": {
-      "baseUrl": "src"
-    },
-    "include": ["src"]
-  }
