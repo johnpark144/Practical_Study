@@ -777,4 +777,29 @@
 # </script>
 # {% endblock %}
 
+####### Django mysql 연동 ######################################################################################################### 
+# pip install mysqlclient  // 연동도구 설치
+
+################### mySettings.py ###################
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',    # 사용할 엔진 설정
+#         'NAME': 'test',                          # mysql 데이터베이스 이름 ( mysql 에서 생성해둬야함)
+#         'USER': 'root',                          # DB접속 계정명
+#         'PASSWORD': '********',                  # DB접속 계정 비밀번호
+#         'HOST': 'localhost',                     # DB주소
+#         'PORT': '3306',                          # 포트번호
+#     }
+# }
+# SECRET_KEY = 'django-insecure-m8*6kftg-5$!9m@lh366@_+9vbmmg43@$xh=@jpfos@vi)#o%&' # settings.py에있는 시크릿키 복사
+
+################### settings.py ###################
+
+# import mySettings
+# DATABASES = mySettings.DATABASES // DB mySettings에 설정
+# SECRET_KEY = mySettings.SECRET_KEY  // SECRET_KEY를 mySettings에 복사
+
+#########################################################
+
 
