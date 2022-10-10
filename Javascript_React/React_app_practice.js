@@ -10,6 +10,7 @@
 favicon.ico
 logo192.png
 logo512.png
+robots.txt
 manifest.json
 App.css
 App.test.js
