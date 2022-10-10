@@ -6,6 +6,19 @@
 // npm run build // 배포판을 만들게 해줌
 // npx serve -s build // build폴더에 index.html을 서비스하는 웹서버가 실행
 
+// ########### 삭제할 것들 ########################################################################################
+favicon.ico
+logo192.png
+logo512.png
+manifest.json
+App.text.js
+logo.svg
+seviceWorker.js
+setuoTests.js
+
+index.js 파일 5 / 9~12 번 줄
+App.js 파일 2 / 8~21 번 줄
+
 // ####### Component (사용자 정의 태그) #####################################################################################
 function Header() { // 함수인데 대문자로
     return <header>
