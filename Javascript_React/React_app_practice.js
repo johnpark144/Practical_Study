@@ -11,13 +11,22 @@ favicon.ico
 logo192.png
 logo512.png
 manifest.json
-App.text.js
+App.css
+App.test.js
 logo.svg
 seviceWorker.js
-setuoTests.js
+reporwebvital
+setupTests.js
 
-index.js 파일 5 / 9~12 번 줄
-App.js 파일 2 / 8~21 번 줄
+index.js 파일
+import reporwebvital
+.StrictMode
+render이후
+
+App.js 파일 
+import logo from './logo.svg';
+import './App.css';
+return내용들
 
 // ####### Component (사용자 정의 태그) #####################################################################################
 function Header() { // 함수인데 대문자로
