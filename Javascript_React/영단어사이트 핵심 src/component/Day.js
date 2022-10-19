@@ -2,10 +2,9 @@ import { Link, useParams } from 'react-router-dom';
 import Word from './Word';
 import useFetch from '../hooks/useFetch';
 
-
 export default function Day() {
     const { day } = useParams();  // useParams는 Url에 포함된 값을 객체형태로로 가져옴({day:1})
-    const words = useFetch(`http://localhost:3001/words?day=${day}`) // 커스텀된 함수
+    const words = useFetch(`http://localhost:3001/words?day=${day}`) // 커스텀 함수
     const days = useFetch('http://localhost:3001/days');
 
     return <>
