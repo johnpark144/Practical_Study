@@ -17,7 +17,6 @@ export default function Day() {
                 {Number(day) < days.length ? <Link to={`/day/${Number(day) + 1}`}>Next</Link> : <span className='marginR'/>}
             </span>
         </div>
-
         {words.length === 0 && <span>Loding...</span>}{/*처음에 로딩중 */}
         <table>
             <tbody>
