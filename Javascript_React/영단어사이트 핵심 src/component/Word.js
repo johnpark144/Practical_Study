@@ -8,6 +8,7 @@ export default function Word({ word:w }) { // word를 w라는 변수명으로 �
     function toggleShow() {
         setIsShow(!isShow) // !는 현재것의 반대값을 반환
     }
+    
     function toggleDone() {
         fetch(`http://localhost:3001/words/${word.id}`, {
             method: 'PUT',
@@ -25,6 +26,7 @@ export default function Word({ word:w }) { // word를 w라는 변수명으로 �
                 }
             });
     }
+    
     function del() {
         if (window.confirm('삭제 할거니?')) {
             fetch(`http://localhost:3001/words/${word.id}`, { // 데이터 삭제
@@ -36,6 +38,7 @@ export default function Word({ word:w }) { // word를 w라는 변수명으로 �
             })
         }
     }
+    
     if (word.id === 0){ // 단어가 실시간으로 삭제될때 표 전체가 바로 삭제되려면 null이 되야함
         return null;
     }
