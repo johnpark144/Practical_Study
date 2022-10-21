@@ -1,0 +1,126 @@
+<!--  -->
+div*5
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+
+(li>a)*5
+<li><a href=""></a></li>
+<li><a href=""></a></li>
+<li><a href=""></a></li>
+<li><a href=""></a></li>
+<li><a href=""></a></li>
+
+<!-- href 새로고침 방지  -->
+<li><a href="#"></a></li>
+
+<!--##### Flexbox (display: flex; ) ###################################################################################### container 속성값 ###################-->
+
+flex-direction: row; <!-- 디폴트는 row -->
+flex-wrap: wrap; <!-- 창이 줄어들때 자동으로 다음칸으로 이동 (디폴트는 nowrap)-->
+flex-flow: column nowrap; <!-- flex-direction + flex-wrap 같이쓸때  -->
+
+<!-- justify-content은 flex-direction와 같은축으로 정렬해줌
+  (row면 가로로 가운데정렬, column이면 세로로 가운데정렬)-->
+justify-content: flex-end; <!-- 오른쪽정렬 (디폴트는 flex-start)  -->
+
+justify-content: space-around; <!-- 좌우 포함하여 사이에 일정하게 공간을 줌으로 가운공간이 큼  -->
+justify-content: space-evenly; <!-- 좌우 포함하여 똑같은 간격으로 사이에 일정하게 공간을 줌  -->
+justify-content: space-between; <!-- 좌우는 옆으로 붙이고 사이사이 일정하게 공간을 줌  -->
+
+<!-- align-items은 flex-direction의 반대축으로 정렬해줌
+  (row면 세로로 가운데정렬, column이면 가로로 가운데정렬)-->
+align-items: flex-end; <!-- 아래로정렬  (디폴트는 flex-start)-->
+align-items: center;
+align-items: baseline;<!-- item들의 크기가 달라져도 중심으로하여 맞춰줌 -->
+
+align-content: space-between;
+
+<!--################################################################################################################################ Item 속성값 ###################-->
+
+flex-grow : 1 <!-- 디스플레이 크기가 커질때 화면에서 더 많이 커짐 (숫자는 비율) -->
+flex-shrink : 1  <!-- 디스플레이 크기가 작아질때 화면에서 더 많이 줄어듬 (숫자는 비율) -->
+flex-basis: 10% <!-- 화면전체의 비율 -->
+
+ align-self: center <!-- 아이템 따로 정렬  -->
+
+<!-- align-items은 flex-direction의 수직된 방향으로 정렬해줌
+  (row면 세로로 가운데정렬, column이면 가로로 가운데정렬)-->
+align-items: flex-start;
+align-items: center;
+align-items: flex-end;
+
+<!--###### Position (display: inline, block, inline-block; 만 사용가능 ) <span>디폴트는 inline <div>디폴트는 block #####################################################-->
+<!-- Position: static;이 기본값 -->
+<!-- relative는 원래있어야할 곳에서 -->
+Position: relative;
+top:20px;
+left:20px;
+
+<!-- absolute는 부모의 0,0에서 절대값으로 지정 -->
+Position: absolute;
+top:20px;
+left:20px;
+
+<!-- fixed는 window에서 절대값으로 지정 -->
+Position: fixed;
+top:20px;
+left:20px;
+
+<!-- sticky는 원래있어야할 곳에서 스크롤될때 벽에 붙음 -->
+Position: sticky;
+
+
+<!--####### 기타 ################################################################################################################################################-->
+
+<!-- 마우스를 특정 id에 올려놨을때 (hover)  -->
+#abc:hover {
+  background-color: #fefefe;
+}
+
+<!-- 디스플레이 크기에따라 설정 (700px이하로 줄어들때 max-width) -->
+@media screen and (max-width: 700px){
+  .navbar{
+    flex-directionL column;
+  }
+}
+
+<!-- CSS 안에서 변수 지정 -->
+:root{
+  --text-color: #f0f4f5;
+  --background-color: #222222;
+  --accent-color: #dfdfdf;
+}
+
+a{
+  color" var(text-color);
+}
+
+<!--######## 애니메이션 ######################################################################################################################################-->
+<!-- transition 속도 확인:  https://cubic-bezier.com/ -->
+
+#py{
+    width: 200px;
+    height: 200px;
+    transition-property: width, height; <!-- width, height 변환할때 -->
+    transition-duration: 2s; <!-- 2초걸리면서 -->
+    transition-delay: 1s; <!-- 1초뒤에시작 -->
+
+    transition-timing-function: ease; <!-- 아늑하게 -->
+    transition-timing-function: ease-in; <!-- 끝이빠름 -->
+    transition-timing-function: ease-out; <!-- 시작이빠름 -->
+    transition-timing-function: ease-in-out; <!-- 중간이빠름 -->
+
+    transition: width 2s 1s ease-in-out; <!-- property(all),duration,delay,timing-function(cubic-bezier) 동시에 -->
+  }
+#py:hover{
+  width: 400px;
+  height: 400px;
+}
+
+<!--  -->
+
+
+
