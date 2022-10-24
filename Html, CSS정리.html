@@ -61,7 +61,7 @@ flex-basis: 10% <!-- 화면전체의 비율 -->
 align-self: center <!-- 아이템 따로 정렬  -->
 
 
-<!--###### Position (display: inline, block, inline-block; 만 사용가능 ) <span>디폴트는 inline <div>디폴트는 block #####################################################-->
+<!--###### Position (display: inline, block, inline-block; 만 사용가능 ) <span>디폴트는 inline, <div>디폴트는 block #####################################################-->
 <!-- Position: static;이 기본값 -->
 <!-- relative는 원래있어야할 곳에서 -->
 Position: relative;
@@ -99,6 +99,9 @@ a{
   color: var(--text-color);
   width: calc(var(--nav-size) * 0.8); <!-- calc는 css안에서 계산해줌 -->
 }
+
+<!-- 스크롤 내릴때 한부분은 고정 -->
+background: url(https://www.starbucks.co.kr/common/img/main/fav_prod_bg_new.jpg) fixed;
 
 <!-- 스크롤 상관없이 가운데 배치하는 방법들  -->
 #abc {
@@ -216,8 +219,7 @@ forwards는실행후 머물러있게 animation-fill-mode(forward,both,backwards.
     }
 }
 
-<!--########################################################################################### 스크롤을 내려 화면이 보일때 예시 (IntersectionObserver) #############-->
-
+<!--########################################################################################### 스크롤을 내려 화면이 보일때 효과(IntersectionObserver)  #############-->
 <style>
         .parent {
             display: grid;
@@ -280,3 +282,63 @@ forwards는실행후 머물러있게 animation-fill-mode(forward,both,backwards.
   
     hiddenElem.forEach((el) => observer.observe(el));
 </script>
+
+
+<!--########################################################################################### 스크롤을 내려 화면이 보일때 효과(window.scrollY)  #############-->
+<style>
+h1{
+        font-size: 5em;
+        width: 258px;
+        color: aliceblue;
+        font-family: sans-serif;
+        position: absolute;
+        top: 80px;
+        left: 200px;
+        animation: slideIn 2s ease-in-out forwards;
+  }
+
+  @keyframes slideIn{
+      from{
+          left: -100px;
+          filter: blur(10px);
+          opacity: 0;
+      }
+      to{
+          left: 200px;
+          filter: blur(0);
+          opacity: 1;
+      }
+  }
+
+  @keyframes slideOut{
+      from{
+          left: 200px;
+          filter: blur(0);
+          opacity: 1;
+      }
+      to{
+          left: -100px;
+          filter: blur(10px);
+          opacity: 0;
+      }
+  }
+</style>
+<body>
+    <section>
+        <h1>PICK YOUR FAVORITE</h1>
+    </section>
+</body>
+<script>
+    let mainText = document.querySelector('h1')
+    window.addEventListener('scroll', ()=>{
+        let value = window.scrollY // scroll Y좌표
+        if(value>330){
+            mainText.style.animation='slideOut 1s ease-in-out forwards'
+        }else{
+            mainText.style.animation='slideIn 2s ease-in-out forwards'
+        }
+    })
+</script>
+
+<!--###################################################################################################################################################################-->
+
