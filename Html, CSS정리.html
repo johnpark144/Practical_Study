@@ -92,15 +92,26 @@ Position: sticky;
 :root{
   --text-color: #f0f4f5;
   --background-color: #222222;
-  --accent-color: #dfdfdf;
+  --nav-size: 60px;
 }
 
 a{
-  color" var(text-color);
+  color: var(text-color);
+  width: calc(var(--nav-size) * 0.8); <!-- calc는 css안에서 계산해줌 -->
 }
 
-<!--######## 애니메이션 #####################################################################################################################################-->
-<!-- transition 속도 확인:  https://cubic-bezier.com/ -->
+<!-- 스크롤 상관없이 가운데 배치하는 방법들  -->
+#abc {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 100vh;
+}
+
+
+<!--######## 애니메이션 ############################################################################################## transition #########################-->
+<!-- 설명:  https://inpa.tistory.com/entry/CSS-%F0%9F%93%9A-%ED%8A%B8%EB%9E%9C%EC%A7%80%EC%85%98-%ED%8A%B8%EB%9E%9C%EC%8A%A4%ED%8F%BC-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98 -->
+<!-- transition는 프로퍼티 값의 변화가 일정 시간(duration)에 걸쳐 일어나도록해줌        // transition 속도 확인:  https://cubic-bezier.com/ -->
 
 #py{
     width: 200px;
@@ -114,14 +125,16 @@ a{
     transition-timing-function: ease-out; <!-- 시작이빠름 -->
     transition-timing-function: ease-in-out; <!-- 중간이빠름 -->
 
-    transition: width 2s 1s ease-in-out; <!-- property(all),duration,delay,timing-function(cubic-bezier) 동시에 -->
+    transition: width 2s 1s ease-in-out; <!-- property(all), duration, delay, timing-function(cubic-bezier) 동시에 -->
   }
 #py:hover{
   width: 400px;
   height: 400px;
 }
 
-<!--########################################################################################################################################################-->
+<!--######################################################################################################### transform, Animation ##################-->
+<!-- Transform은 요소에 이동(translate), 회전(rotate), 확대축소(scale), 비틀기(skew) 효과를 부여하기 위한 함수를 제공한다.
+애니메이션 효과를 부여할 필요가 있다면 트랜지션이나 애니메이션과 함께 사용해야한다.-->
 
 .parent{
     background-color: navy;
@@ -160,5 +173,67 @@ forwards는실행후 머물러있게 animation-fill-mode(forward,both,backwards.
     }
 }
 
+<!--########################################################################################### 스크롤을 내려 화면이 보일때 예시 (IntersectionObserver) #############-->
 
+<style>
+        .parent {
+            display: grid;
+            place-items: center;
+            align-content: center;
+            min-height: 100vh;
+        }
+        .hidden{
+            opacity: 0;
+            filter: blur(1px);
+            transform: translateX(-100%);
+            transition: all 1s;
+        }
+        .show{
+            background-color: aquamarine;
+            width: 200px;
+            height:  200px;
+            opacity: 1;
+            filter: blur(0);
+            transform: translateX(0);
+        }
 
+         .logo:nth-child(2){ /* 몇번째 자식에게 줄 효과인지 */
+            transition-delay: 200ms;
+        }
+        .logo:nth-child(3){
+            transition-delay: 400ms;
+        }
+        .logo:nth-child(4){
+            transition-delay: 600ms;
+        }
+</style>
+<body>
+    <div class="parent">
+        <div class="logo hidden">
+            logo 1
+        </div>
+        <div class="logo hidden">
+            logo 2
+        </div>
+        <div class="logo hidden">
+            logo 3
+        </div>
+        <div class="logo hidden">
+            logo 4
+        </div>
+    </div>
+</body>
+<script>
+    const observer = new IntersectionObserver((entries) =>{
+        entries.forEach((entry=>{
+            if(entry.isIntersecting){
+                entry.target.classList.add('show');
+            } else {
+                entry.target.classList.remove('show');
+            }
+        }))
+    })
+    const hiddenElem = document.querySelectorAll('.hidden');
+  
+    hiddenElem.forEach((el) => observer.observe(el));
+</script>
