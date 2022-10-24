@@ -1,3 +1,17 @@
+<!-- CSS를 따로 빼기  -->
+<link rel="stylesheet" href="style.css">
+
+<!-- 전체지정 (기본값이 들어있기 때문에 가끔씩 필요함) -->
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+
+  body{
+    font-family: serif;
+  }
+}
+
 <!-- 단축키  -->
 div*5
 <div></div>
@@ -46,12 +60,6 @@ flex-basis: 10% <!-- 화면전체의 비율 -->
 
 align-self: center <!-- 아이템 따로 정렬  -->
 
-<!-- align-items은 flex-direction의 수직된 방향으로 정렬해줌
-  (row면 세로로 가운데정렬, column이면 가로로 가운데정렬)-->
-align-items: flex-start;
-align-items: center;
-align-items: flex-end;
-
 
 <!--###### Position (display: inline, block, inline-block; 만 사용가능 ) <span>디폴트는 inline <div>디폴트는 block #####################################################-->
 <!-- Position: static;이 기본값 -->
@@ -73,19 +81,11 @@ left:20px;
 <!-- sticky는 원래있어야할 곳에서 스크롤될때 벽에 붙음 -->
 Position: sticky;
 
-
 <!--####### 기타 ################################################################################################################################################-->
 
 <!-- 마우스를 특정 id에 올려놨을때 (hover)  -->
 #abc:hover {
   background-color: #fefefe;
-}
-
-<!-- 디스플레이 크기에따라 설정 (700px이하로 줄어들때 max-width) -->
-@media screen and (max-width: 700px){
-  .navbar{
-    flex-directionL column;
-  }
 }
 
 <!-- CSS 안에서 변수 지정 -->
@@ -96,7 +96,7 @@ Position: sticky;
 }
 
 a{
-  color: var(text-color);
+  color: var(--text-color);
   width: calc(var(--nav-size) * 0.8); <!-- calc는 css안에서 계산해줌 -->
 }
 
@@ -107,7 +107,50 @@ a{
   align-content: center;
   min-height: 100vh;
 }
+#abc{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
+
+
+
+<!--####### media쿼리 ################################################################################################################################################-->
+<!--
+Break-points 기준 (Sass에서는 변수로 지정해두면 편리)
+--Mobile: 576px;
+--Tablet: 768px;
+--Laptop: 992px;
+--Desktop: 1200px;
+-->
+<!-- 디스플레이 크기에따라 설정 (700px이하로 줄어들때 max-width) -->
+@media screen and (max-width: 700px){
+  .navbar{
+    flex-directionL column;
+  }
+}
+
+<!-- width값 크기 확인 -->
+
+<body>
+    <div id="size">
+    </div>
+</body>
+</html>
+
+<script>
+    window.onload = screen; // 처음에 로드 되자마자 함수실행
+    window.onresize = screen; // window size가 조정될때 함수실행
+
+    function screen(){
+        myWidth = window.innerWidth; // window의 width값
+
+        document.getElementById('size').innerHTML
+        = "Width : " + myWidth;
+    }
+</script>
 
 <!--######## 애니메이션 ############################################################################################## transition #########################-->
 <!-- 설명:  https://inpa.tistory.com/entry/CSS-%F0%9F%93%9A-%ED%8A%B8%EB%9E%9C%EC%A7%80%EC%85%98-%ED%8A%B8%EB%9E%9C%EC%8A%A4%ED%8F%BC-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98 -->
@@ -132,7 +175,7 @@ a{
   height: 400px;
 }
 
-<!--######################################################################################################### transform, Animation ##################-->
+<!--############################################################################################################### transform, Animation ##################-->
 <!-- Transform은 요소에 이동(translate), 회전(rotate), 확대축소(scale), 비틀기(skew) 효과를 부여하기 위한 함수를 제공한다.
 애니메이션 효과를 부여할 필요가 있다면 트랜지션이나 애니메이션과 함께 사용해야한다.-->
 
