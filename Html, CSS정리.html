@@ -44,13 +44,14 @@ flex-grow : 1 <!-- 디스플레이 크기가 커질때 화면에서 더 많이 �
 flex-shrink : 1  <!-- 디스플레이 크기가 작아질때 화면에서 더 많이 줄어듬 (숫자는 비율) -->
 flex-basis: 10% <!-- 화면전체의 비율 -->
 
- align-self: center <!-- 아이템 따로 정렬  -->
+align-self: center <!-- 아이템 따로 정렬  -->
 
 <!-- align-items은 flex-direction의 수직된 방향으로 정렬해줌
   (row면 세로로 가운데정렬, column이면 가로로 가운데정렬)-->
 align-items: flex-start;
 align-items: center;
 align-items: flex-end;
+
 
 <!--###### Position (display: inline, block, inline-block; 만 사용가능 ) <span>디폴트는 inline <div>디폴트는 block #####################################################-->
 <!-- Position: static;이 기본값 -->
@@ -120,4 +121,44 @@ a{
   height: 400px;
 }
 
-<!--  -->
+<!--########################################################################################################################################################-->
+
+.parent{
+    background-color: navy;
+    height: 400px;
+    width: 400px;
+}
+
+.child{
+    background-color: red;
+    height: 50%;
+    width: 50%;
+    animation: moves 1s ease-in forwards infinite alternate; 
+}<!--animation에 keyframes이름을 지정가능. moves는 내가지정한 동작이름,
+forwards는실행후 머물러있게 animation-fill-mode(forward,both,backwards...),
+횟수(infinite,1,2,3..),
+번갈아가며반복(alternate) -->
+
+.parent:hover .child{
+    animation-play-state: paused <!-- 마우스 hover될때 멈추도록 -->
+}
+
+@keyframes moves{ <!--moves는 내가지정한 동작의 효과 -->
+    0%{
+        background-color: red;
+        transform: translateX(0);
+    }
+    33%{
+        transform: translateY(100%);
+    }
+    66%{
+        transform: translateX(100%) translateY(100%);
+    }
+    100%{
+        background-color: green;
+        transform: translateX(100%);
+    }
+}
+
+
+
