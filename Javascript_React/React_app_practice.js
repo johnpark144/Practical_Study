@@ -37,6 +37,8 @@ import logo from './logo.svg';
 import './App.css';
 return내용들
 
+index.css 모든 내용들
+
 // ####### Component (사용자 정의 태그) #####################################################################################
 function Header() { // 함수인데 대문자로
     return <header>
