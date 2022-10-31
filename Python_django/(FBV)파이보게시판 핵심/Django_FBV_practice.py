@@ -1,8 +1,11 @@
 ####### URL과 뷰 ######################################################################
 # python -m venv mysite // 가상환경 (Scripts -> activate)
 # django-admin startproject mysite
-# django-admin startapp pybo 
+# django-admin startapp pybo
+# pip install django
 # py manage.py runserver
+
+# '__.apps.___Config', // 앱 폴더이름 앱이름
 
 # from django.http import HttpResponse
 # def index(request):
