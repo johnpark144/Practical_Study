@@ -24,6 +24,7 @@ setupTests.js
 <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
 <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+<noscript>You need to enable JavaScript to run this app.</noscript>
 
 아래 index.js 파일 내용물
 import reporwebvital
