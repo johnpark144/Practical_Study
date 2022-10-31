@@ -5,8 +5,6 @@
 # pip install django
 # py manage.py runserver
 
-# '__.apps.___Config', // 앱 폴더이름 앱이름
-
 # from django.http import HttpResponse
 # def index(request):
 #    return HttpResponse("하이") 
