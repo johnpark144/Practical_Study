@@ -19,13 +19,19 @@ seviceWorker.js
 reporwebvital
 setupTests.js
 
-index.js 파일
+아래 index.html 파일 내용물 (인터넷에 더찾아보기)
+주석들
+<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+아래 index.js 파일 내용물
 import reporwebvital
 root.render안에 React태그
 .StrictMode
 render이후
 
-App.js 파일 
+아래 App.js 파일 내용물
 import logo from './logo.svg';
 import './App.css';
 return내용들
