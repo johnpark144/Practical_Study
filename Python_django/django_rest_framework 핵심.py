@@ -1,11 +1,11 @@
-####### URL과 뷰 ####################################################################################
+####### URL과 뷰 ####################################################################################################################################
 # python -m venv mysite // 가상환경 (Scripts -> activate)
 # django-admin startproject mysite
 # django-admin startapp pybo
 # pip install django
 # py manage.py runserver
 
-######## 모델 ##########################################################################################
+######## 모델 ##########################################################################################################################################
 from django.db import models //models.py
 
 class Note(models.Model):
@@ -16,13 +16,13 @@ class Note(models.Model):
     def __str__(self):
         return self.body[0:50] // 50자만
         
-############################################### 앱연결 및 Migrate ######################################
+##### 앱연결 및 Migrate ############################################################################################################################
 # INSTALLED_APPS = [ 'pybo.apps.PyboConfig',]  // Settings
 
 # python manage.py makemigrations
 # python manage.py migrate
 
-####### 장고 관리자 ###################################################################################
+####### 장고 관리자 ###################################################################################################################################
 from django.contrib import admin //admin.py
 from .models import Note
 
@@ -31,7 +31,7 @@ class NoteAdmin(admin.ModelAdmin):
 
 admin.site.register(Note, NoteAdmin)
 
-######### Django_rest_framework basis ##############################################################
+######### Django_rest_framework basis ######################################################################################################################
 # pip install djangorestframework
 # INSTALLED_APPS = [ 'rest_framework',]  // Settings
 
@@ -76,7 +76,7 @@ def getRoutes(request):
 
     return Response(routes)
     
-######### serializers ###############################################################################
+######### serializers #######################################################################################################################################
 from rest_framework.serializers import ModelSerializer, serializers      // serializers.py
 from .models import Note
 
@@ -89,17 +89,19 @@ class NoteSerializer(ModelSerializer):
 ############# //views.py
 @api_view(['GET'])
 def getNotes(request):
-    notes = Note.objects.all()
-    serialzer = NoteSerializer(notes, many=True)
-    return Response(serialzer.data)
+    if request.method == 'GET':
+        notes = Note.objects.all().order_by('-update')
+        serialzer = NoteSerializer(notes, many=True)
+        return Response(serialzer.data)
 
 @api_view(['GET'])
 def getNote(request, pk):
-    notes = Note.objects.get(id=pk)
-    serialzer = NoteSerializer(notes, many=False) # many=False는 한개만 serialize
-    return Response(serialzer.data)
+    if request.method == 'GET':
+        notes = Note.objects.get(id=pk)
+        serialzer = NoteSerializer(notes, many=False) # many=False는 한개만 serialize
+        return Response(serialzer.data)
 
-########### //urls.py
+########### // api.urls.py
 
 from django.urls import path
 from . import views
@@ -110,7 +112,7 @@ urlpatterns = [
     path('notes/<str:pk>/', views.getNote, name='notes'),
 ]
 
-###### 리액트 사용전 요청허용 세팅 ###########################################################################
+###### 리액트 사용전 요청허용 세팅 ###################################################################################################################################
 # python -m pip install django-cors-headers //  다른포트에서 데이터를 요청했을때 차단하는것을 방지
 # INSTALLED_APPS=['corsheaders',] // settings.py
 # MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware',]
@@ -120,7 +122,7 @@ urlpatterns = [
 #     'http://localhost:3000/',
 # ] //  특정 요청만 허용할때 사용
 
-######### 리액트(frontend) ###############################################################################
+######### 리액트(frontend) #######################################################################################################################################
     
 # npx create-react-app frontend
 # npm install react-router-dom --save
@@ -128,22 +130,21 @@ urlpatterns = [
 
 # "proxy": "http://127.0.0.1:8000/",  // package.json()
 
-####### 컴포넌트 // NoteListPage.js
+####### // NoteListPage.js
 import React, { useEffect, useState } from "react";
 
 export default function NoteListPage(){
     const [notes, setNotes] = useState([])
 
     useEffect(()=>{
+        let getNotes = async () =>{
+            let response = await fetch('/api/notes/')
+            let data = await response.json()
+            setNotes(data)
+        }
         getNotes()
     },[])
-
-    let getNotes = async () =>{
-        let response = await fetch('/api/notes/')
-        let data = await response.json()
-        setNotes(data)
-    }
-
+    
     return(
         <div>
             <div className="notes-list">
@@ -155,7 +156,7 @@ export default function NoteListPage(){
     )
 }
 
-######### 라우터구현  // App.js
+######### // App.js
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Header from "./components/Header";
@@ -186,14 +187,13 @@ export default function NotePage({ }){
     const [note, setNote] = useState(null)
 
     useEffect(()=>{
+        let getNote = async()=>{
+            let response = await fetch(`/api/notes/${id}`)
+            let data = await response.json()
+            setNote(data)
+        }
         getNote()
     }, [id])
-
-    let getNote = async()=>{
-        let response = await fetch(`/api/notes/${id}`)
-        let data = await response.json()
-        setNote(data)
-    }
 
     return(
         <div>
@@ -202,20 +202,20 @@ export default function NotePage({ }){
     )
 }
 
-######### 수정 ###############################################################################
-@api_view(['PUT'])          // views.py
-def updateNote(request, pk):
-    data = request.data
-    note = Note.objects.get(id=pk)
-    serializer = NoteSerializer(instance=note, data=data)
+######### 수정 #################################################################################################################################################
+@api_view(['GET','PUT'])    // views.py
+def getNote(request, pk):
+    if request.method == 'GET':
+        # ... 생략 ...
+    if request.method == 'PUT':
+        data = request.data
+        note = Note.objects.get(id=pk)
+        serializer = NoteSerializer(instance=note, data=data)
 
-    if serializer.is_valid():
-        serializer.save()
+        if serializer.is_valid():
+            serializer.save()
 
-    return Response(serializer.data)
-
-############## // url.py
- path('notes/<str:pk>/update/', views.updateNote, name='updateNote'),
+        return Response(serializer.data)
     
 ############## // NotePage.js
 import { useNavigate, useParams } from 'react-router-dom';
@@ -225,7 +225,7 @@ const [note, setNote] = useState(null)
 const navigate = useNavigate();
 # ... 생략 ...
 let updateNote = async () => {
-    await fetch(`/api/notes/${id}/update/`,{
+    await fetch(`/api/notes/${id}/`,{
         method: "PUT",
         headers: {
             'Content-Type': 'application/json'
@@ -246,15 +246,17 @@ return (
     </div>
 )    
     
-######### 삭제 ###############################################################################
-@api_view(['DELETE'])   // views.py
-def deleteNote(request, pk):
-    note = Note.objects.get(id=pk)
-    note.delete()
-    return Response('Note was deleted.')
-
-############## // url.py
-path('notes/<str:pk>/delete/', views.deleteNote, name='deleteNote'),
+######### 삭제 #########################################################################################################################################
+@api_view(['GET','PUT','DELETE'])   // views.py
+def getNote(request, pk):
+    if request.method == 'GET':
+        # ... 생략 ...
+    if request.method == 'PUT':
+        # ... 생략 ...
+    if request.method == 'DELETE':
+        note = Note.objects.get(id=pk)
+        note.delete()
+        return Response('Note was deleted.')
 
 ############## // NotePage.js
 
@@ -263,9 +265,8 @@ let updateNote = async () => {
     if (id !== 'new') {
         if (note.body === '') {
             deleteNote()
-            navigate('/')
         } else {
-            await fetch(`/api/notes/${id}/update/`, {
+            await fetch(`/api/notes/${id}/`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -280,7 +281,7 @@ let updateNote = async () => {
 }
 
 let deleteNote = async () => {
-    await fetch(`/api/notes/${id}/delete/`, {
+    await fetch(`/api/notes/${id}/`, {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json'
@@ -297,18 +298,18 @@ return (
 </button>
 # ... 생략 ...
     
-######### 생성 ###############################################################################
-@api_view(['POST'])     // views.py
-def createNote(request):
-    data = request.data
-    note = Note.objects.create(
-        body=data['body']
-    )
-    serialzer = NoteSerializer(note, many=False)
-    return Response(serialzer.data)
-
-############## // url.py
-path('notes/create/', views.createNote, name='createNote'),
+######### 생성 ##################################################################################################################################################
+@api_view(['GET','POST'])   // views.py
+def getNotes(request):
+    if request.method == 'GET':
+        # ... 생략 ...
+    if request.method == 'POST':
+        data = request.data
+        note = Note.objects.create(
+            body=data['body']
+        )
+        serialzer = NoteSerializer(note, many=False)
+        return Response(serialzer.data)
 
 ############## // Addbutton.js
 import React from "react";      
@@ -341,7 +342,7 @@ let getNote = async () => {
 # ... 생략 ...
 let createNote = async () => {
     if (note !== null) {
-        await fetch(`/api/notes/create/`, {
+        await fetch(`/api/notes/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -366,8 +367,42 @@ return (
     )
     }
     # ... 생략 ...
+
+###### 리액트앱을 장고 Template으로 합치기 ################################################################################################################################
+import { HashRouter, Route, Routes } from 'react-router-dom';   // .App.js
+ return (
+    <HashRouter>    // BrowserRouter을 HashRouter로 바꿔주기
+        # ... 생략 ...
+    </HashRouter>
+  );
+######### 배포판 형성
     
-########################################################################################
-    
-    
-  
+ # npm run build 
+
+############# .settings.py
+TEMPLATES = [
+    {
+    # ... 생략 ...
+        'DIRS': [
+            BASE_DIR / 'frontend/build'
+        ],
+    # ... 생략 ...
+    }
+]
+# ... 생략 ...    
+STATICFILES_DIRS =[
+    BASE_DIR / 'frontend/build/static'
+]
+
+############# noteApp.urls.py
+from django.contrib import admin
+from django.urls import path, include
+from django.views.generic import TemplateView
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
+    path('', TemplateView.as_view(template_name='index.html')),
+]
+
+############ mysql 업데이트 하기 #################################################################################################
