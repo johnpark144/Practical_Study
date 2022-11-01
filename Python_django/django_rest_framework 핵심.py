@@ -218,40 +218,156 @@ def updateNote(request, pk):
  path('notes/<str:pk>/update/', views.updateNote, name='updateNote'),
     
 ############## // NotePage.js
+import { useNavigate, useParams } from 'react-router-dom';
 # ... 생략 ...
 const { id } = useParams();
 const [note, setNote] = useState(null)
 const navigate = useNavigate();
 # ... 생략 ...
 let updateNote = async () => {
-    fetch(`/api/notes/${id}/update/`,{
+    await fetch(`/api/notes/${id}/update/`,{
         method: "PUT",
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(note)
     })
-}
-
-let handleSubmit = () =>{
-    updateNote()
     navigate('/')
 }
-    
+
 return (
     <div className="note">
         <div className="note-header">
-            <h3>
-                <span onClick={handleSubmit} className="material-icons-outlined">
-                    arrow_back_ios
-                </span>
-            </h3>
+            <span style={{ cursor: 'pointer' }} onClick={updateNote} className="material-icons-outlined">
+                arrow_back_ios
+            </span>
         </div>
-        <textarea onChange={(e)=>{setNote({...note, 'body':e.target.value})}} defaultValue={note?.body} /> {/* ? 는 body 가있으면 실행하고 없으면 내비둠*/}
+        <textarea onChange={(e)=>{setNote({...note, 'body':e.target.value})}} Value={note?.body} /> {/* ? 는 body 가있으면 실행하고 없으면 내비둠*/}
     </div>
 )    
     
+######### 삭제 ###############################################################################
+@api_view(['DELETE'])   // views.py
+def deleteNote(request, pk):
+    note = Note.objects.get(id=pk)
+    note.delete()
+    return Response('Note was deleted.')
+
+############## // url.py
+path('notes/<str:pk>/delete/', views.deleteNote, name='deleteNote'),
+
+############## // NotePage.js
+
+# ... 생략 ...
+let updateNote = async () => {
+    if (id !== 'new') {
+        if (note.body === '') {
+            deleteNote()
+            navigate('/')
+        } else {
+            await fetch(`/api/notes/${id}/update/`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(note)
+            })
+            navigate('/')
+        }
+    } else {
+        navigate('/')
+    }
+}
+
+let deleteNote = async () => {
+    await fetch(`/api/notes/${id}/delete/`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(note)
+    })
+    navigate('/')
+}
+
+return (
+# ... 생략 ...
+<button onClick={deleteNote}>
+    Delete
+</button>
+# ... 생략 ...
+    
+######### 생성 ###############################################################################
+@api_view(['POST'])     // views.py
+def createNote(request):
+    data = request.data
+    note = Note.objects.create(
+        body=data['body']
+    )
+    serialzer = NoteSerializer(note, many=False)
+    return Response(serialzer.data)
+
+############## // url.py
+path('notes/create/', views.createNote, name='createNote'),
+
+############## // Addbutton.js
+import React from "react";      
+import { Link } from "react-router-dom";
+
+export default function AddButton({ }) {
+    return (<>
+        <Link to='/note/new' className="floating-button material-icons-outlined">
+            add
+        </Link>
+    </>)
+}
+
+############# // NoteListPage.js
+return (
+    # ... 생략 ...
+        <AddButton /> 
+    # ... 생략 ...
+)
+    
+############# // NotePage.js
+# ... 생략 ...
+let getNote = async () => {
+    if(id === 'new') return     // 새로 생성하는 경우 api를 불러오지않음
+
+    let response = await fetch(`/api/notes/${id}/`)
+    let data = await response.json()
+    setNote(data)
+}   
+# ... 생략 ...
+let createNote = async () => {
+    if (note !== null) {
+        await fetch(`/api/notes/create/`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(note)
+        })
+    }
+    navigate('/')
+}
+    
+# ... 생략 ...
+return (
+    # ... 생략 ...
+    {id !== 'new' ? (
+        <button onClick={deleteNote}>
+            Delete
+        </button>
+    ) : (
+        <button onClick={createNote}>
+            Done
+        </button>
+    )
+    }
+    # ... 생략 ...
+    
+########################################################################################
     
     
-    
-    
+  
