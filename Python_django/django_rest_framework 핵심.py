@@ -1,11 +1,11 @@
-####### URL과 뷰 ######################################################################
+####### URL과 뷰 ####################################################################################
 # python -m venv mysite // 가상환경 (Scripts -> activate)
 # django-admin startproject mysite
 # django-admin startapp pybo
 # pip install django
 # py manage.py runserver
 
-######## 모델 ############################################################################
+######## 모델 ##########################################################################################
 from django.db import models //models.py
 
 class Note(models.Model):
@@ -16,13 +16,13 @@ class Note(models.Model):
     def __str__(self):
         return self.body[0:50] // 50자만
         
-############################################### 앱연결 및 Migrate ##########################
+############################################### 앱연결 및 Migrate ######################################
 # INSTALLED_APPS = [ 'pybo.apps.PyboConfig',]  // Settings
 
 # python manage.py makemigrations
 # python manage.py migrate
 
-####### 장고 관리자 ############################################################################
+####### 장고 관리자 ###################################################################################
 from django.contrib import admin //admin.py
 from .models import Note
 
@@ -35,7 +35,7 @@ admin.site.register(Note, NoteAdmin)
 # pip install djangorestframework
 # INSTALLED_APPS = [ 'rest_framework',]  // Settings
 
-####################### //views.py
+######### //views.py
 from rest_framework.response import Response   
 from rest_framework.decorators import api_view
 
@@ -76,7 +76,7 @@ def getRoutes(request):
 
     return Response(routes)
     
-######### serializers #################################################################
+######### serializers ###############################################################################
 from rest_framework.serializers import ModelSerializer, serializers      // serializers.py
 from .models import Note
 
@@ -86,7 +86,7 @@ class NoteSerializer(ModelSerializer):
         fields = '__all__'
         
         
-####################### //views.py
+############# //views.py
 @api_view(['GET'])
 def getNotes(request):
     notes = Note.objects.all()
@@ -99,7 +99,7 @@ def getNote(request, pk):
     serialzer = NoteSerializer(notes, many=False) # many=False는 한개만 serialize
     return Response(serialzer.data)
 
-####################### //urls.py
+########### //urls.py
 
 from django.urls import path
 from . import views
@@ -107,10 +107,10 @@ from . import views
 urlpatterns = [
     path('', views.getRoutes, name='routes'),
     path('notes/', views.getNotes, name='notes'),
-    path('notes/<str:pk>', views.getNote, name='notes'),
+    path('notes/<str:pk>/', views.getNote, name='notes'),
 ]
 
-###### 리액트 사용전 요청허용 세팅 #############################################################
+###### 리액트 사용전 요청허용 세팅 ###########################################################################
 # python -m pip install django-cors-headers //  다른포트에서 데이터를 요청했을때 차단하는것을 방지
 # INSTALLED_APPS=['corsheaders',] // settings.py
 # MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware',]
@@ -120,11 +120,15 @@ urlpatterns = [
 #     'http://localhost:3000/',
 # ] //  특정 요청만 허용할때 사용
 
-######### 리액트(frontend) #################################################################
+######### 리액트(frontend) ###############################################################################
     
 # npx create-react-app frontend
+# npm install react-router-dom --save
 # npm start
 
+# "proxy": "http://127.0.0.1:8000/",  // package.json()
+
+####### 컴포넌트 // NoteListPage.js
 import React, { useEffect, useState } from "react";
 
 export default function NoteListPage(){
@@ -135,7 +139,7 @@ export default function NoteListPage(){
     },[])
 
     let getNotes = async () =>{
-        let response = await fetch('http://127.0.0.1:8000/api/notes/')
+        let response = await fetch('/api/notes/')
         let data = await response.json()
         setNotes(data)
     }
@@ -151,5 +155,103 @@ export default function NoteListPage(){
     )
 }
 
-#########  #################################################################
+######### 라우터구현  // App.js
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import Header from "./components/Header";
+import NoteListPage from "./pages/NoteListPage";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div className='App'>
+        <Header />
+        <Routes>
+          <Route exact path='/' element={<NoteListPage />} />
+          <Route path='/note/:id' element={<NotePage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+
+######### useParams로 id 따와서 그 id맞는 api가져오기    // NotePage.js
+import React, { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+
+export default function NotePage({ }){
+    const { id } = useParams();
+    const [note, setNote] = useState(null)
+
+    useEffect(()=>{
+        getNote()
+    }, [id])
+
+    let getNote = async()=>{
+        let response = await fetch(`/api/notes/${id}`)
+        let data = await response.json()
+        setNote(data)
+    }
+
+    return(
+        <div>
+             <p> {note?.body}</p> {/* ? 는 body 가있으면 실행하고 없으면 내비둠*/}
+        </div>
+    )
+}
+
+######### 수정 ###############################################################################
+@api_view(['PUT'])          // views.py
+def updateNote(request, pk):
+    data = request.data
+    note = Note.objects.get(id=pk)
+    serializer = NoteSerializer(instance=note, data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+############## // url.py
+ path('notes/<str:pk>/update/', views.updateNote, name='updateNote'),
+    
+############## // NotePage.js
+# ... 생략 ...
+const { id } = useParams();
+const [note, setNote] = useState(null)
+const navigate = useNavigate();
+# ... 생략 ...
+let updateNote = async () => {
+    fetch(`/api/notes/${id}/update/`,{
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(note)
+    })
+}
+
+let handleSubmit = () =>{
+    updateNote()
+    navigate('/')
+}
+    
+return (
+    <div className="note">
+        <div className="note-header">
+            <h3>
+                <span onClick={handleSubmit} className="material-icons-outlined">
+                    arrow_back_ios
+                </span>
+            </h3>
+        </div>
+        <textarea onChange={(e)=>{setNote({...note, 'body':e.target.value})}} defaultValue={note?.body} /> {/* ? 는 body 가있으면 실행하고 없으면 내비둠*/}
+    </div>
+)    
+    
+    
+    
+    
+    
