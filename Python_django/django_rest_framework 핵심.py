@@ -112,7 +112,7 @@ urlpatterns = [
     path('notes/<str:pk>/', views.getNote, name='notes'),
 ]
 
-###### 리액트 사용전 요청허용 세팅 ###################################################################################################################################
+###### 리액트 사용전 요청허용 세팅 (CORS) ########################################################################################################################
 # python -m pip install django-cors-headers //  다른포트에서 데이터를 요청했을때 차단하는것을 방지
 # INSTALLED_APPS=['corsheaders',] // settings.py
 # MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware',]
@@ -202,7 +202,7 @@ export default function NotePage({ }){
     )
 }
 
-######### 수정 #################################################################################################################################################
+######### 수정(Update) ###########################################################################################################################################
 @api_view(['GET','PUT'])    // views.py
 def getNote(request, pk):
     if request.method == 'GET':
@@ -246,7 +246,7 @@ return (
     </div>
 )    
     
-######### 삭제 #########################################################################################################################################
+######### 삭제(Delete) ##################################################################################################################################
 @api_view(['GET','PUT','DELETE'])   // views.py
 def getNote(request, pk):
     if request.method == 'GET':
@@ -298,7 +298,7 @@ return (
 </button>
 # ... 생략 ...
     
-######### 생성 ##################################################################################################################################################
+######### 생성(Create) #########################################################################################################################################
 @api_view(['GET','POST'])   // views.py
 def getNotes(request):
     if request.method == 'GET':
@@ -368,7 +368,7 @@ return (
     }
     # ... 생략 ...
 
-###### 리액트앱을 장고 Template으로 합치기 ################################################################################################################################
+###### 리액트앱을 장고 Template으로 합치기 (선택) ###############################################################################################################
 import { HashRouter, Route, Routes } from 'react-router-dom';   // .App.js
  return (
     <HashRouter>    // BrowserRouter을 HashRouter로 바꿔주기
@@ -405,17 +405,17 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
 ]
 
-############ Auth ##################################################################################################################################
+############ Auth (장고 백엔드) ##################################################################################################################################
 python -m pip install djangorestframework-simplejwt
 
-############### // settings.py
+############ // settings.py
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
 
-############### // api.urls.py
+############ // api.urls.py
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -434,7 +434,7 @@ urlpatterns = [
 # Username : (SuperUser)
 # Password : (SuperUserPassWord)
     
-############### // settings.py
+############## // settings.py
     
 from datetime import timedelta
 
@@ -469,12 +469,234 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
     
-############### 블랙리스트기능 사용하는 경우 // settings.py
+############ 블랙리스트기능 사용하는 경우(선택) // settings.py
 INSTALLED_APPS = [
     # ... 생략 ...
     'rest_framework_simplejwt.token_blacklist',
     ]
 
 # py manage.py migrate // 마이그레이션 해줘야됨
+    
+################################################################################################################# Customizing token ###############
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer   // views.py 
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer  
+    
+
+############### // api.urls.py
+from .views import MyTokenObtainPairView
+from rest_framework_simplejwt.views import (
+  # TokenObtainPairView를 지워줌
+    TokenRefreshView,
+)
+    
+urlpatterns = [
+    # ... 생략 ...
+    path('token/', MyTokenObtainPairView.as_view(), name='tokenObtainPair'),    # // MyTokenObtainPairView로 대체
+    path('token/refresh/', TokenRefreshView.as_view(), name='tokenRefresh'),
+]  
+
+# https://jwt.io/ 에서 토큰정보 확인 가능
+    
+######## Auth (리액트 프론트엔드) #####################################################################################################################
+npm install jwt-decode // 디코딩 라이브러리
+
+##################################################################################################### 로그인, 로그아웃, UseContext(정보전달) ########
+import { createContext, useState } from "react";    // AuthContext.js
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode"
+
+const AuthContext = createContext()
+export default AuthContext;
+
+export const AuthProvider = ({ children }) =>{
+    const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null) // 페이지마다 저장된 토큰이 있는지 확인하여 있으면 정보를 유지해줌(로그인유지)
+    const [user, setUser] = useState(localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null) // 페이지마다 유저정보가 있는지 확인하여 있으면 정보를 유지해줌(로그인유지)
+    const navigate = useNavigate();
+    
+    // 로그인해서 토큰들을 불러옴
+    const loginUser = async (e) => {
+        e.preventDefault()
+        let response = await fetch('http://127.0.0.1:8000/api/token/',{
+            method:'POST',
+            headers:{
+                'Content-Type' : 'application/json'
+            },
+            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})   // 받은 정보를 json화 시킴
+        })
+        let data = await response.json()
+
+        if(response.status === 200){
+            setAuthTokens(data)
+            setUser(jwt_decode(data.access)) // 받은 토큰을 디코딩함
+            localStorage.setItem('authTokens', JSON.stringify(data)) // localStorage에 토큰을 저장해둠
+            navigate('/')
+        }else{
+            alert('Something went wrong!')
+        }
+    }
+    // 로그아웃
+    const logoutUser = () =>{
+        setAuthTokens(null)
+        setUser(null) 
+        localStorage.removeItem('authTokens')
+        navigate('/login')
+    }
+    
+    // useContext로 사용할 객체 상수
+    const contextData ={   
+        user:user,
+        loginUser:loginUser,
+        logoutUser:logoutUser
+    }
+
+    return(
+        <AuthContext.Provider value={contextData}>  // 사용가능하게 할 value (객체 상수)를 제공 
+            {children}
+        </AuthContext.Provider>
+    )
+}
+
+########## // App.js
+# ... 생략 ...
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    
+    return (
+    <HashRouter>
+      <div className='container dark'>
+        <div className='app'>
+          <AuthProvider>    // AuthProvider로 감싸 주는 부분만 useContext 사용가능
+            <Header setIsLoggedIn={setIsLoggedIn}/>     // setIsLoggedIn으로 로그아웃 시키려고
+            <Routes>
+              {isLoggedIn ? (
+                <>
+                  <Route exact path='/' element={<NoteListPage />} />
+                  <Route path='/note/:id' element={<NotePage />} />
+                </>
+              ) : (
+                <>
+                  <Route path='/' element={<LoginPage setIsLoggedIn={setIsLoggedIn}/>} />   // setIsLoggedIn으로 로그인 시키려고
+                  <Route path='/login/' element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />  // setIsLoggedIn으로 로그인 시키려고
+                </>
+              )}
+            </Routes>
+          </AuthProvider>
+        </div>
+      </div>
+    </HashRouter >
+  );
+    
+############# // Header.js
+import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
+
+export default function Header({ setIsLoggedIn }){
+    let { user, logoutUser } = useContext(AuthContext)  // useContext를통해 createContext로 제공받은 것을 사용
+    useEffect(() => {
+        if (user) {
+            setIsLoggedIn(true)
+        } else {
+            setIsLoggedIn(false)
+        }
+    }, [user])
+
+    return(
+        <div className="app-header">
+            <h1>My Notes</h1>
+            <Link to='/'>Home</Link>
+            {user ? (
+               <p onClick={logoutUser} style={{cursor:'pointer'}}>Logout</p>
+            ):(
+            <Link to='/login'>Login</Link>
+            )}
+            {user && <p>Hello {user.username}</p>}
+        </div>
+    )
+}
+
+############# // LoginPage.js
+import { useContext, useEffect } from "react"
+import AuthContext from "../context/AuthContext";
+
+export default function LoginPage({ setIsLoggedIn }) {
+    let { user, loginUser } = useContext(AuthContext)    // useContext를통해 createContext로 제공받은 것을 사용
+    useEffect(() => {
+        if (user) {
+            setIsLoggedIn(true)
+        } else {
+            setIsLoggedIn(false)
+        }
+    }, [user])
+
+    return (
+        <div>
+            <form onSubmit={loginUser}>
+                <input type='text' name='username' placeholder='Enter Username' />
+                <input type='password' name='password' placeholder='Enter Password' />
+                <input type='submit' />
+            </form>
+        </div>
+    )
+}
+################################################################################################# 4분마다 Token 업데이트 #######################
+    
+// Token 업데이트   // AuthContext.js
+const updateToken = async () =>{
+    console.log('update token called')
+    let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'refresh':authTokens.refresh })   // 받은 정보를 json화 시킴
+    })
+    let data = await response.json()
+
+    if (response.status === 200) {
+        setAuthTokens(data)
+        setUser(jwt_decode(data.access))
+        localStorage.setItem('authTokens', JSON.stringify(data))
+    } else {
+        logoutUser()
+    }
+}
+// authTokens존재하면 4분마다 updateToken실행
+useEffect(()=>{
+    let interval = setInterval(()=>{
+        if(authTokens){
+            updateToken()
+        }
+    }, 240000)
+    return()=> clearInterval(interval)
+
+},[authTokens, loading])
+    
+####### modles에 회원정보 (마이그레이션 필수) ################################################################################################
+from django.db import models    // models.py
+from django.contrib.auth.models import User
+
+class Note(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    body = models.TextField(null=True, blank=True)
+    update = models.DateTimeField(auto_now=True)
+    create = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.body[0:50]
     
 ############ mysql 업데이트 하기 #################################################################################################
