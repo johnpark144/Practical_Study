@@ -379,7 +379,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';   // .App.js
     
  # npm run build 
 
-############# .settings.py
+############# // settings.py
 TEMPLATES = [
     {
     # ... 생략 ...
@@ -394,7 +394,7 @@ STATICFILES_DIRS =[
     BASE_DIR / 'frontend/build/static'
 ]
 
-############# noteApp.urls.py
+############# // noteApp.urls.py
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
@@ -405,4 +405,76 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
 ]
 
+############ Auth ##################################################################################################################################
+python -m pip install djangorestframework-simplejwt
+
+############### // settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+############### // api.urls.py
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+    
+urlpatterns = [
+    # ... 생략 ...
+    path('token/', TokenObtainPairView.as_view(), name='tokenObtainPair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='tokenRefresh'),
+]
+    
+############### // http://127.0.0.1:8000/api/token/
+# refresh토큰 access토큰 확인가능
+    
+# Username : (SuperUser)
+# Password : (SuperUserPassWord)
+    
+############### // settings.py
+    
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # // 접근하기 위한 토큰 만료기간
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),    # // 로그인후 새로고침되지 않을시 로그인이 얼마나 지속되는지
+    'ROTATE_REFRESH_TOKENS': False,     # // REFRESH_TOKENS 사용여부
+    'BLACKLIST_AFTER_ROTATION': False,  # // REFRESH_TOKENS 사용된경우 블랙리스트 처리 (재사용불가), INSTALLED_APPS추가해줘야함
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    'JWK_URL': None,
+    'LEEWAY': 0,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+    
+############### 블랙리스트기능 사용하는 경우 // settings.py
+INSTALLED_APPS = [
+    # ... 생략 ...
+    'rest_framework_simplejwt.token_blacklist',
+    ]
+
+# py manage.py migrate // 마이그레이션 해줘야됨
+    
 ############ mysql 업데이트 하기 #################################################################################################
