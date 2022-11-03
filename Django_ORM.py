@@ -101,22 +101,32 @@ SELECT "events_event"."id", "events_event"."epic_id","events_event"."details", "
 5
 
 ############### 존재하는지 ####################################################################################################
-In : Menu.objects.filter(name="음료").exists()
-Out: True
+>>> Menu.objects.filter(name="음료").exists()
+True
     
 ############### 전체 값을 딕셔너리 형태로 ###############################################################################################
-In : Menu.objects.values()
-Out: <QuerySet [{'id': 1, 'name': '음료'}, {'id': 2, 'name': '푸드'}, {'id': 3, 'name': '상품'}, {'id': 4, 'name': '카드'}]>
+>>> Menu.objects.values()
+<QuerySet [{'id': 1, 'name': '음료'}, {'id': 2, 'name': '푸드'}, {'id': 3, 'name': '상품'}, {'id': 4, 'name': '카드'}]>
 
 ############### 전체 값을 리스트 형태로 ####################################################################################################
-In : Menu.objects.values_list()
-Out: <QuerySet [(1, '음료'), (2, '푸드'), (3, '상품'), (4, '카드')]>
+>>> Menu.objects.values_list()
+<QuerySet [(1, '음료'), (2, '푸드'), (3, '상품'), (4, '카드')]>
     
 
 ############### 대소문자 구분없이 정렬 #######################################################################################
 >>> from django.db.models.functions import Lower
 >>> User.objects.all().order_by(Lower('username')).values_list('username', flat=True)
 <QuerySet ['Billy', 'John', 'johny', 'johny1', 'paul', 'Radha', 'Raghu', 'Ricky', 'rishab', 'Ritesh', 'sharukh', 'sohan', 'yash']>
+
+############### get_or_create #######################################################################################
+
+>>> new_drink = Drink.objects.get_or_create(korean_name='나이트로 쇼콜라 클라우드')
+# 기존에 있는 데이터 반환
+>>> new_drink
+(<Drink: 나이트로 쇼콜라 클라우드>, False)
+# 없는 데이터를 get_or_create 했을 때
+>>> new_drink
+(<Drink: new>, True)
 
 ############### 외래 키로 연결된 표의 열을 기준으로 정렬 ######################################################################
 class Category(models.Model):
