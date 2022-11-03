@@ -778,29 +778,37 @@
 # </script>
 # {% endblock %}
 
-####### Django mysql 연동 ######################################################################################################### 
+###### Django MySQL 연동 ######################################################################################################### 
 # pip install mysqlclient  // 연동도구 설치
+# python -m pip install django-environ    // .env를 이을 도구 설치
+    
+################# .env (manage.py)와 같은 경로 
+# PASSWORD='********' # // DB접속 계정 비밀번호
+# SECRET_KEY = 'django-insecure-m8*6kftg-5$!9m@lh366@_+9vbmmg43@$xh=@jpfos@vi)#o%&' # // settings.py에 있는 시크릿키를 이쪽으로 이동시킴
 
-################### mySettings.py ###################
+################## settings.py
+# from environ import Env
+# env = Env()
+# env_path = BASE_DIR / ".env"
+# if env_path.exists():
+#     with env_path.open("rt", encoding="utf8") as f:
+#         env.read_env(f, overwrite=True)
 
-# DATABASES = {
+# SECRET_KEY = env('SECRET_KEY')  # // SECRET_KEY를 mySettings에 복사
+    
+# ... 생략 ...
+    
+# DATABASES={
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',    # 사용할 엔진 설정
-#         'NAME': 'test',                          # mysql 데이터베이스 이름 ( mysql 에서 생성해둬야함)
-#         'USER': 'root',                          # DB접속 계정명
-#         'PASSWORD': '********',                  # DB접속 계정 비밀번호
-#         'HOST': 'localhost',                     # DB주소
-#         'PORT': '3306',                          # 포트번호
+#         'ENGINE': 'django.db.backends.mysql',    # // 사용할 엔진 설정
+#         'NAME': 'app',                           # // mysql 데이터베이스 이름
+#         'USER': 'root',                          # // DB접속 계정명
+#         'PASSWORD': env('PASSWORD'),             # // .env에 따로 저장
+#         'HOST': 'localhost',                     # // DB주소
+#         'PORT': '3306',                          # // 포트번호
 #     }
 # }
-# SECRET_KEY = 'django-insecure-m8*6kftg-5$!9m@lh366@_+9vbmmg43@$xh=@jpfos@vi)#o%&' # settings.py에있는 시크릿키 복사
-
-################### settings.py ###################
-
-# import mySettings
-# DATABASES = mySettings.DATABASES // DB mySettings에 설정
-# SECRET_KEY = mySettings.SECRET_KEY  // SECRET_KEY를 mySettings에 복사
-
-#########################################################
-
+    
+############## MySQL DB생성후 마이그레이트 해야함
+# CREATE DATABASE app
 
