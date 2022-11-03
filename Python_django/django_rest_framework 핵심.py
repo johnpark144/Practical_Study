@@ -72,6 +72,12 @@ def getRoutes(request):
             'body': None,
             'description': 'Deletes and exiting note'
         },
+        {
+            'Endpoint': '/token/',
+        },
+        {
+            'Endpoint': '/token/refresh',
+        }
     ]
 
     return Response(routes)
@@ -91,7 +97,7 @@ class NoteSerializer(ModelSerializer):
 def getNotes(request):
     if request.method == 'GET':
         notes = Note.objects.all().order_by('-update')
-        serialzer = NoteSerializer(notes, many=True)
+        serialzer = NoteSerializer(notes, many=True) # many=True 여러개 serialize
         return Response(serialzer.data)
 
 @api_view(['GET'])
@@ -224,13 +230,15 @@ const { id } = useParams();
 const [note, setNote] = useState(null)
 const navigate = useNavigate();
 # ... 생략 ...
-let updateNote = async () => {
+const updateNote = async () => {
     await fetch(`/api/notes/${id}/`,{
         method: "PUT",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(note)
+        body: JSON.stringify({
+            body : note,
+        })
     })
     navigate('/')
 }
@@ -242,7 +250,7 @@ return (
                 arrow_back_ios
             </span>
         </div>
-        <textarea onChange={(e)=>{setNote({...note, 'body':e.target.value})}} Value={note?.body} /> {/* ? 는 body 가있으면 실행하고 없으면 내비둠*/}
+        <textarea onChange={(e)=>{setNote( e.target.value )} Value={note?.body} /> {/* ? 는 body 가있으면 실행하고 없으면 내비둠*/}
     </div>
 )    
     
@@ -261,9 +269,9 @@ def getNote(request, pk):
 ############## // NotePage.js
 
 # ... 생략 ...
-let updateNote = async () => {
+const updateNote = async () => {
     if (id !== 'new') {
-        if (note.body === '') {
+        if (!note) {
             deleteNote()
         } else {
             await fetch(`/api/notes/${id}/`, {
@@ -271,7 +279,9 @@ let updateNote = async () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(note)
+                body: JSON.stringify({
+                    body : note,
+                })
             })
             navigate('/')
         }
@@ -280,13 +290,12 @@ let updateNote = async () => {
     }
 }
 
-let deleteNote = async () => {
+const deleteNote = async () => {
     await fetch(`/api/notes/${id}/`, {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(note)
     })
     navigate('/')
 }
@@ -340,14 +349,16 @@ let getNote = async () => {
     setNote(data)
 }   
 # ... 생략 ...
-let createNote = async () => {
+const createNote = async () => {
     if (note !== null) {
         await fetch(`/api/notes/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(note)
+            body: JSON.stringify({
+                body : note,
+            }),
         })
     }
     navigate('/')
@@ -368,10 +379,10 @@ return (
     }
     # ... 생략 ...
 
-###### 리액트앱을 장고 Template으로 합치기 (선택) ###############################################################################################################
+###### 리액트앱을 장고 Template으로 합치려면 (선택) ###############################################################################################################
 import { HashRouter, Route, Routes } from 'react-router-dom';   // .App.js
  return (
-    <HashRouter>    // BrowserRouter을 HashRouter로 바꿔주기
+    <HashRouter>    // BrowserRouter을 HashRouter로 바꿔주기(장고 포트에서도 돌아다닐 수 있음)
         # ... 생략 ...
     </HashRouter>
   );
@@ -397,7 +408,7 @@ STATICFILES_DIRS =[
 ############# // noteApp.urls.py
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView   # // 제네릭뷰로 템플릿 바로전달
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -479,7 +490,7 @@ INSTALLED_APPS = [
     
 ################################################################################################################# Customizing token ###############
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer   // views.py 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer   # // views.py 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -536,7 +547,7 @@ export const AuthProvider = ({ children }) =>{
             headers:{
                 'Content-Type' : 'application/json'
             },
-            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})   // 받은 정보를 json화 시킴
+            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value}) // input name(e.target.password)의 value
         })
         let data = await response.json()
 
@@ -549,6 +560,7 @@ export const AuthProvider = ({ children }) =>{
             alert('Something went wrong!')
         }
     }
+    
     // 로그아웃
     const logoutUser = () =>{
         setAuthTokens(null)
@@ -654,8 +666,9 @@ export default function LoginPage({ setIsLoggedIn }) {
     )
 }
 ################################################################################################# 4분마다 Token 업데이트 #######################
-    
-// Token 업데이트   // AuthContext.js
+const [loading, setLoading] = useState(true)   // AuthContext.js
+
+// Token 업데이트
 const updateToken = async () =>{
     console.log('update token called')
     let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
@@ -674,9 +687,16 @@ const updateToken = async () =>{
     } else {
         logoutUser()
     }
+    
+    if(loading){
+        setLoading(false)
+    }
 }
 // authTokens존재하면 4분마다 updateToken실행
 useEffect(()=>{
+    if(loading){
+        updateToken()
+    }
     let interval = setInterval(()=>{
         if(authTokens){
             updateToken()
@@ -686,7 +706,7 @@ useEffect(()=>{
 
 },[authTokens, loading])
     
-####### modles에 회원정보 (마이그레이션 필수) ################################################################################################
+####### modles에 회원정보 (마이그레이션 필수) #################### 회원정보 모델 마이그레이션후 해야할 모든업데이트는 NoteApp 깃헙참고 ##################
 from django.db import models    // models.py
 from django.contrib.auth.models import User
 
@@ -699,4 +719,6 @@ class Note(models.Model):
     def __str__(self):
         return self.body[0:50]
     
-############ mysql 업데이트 하기 #################################################################################################
+############ mysql 업데이트 하기 ###################################################################################################################
+    
+   
