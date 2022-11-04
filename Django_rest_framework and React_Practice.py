@@ -1,5 +1,5 @@
 ####### URL과 뷰 ####################################################################################################################################
-# python -m venv mysite // 가상환경 (Scripts -> activate)
+# python -m venv virenv // 가상환경 (Scripts -> activate)
 # django-admin startproject mysite
 # django-admin startapp pybo
 # pip install django
