@@ -17,7 +17,7 @@ class Note(models.Model):
         return self.body[0:50] // 50자만
         
 ##### 앱연결 및 Migrate ############################################################################################################################
-# INSTALLED_APPS = [ 'pybo.apps.PyboConfig',]  // Settings
+# INSTALLED_APPS = [ 'api.apps.ApiConfig',]  // Settings
 
 # python manage.py makemigrations
 # python manage.py migrate
