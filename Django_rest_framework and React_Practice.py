@@ -87,7 +87,8 @@ def getRoutes(request):
     return Response(routes)
     
 ######### serializers #######################################################################################################################################
-from rest_framework.serializers import ModelSerializer, serializers      // serializers.py
+from rest_framework.serializers import ModelSerializer // serializers.py
+from rest_framework import serializers
 from .models import Note
 
 class NoteSerializer(ModelSerializer):
