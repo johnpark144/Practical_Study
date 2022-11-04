@@ -120,7 +120,7 @@ from . import views
 urlpatterns = [
     path('', views.getRoutes, name='routes'),
     path('notes/', views.getNotes, name='notes'),
-    path('notes/<str:pk>/', views.getNote, name='notes'),
+    path('notes/<str:pk>/', views.getNote, name='note'),
 ]
 
 ###### 리액트 사용전 요청허용 세팅 (CORS) ########################################################################################################################
