@@ -136,7 +136,7 @@ urlpatterns = [
 ######### 리액트(frontend) #######################################################################################################################################
     
 # npx create-react-app frontend
-# npm install react-router-dom --save
+# npm install react-router-dom --save (frontend 폴더안에서 설치)
 # npm start
 
 # "proxy": "http://127.0.0.1:8000/",  // package.json()
