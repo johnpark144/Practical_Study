@@ -28,8 +28,7 @@ setupTests.js
 
 아래 index.js 파일 내용물
 import reporwebvital
-root.render안에 React태그
-.StrictMode
+root.render안에 React.StrictMode태그
 render이후
 
 아래 App.js 파일 내용물
