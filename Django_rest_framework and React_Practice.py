@@ -729,7 +729,7 @@ python -m pip install django-environ    // .env를 이을 도구 설치
     
 ################### .env (manage.py)와 같은 경로 
 PASSWORD='********' # // DB접속 계정 비밀번호
-SECRET_KEY = 'django-insecure-m8*6kftg-5$!9m@lh366@_+9vbmmg43@$xh=@jpfos@vi)#o%&' # // settings.py에 있는 시크릿키를 이쪽으로 이동시킴
+SECRET_KEY='django-insecure-m8*6kftg-5$!9m@lh366@_+9vbmmg43@$xh=@jpfos@vi)#o%&' # // settings.py에 있는 시크릿키를 이쪽으로 이동시킴 (변수에  띄어쓰면X)
 
 ################### settings.py
 from environ import Env
