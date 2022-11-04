@@ -2,10 +2,11 @@
 # python -m venv virenv // 가상환경 (Scripts -> activate) 작업폴더와 가상환경폴더를 섞지말것
 # pip install django
 
-# 인터프리터로 가상환경에 python.exe를 찾아서 지정해 줘야함
-
 # django-admin startproject mysite
 # django-admin startapp api
+
+# 인터프리터로 가상환경에 python.exe를 찾아서 지정해 줘야함
+
 # py manage.py runserver
 
 ######## 모델 ##########################################################################################################################################
