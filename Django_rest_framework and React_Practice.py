@@ -758,4 +758,7 @@ DATABASES={
 ############### MySQL DB생성후 마이그레이트 해야함
 CREATE DATABASE app
     
+    
+    
+############### Uselocation로 Link의 prop가져오는거 적기 (stillsteal)
    
