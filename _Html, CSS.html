@@ -195,7 +195,12 @@ Break-points 기준 (Sass에서는 변수로 지정해두면 편리)
 
     transition: width 2s 1s ease-in-out; <!-- property(all), duration, delay, timing-function(cubic-bezier) 동시에 -->
   }
+
 #py:hover{
+  width: 400px;
+}
+<!-- 형제 태그에   -->
+#py:hover ~ .pySibling{
   width: 400px;
 }
 
