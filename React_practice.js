@@ -18,6 +18,7 @@ logo.svg
 seviceWorker.js
 reporwebvital
 setupTests.js
+Readme
 
 아래 index.html 파일 내용물 (인터넷에 더찾아보기)
 주석들
