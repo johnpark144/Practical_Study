@@ -110,11 +110,11 @@ function mapStateToProps(state, ownProps){
     };
 } 
 
-// dispatch를 가진 함수 (value를가진 key를 connect를통에 Home에 전달) // function 이름은 바꿔도 무난함
+// dispatch를 가진 함수 (value를가진 key를 connect를통에 Home에 전달)
 function mapDispatchToProps(dispatch, ownProps){
     return {
-        addToDo: text => dispatch(actionCreators.addToDo(text))  // dispatch(action)
-    };
+        addToDo: text => dispatch(actionCreators.addToDo(text)) 
+    }; // 리덕스 : dispatch(action) // 리덕스 툴킷 : dispatch(action(action.payload))
 } 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
@@ -147,3 +147,35 @@ function mapDispatchToProps(dispatch, ownProps) {
 
 export default connect(null, mapDispatchToProps)(ToDo);
 
+
+
+
+
+// ###### Redux Toolkit로 ToDo ####################################################################################################################################
+// ################### store.js
+
+import { legacy_createStore as createStore} from 'redux';
+import { createAction } from "@reduxjs/toolkit";
+
+const addToDo = createAction("ADD");    // createAction(type) // addToDo.type == 'ADD'
+const deleteToDo = createAction("DELETE");
+
+const reducer = (state = [], action) => {
+    switch (action.type){
+        case addToDo.type:
+            return [ { text: action.payload, id: Date.now() }, ...state ];
+        case deleteToDo.type:
+            return state.filter(toDo => toDo.id !== action.payload);
+        default:
+            return state;
+    }
+};
+
+const store = createStore(reducer);
+
+export const actionCreators = {
+    addToDo,
+    deleteToDo
+}
+
+export default store;
