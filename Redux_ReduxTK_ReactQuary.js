@@ -37,7 +37,7 @@ function App() {
 export default App;
 
  // ################### store.js
-import { legacy_createStore as createStore} from 'redux';
+import { legacy_createStore as createStore } from 'redux';
 
 const ADD = "ADD";
 const DELETE = "DELETE";
