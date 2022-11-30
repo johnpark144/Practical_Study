@@ -20,7 +20,6 @@ root.render(
 
  // ################### App.js
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Detail from './Detail';
 import Home from './Home';
 
 function App() {
@@ -28,7 +27,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} /> 
-        <Route path='/:id' element={<Detail />} />
       </Routes>
     </BrowserRouter>
   );
@@ -68,6 +66,13 @@ const reducer = (state = [], action) => {
 };
 
 const store = createStore(reducer);
+
+export const actionCreators = {
+    addToDo,
+    deleteToDo
+}
+
+export default store;
 
  // ################### Home.js
 import { useState } from "react";
