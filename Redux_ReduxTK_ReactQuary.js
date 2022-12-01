@@ -169,16 +169,6 @@ const reducer = createReducer([],(builder) => {
     .addCase(deleteToDo, (state, action) => 
         state.filter(toDo => toDo.id !== action.payload) 
     )// mutate이 아닌 새로운 state를 생성 하는 경우 return해줘야 하는데 JS에선 한줄짜리 식은 중괄호 빼면 자동 return
-
-    // 그외 예시
-    // addMatcher로 특정한경우에만 실행하게 가능
-    // .addMatcher(
-    //     (action) => action.type.endsWith('t'),   // t로 끝나는경우만 밑에 state를 mutate시키거나 return해서 새로생성
-    //     (state) => state + 2
-    //   )
-
-    // addDefaultCase로 일치하는 액션타입이 없는경우 디폴트 지정
-    // .addDefaultCase(()=>[])  // 빈배열을 state로 리턴
 })  
 
 const store = configureStore({ reducer });
@@ -189,3 +179,13 @@ export const actionCreators = {
 }
 
 export default store;
+
+// ###################  그외 builder callback 예시
+    // addMatcher로 특정한경우에만 실행
+    // .addMatcher(
+    //     (action) => action.type.endsWith('t'),   // t로 끝나는경우만 밑에 state를 mutate시키거나 return해서 새로생성
+    //     (state) => state + 2
+    //   )
+
+    // addDefaultCase로 일치하는 액션타입이 없는경우 디폴트 지정
+    // .addDefaultCase(()=>[])  // 빈배열을 state로 리턴
