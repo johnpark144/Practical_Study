@@ -28,4 +28,4 @@ module.exports = {
 
 // index.html // 넣었다가 오류뜨면 지워도됨
 <!-- Tailwind css -->
-//  <link href="/dist/output.css" rel="stylesheet"> 
+<link href="/dist/output.css" rel="stylesheet"> 
