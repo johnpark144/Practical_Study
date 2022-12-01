@@ -156,24 +156,32 @@ export default connect(null, mapDispatchToProps)(ToDo);
 // ###### Redux Toolkit로 ToDo ####################################################################################################################################
 // ################### store.js
 
-import { legacy_createStore as createStore} from 'redux';
-import { createAction } from "@reduxjs/toolkit";
+import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
 
 const addToDo = createAction("ADD");    // createAction(type) // addToDo.type == 'ADD'
 const deleteToDo = createAction("DELETE");
 
-const reducer = (state = [], action) => {
-    switch (action.type){
-        case addToDo.type:
-            return [ { text: action.payload, id: Date.now() }, ...state ];
-        case deleteToDo.type:
-            return state.filter(toDo => toDo.id !== action.payload);
-        default:
-            return state;
-    }
-};
+const reducer = createReducer([],(builder) => {
+    builder
+    .addCase(addToDo, (state, action) => {
+        state.push({ text: action.payload, id: Date.now() });
+    })// Mutate 가능  // mutate하는 경우 return 하지않아도 Immer에서 알아서 작동시켜줌
+    .addCase(deleteToDo, (state, action) => 
+        state.filter(toDo => toDo.id !== action.payload) 
+    )// mutate이 아닌 새로운 state를 생성 하는 경우 return해줘야 하는데 JS에선 한줄짜리 식은 중괄호 빼면 자동 return
 
-const store = createStore(reducer);
+    // 그외 예시
+    // addMatcher로 특정한경우에만 실행하게 가능
+    // .addMatcher(
+    //     (action) => action.type.endsWith('t'),   // t로 끝나는경우만 밑에 state를 mutate시키거나 return해서 새로생성
+    //     (state) => state + 2
+    //   )
+
+    // addDefaultCase로 일치하는 액션타입이 없는경우 디폴트 지정
+    // .addDefaultCase(()=>[])  // 빈배열을 state로 리턴
+})  
+
+const store = configureStore({ reducer });
 
 export const actionCreators = {
     addToDo,
