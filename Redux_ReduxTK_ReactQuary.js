@@ -189,3 +189,33 @@ export default store;
 
     // addDefaultCase로 일치하는 액션타입이 없는경우 디폴트 지정
     // .addDefaultCase(()=>[])  // 빈배열을 state로 리턴
+    
+// ###### Redux Toolkit (CreateSlice) ###############################################################################################################################
+// ################### store.js
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+const toDos = createSlice({
+    name: "toDosReducer",
+    initialState: [],
+    reducers:{
+        addToDo: (state, action) => {
+            state.push({ text: action.payload, id: Date.now() });
+        },
+        deleteToDo: (state, action) => state.filter(toDo => toDo.id !== action.payload) 
+    }
+});
+
+export const { addToDo, deleteToDo } = toDos.actions;
+
+export default configureStore({ reducer: toDos.reducer });
+
+// ################### Home.js
+import { addToDo } from "./store";
+// actionCreators의 흔적을 지워줌
+
+// ################### ToDo.js
+import { deleteToDo } from "./store";
+// actionCreators의 흔적을 
+
+
+
