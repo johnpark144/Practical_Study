@@ -1,6 +1,6 @@
 
-npm i -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+// npm i -D tailwindcss postcss autoprefixer
+// npx tailwindcss init -p
    
 // postcss.config.js 설정 (아무수정 안해줘도됨)
 module.exports = {
