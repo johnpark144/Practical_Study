@@ -153,7 +153,7 @@ function mapDispatchToProps(dispatch, ownProps) {
 export default connect(null, mapDispatchToProps)(ToDo);
 
 
-// ###### Redux Toolkit로 ToDo ####################################################################################################################################
+// ###### Redux Toolkit ####################################################################################################################################
 // ################### store.js
 
 import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
@@ -190,7 +190,7 @@ export default store;
     // addDefaultCase로 일치하는 액션타입이 없는경우 디폴트 지정
     // .addDefaultCase(()=>[])  // 빈배열을 state로 리턴
     
-// ###### Redux Toolkit (CreateSlice) ###############################################################################################################################
+// ###### Redux Toolkit (with CreateSlice) ###############################################################################################################################
 // ################### store.js
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
@@ -216,6 +216,11 @@ import { addToDo } from "./store";
 // ################### ToDo.js
 import { deleteToDo } from "./store";
 // actionCreators의 흔적을 
+
+
+
+// ###### ReactQuary ###############################################################################################################################
+
 
 
 
