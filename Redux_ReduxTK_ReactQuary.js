@@ -293,7 +293,6 @@ function Characters() {
   }); // onSuccess, onError, onSettled : 성공,실패,완료시 sideEffect 정의가능
   // enabled : 자동실행할지여부, retry : 동작실패시 자동 retry여부, refetchInterval : 주기적으로 refetch여부
 
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
