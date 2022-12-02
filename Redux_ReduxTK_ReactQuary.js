@@ -2,6 +2,8 @@
 // npm install react-redux  // react에서 사용할 redux
 // npm install @reduxjs/toolkit // reduxTK
 
+// npm install react-query  // reactquery
+
 // ###### Redux로 ToDo ####################################################################################################################################
 // ################## index.js
 import React from 'react';
@@ -190,7 +192,7 @@ export default store;
     // addDefaultCase로 일치하는 액션타입이 없는경우 디폴트 지정
     // .addDefaultCase(()=>[])  // 빈배열을 state로 리턴
     
-// ###### Redux Toolkit (with CreateSlice) ###############################################################################################################################
+// ###### Redux Toolkit (with CreateSlice) #######################################################################################################################
 // ################### store.js
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
@@ -217,10 +219,131 @@ import { addToDo } from "./store";
 import { deleteToDo } from "./store";
 // actionCreators의 흔적을 
 
+// ###### ReactQuary ######################################################################################################################################
+// ################### Characters.js
+
+import React from 'react';
+import { useQuery } from "react-query";
+
+function Characters() {
+
+  const fetchCharacters = async () => {
+    const response = await fetch("http://rickandmortyapi.com/api/character")
+    return response.json();
+  };
+
+  const { data, status } = useQuery("characters", fetchCharacters); // useQuery("키", 데이터불러올함수)
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+  if (status === 'error') {
+    return <div>Error</div>;
+  }
+
+  return (
+    <div>
+      {data.results.map(character => (
+        <div key={character.id}>
+          <img src={character.image} alt='' />
+          <h3>{character.name}</h3>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default Characters
+
+// ################### Home.js
+
+import Characters from "./Characters";
+import { QueryClientProvider, QueryClient } from "react-query";
+
+const queryClient = new QueryClient()   // export default밖에서
+
+function Home() {
+// ...생략...
+return (
+<QueryClientProvider client={queryClient}>
+    <Characters />
+</QueryClientProvider>
+);
+}
+export default Home;
+
+// ################################################################################################################# 페이지네이션 with ReactQuary  ###############
+// ################### Characters.js
+
+import React, { useState } from 'react';
+import { useQuery } from "react-query";
+
+function Characters() {
+  const [page, setPage] = useState(1)
+
+  const fetchCharacters = async ({ queryKey }) => {
+    const response = await fetch(`http://rickandmortyapi.com/api/character?page=${queryKey[1]}`)
+    return response.json();
+  };
+
+  // useQuery("queryKey(고유키)", 데이터불러올함수)
+  const { data, status, isPreviousData, isLoading, isError } = useQuery(["characters", page], fetchCharacters, // error, isFetching, isSuccess 등 
+  {  
+    keepPreviousData: true, // 다음 fetch시까지 이전 데이터들로 일처리함
+  }); // onSuccess, onError, onSettled : 성공,실패,완료시 sideEffect 정의가능
+  // enabled : 자동실행할지여부, retry : 동작실패시 자동 retry여부, refetchInterval : 주기적으로 refetch여부
 
 
-// ###### ReactQuary ###############################################################################################################################
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    return <div>Error</div>;
+  }
 
+  const paginations = [...Array(data?.info.pages)]  // [...Array(number)] 숫자만큼배열을 만들어줌
 
+return (<>
+{/* 페이지네이션 */}
+    <button disabled={page === 1} onClick={() => setPage(page - 1)} 
+    style={{ cursor: "pointer", height: "30px" }}>
+      Previous
+    </button>
+    {paginations.map((x, idx) => (
+      idx + 1 === page ? (
+        <button key={idx + 1}
+          style={{ border: "1px solid blue", color: "black", backgroundColor: "blue", cursor: "pointer", height: "30px" }}
+          onClick={() => { setPage(idx + 1) }} >
+          {idx + 1}
+        </button>
+      ) : (
+        idx - 4 < page && page < idx + 6 ? (
+          <button key={idx + 1}
+            style={{ border: "1px solid gray", color: "gray", cursor: "pointer", height: "30px" }}
+            onClick={() => { setPage(idx + 1) }} >
+            {idx + 1}
+          </button>
+        ) : (
+          ""
+        )
+      )
+    ))}
+    <button disabled={ isPreviousData && (page === data?.info.pages) } onClick={() => setPage(page + 1)} 
+    style={{ cursor: "pointer", height: "30px"  }}>
+      Next
+    </button>
+    {/* 캐릭터 이미지와 이름 */}
+    <div>
+      {data.results.map(character => (
+        <div key={character.id}>
+          <img src={character.image} alt='' />
+          <h3>{character.name}</h3>
+        </div>
+      ))}
+    </div>
+  </>)
+}
+
+export default Characters
 
 
