@@ -1,5 +1,5 @@
 // npm install redux  // 기본 redux
-// npm install react-redux  // react에서 사용할 redux
+// npm install react-redux  // react redux
 // npm install @reduxjs/toolkit // reduxTK
 
 // npm install react-query  // reactquery
