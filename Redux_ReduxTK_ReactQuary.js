@@ -4,7 +4,98 @@
 
 // npm install react-query  // reactquery
 
-// ###### Redux로 ToDo ####################################################################################################################################
+// ####### 생활코딩 redux의 원리 ######################################################################################################################
+// ###### Redux (with useSelector, useDispatch)######################################################################################################
+import React from "react";
+import { legacy_createStore as createStore } from 'redux';
+import { Provider, useSelector, useDispatch } from 'react-redux';
+
+// ################ store 부분
+function reducer(state, action) {
+  if(action.type === 'up'){
+    return {...state, value:state.value + action.step}
+  }
+  return state;
+}
+
+const initialState = { value: 0 }
+const store = createStore(reducer, initialState);
+
+// ################ 작동하는 부분
+function Counter() {
+  const dispatch = useDispatch();
+  const count = useSelector(state => state.value);
+  return <div>
+    <button onClick={()=>{
+      dispatch({type:'up', step:2});
+    }}>+</button> {count}
+  </div>
+}
+
+// ################ 범위 부분
+function App() {
+  return (
+    <Provider store={store}>
+      <div>
+        <Counter></Counter>
+      </div>
+    </Provider>
+  );
+}
+
+export default App;
+
+// ###### Redux Toolkit (with createSlice, useSelector, useDispatch) ####################################################################################
+import React from "react";
+import { Provider, useSelector, useDispatch } from 'react-redux';
+import { createSlice, configureStore } from "@reduxjs/toolkit";
+
+// ################ store 부분
+const counterSlice = createSlice({
+  name:'counterSlice',
+  initialState: { value: 0 },
+  reducers:{
+    up:(state, action)=>{
+      state.value = state.value + action.payload;
+    }
+  }
+})
+
+const store = configureStore({
+  reducer:{
+    counter:counterSlice.reducer
+  }
+})
+
+// ################ 작동하는 부분
+function Counter() {
+  const dispatch = useDispatch();
+  const count = useSelector(state => {
+    return state.counter.value
+  })
+  return <div>
+    <button onClick={()=>{
+      dispatch(counterSlice.actions.up(2)); 
+    }}>+</button> {count}
+  </div>
+}
+
+// ################ 범위 부분
+function App() {
+  return (
+    <Provider store={store}>
+      <div>
+        <Counter></Counter>
+      </div>
+    </Provider>
+  );
+}
+
+export default App;
+
+
+// ####### 노마드코더 ToDolist만들기 ##############################################################################################################################
+// ###### Redux (with connect) #####################################################################################################################################
 // ################## index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -155,7 +246,7 @@ function mapDispatchToProps(dispatch, ownProps) {
 export default connect(null, mapDispatchToProps)(ToDo);
 
 
-// ###### Redux Toolkit ####################################################################################################################################
+// ###### Redux Toolkit 으로 ToDolist ##############################################################################################################################
 // ################### store.js
 
 import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
@@ -192,7 +283,7 @@ export default store;
     // addDefaultCase로 일치하는 액션타입이 없는경우 디폴트 지정
     // .addDefaultCase(()=>[])  // 빈배열을 state로 리턴
     
-// ###### Redux Toolkit (with CreateSlice) #######################################################################################################################
+// ###### Redux Toolkit (with CreateSlice) 으로 ToDolist #########################################################################################################
 // ################### store.js
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
@@ -219,6 +310,11 @@ import { addToDo } from "./store";
 import { deleteToDo } from "./store";
 // actionCreators의 흔적을 
 
+
+
+
+
+// ########################################################################################################################################################
 // ###### ReactQuary ######################################################################################################################################
 // ################### Characters.js
 
