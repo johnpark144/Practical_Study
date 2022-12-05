@@ -5,9 +5,11 @@ import { asyncUpFetch } from './counterSlice'
 
 function App() {
   const dispatch = useDispatch();
+  
   const count = useSelector(state => {
     return state.counter.value;
   });
+  
   const status = useSelector(state => {
     return state.counter.status;
   });
