@@ -57,3 +57,4 @@ function mapDispatchToProps(dispatch, ownProps) {
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
 // connect의 첫번째 함수인자(mapStateToProps)는 store의 state를 인자로 가졌고 리턴값을 Home의 props로 준다 (두번째인자로 ownProps)
 // connect의 두번째 함수인자(mapDispatchToProps)는 store의 dispatch를 인자로 가졌고 리턴값을 Home의 props로 준다 (두번째인자로 ownProps)
+// connect대신 useSelector, useDispatch 대신 사용가능
