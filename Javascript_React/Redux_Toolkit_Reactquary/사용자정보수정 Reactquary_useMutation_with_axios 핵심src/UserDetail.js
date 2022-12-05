@@ -9,7 +9,7 @@ function UserDetail({ userId }) {
 
     const { data, isLoading, isFetching } = useQuery(['user', userId], () =>
         api.getUser(userId), {
-        enabled: Boolean(userId)    // userId가 있는경우만 useQuery를 작동
+        enabled: Boolean(userId)   // userId가 있는경우만 useQuery를 작동
     });
 
     if (!userId) {
