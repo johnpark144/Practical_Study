@@ -1,0 +1,39 @@
+{
+  "users": [
+    {
+      "name": "Ervin Howell",
+      "username": "Bret",
+      "email": "1111@april.biz",
+      "phone": "1-770-736-8031 x56442",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "name": "Leanne Graham",
+      "username": "Leanne12",
+      "email": "Leanne12@april.biz",
+      "phone": "1-353-223-1222 x56442"
+    },
+    {
+      "id": 3,
+      "name": "Clementine Bauch",
+      "username": "Abcs000",
+      "email": "Sincere@gmail.com",
+      "phone": "1-832-466-3455 x56442"
+    },
+    {
+      "name": "Patricia Lebsack123",
+      "username": "Helloworld",
+      "email": "Helloworld1223@gmail.com",
+      "phone": "1-281-334-4425 x56442",
+      "id": 4
+    },
+    {
+      "name": "Chelsey Dietrich123",
+      "username": "greattChelsey",
+      "email": "Chelsey1@gmail.com",
+      "phone": "1-502-225-1277 x56442",
+      "id": 5
+    }
+  ]
+}
