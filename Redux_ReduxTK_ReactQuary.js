@@ -319,8 +319,8 @@ export const { up } = counterSlice.actions;
 export { asyncUpFetch }
 
 
-// ########################################################################################################################################################
-// ###### ReactQuary ######################################################################################################################################
+// ###### 캐릭터 페이지 #####################################################################################################################################
+// ###### ReactQuary 기본 with fetch #######################################################################################################################
 // ################### Characters.js
 
 import React from 'react';
@@ -446,4 +446,219 @@ return (<>
 
 export default Characters
 
+// ###### 사용자정보 수정 ##########################################################################################################################################
+// ###### ReactQuary 심화 ( useMutation with axios ) ##############################################################################################################
+// npm install -g json-server // json-server로 rest-API 설치
+// json-server --watch ./src/db/data.json --port 3001    // restful api 구축 // json-server --watch + 경로 + 몇번 port에
 
+// ################### db/data.json
+{
+  "users": [
+    {
+      "name": "Ervin Howell",
+      "username": "Bret",
+      "email": "1111@april.biz",
+      "phone": "1-770-736-8031 x56442",
+      "id": 1
+    },
+//  ... 생략 ...
+   ]
+}
+
+// ################### index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+const queryClient = new QueryClient();
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+   <QueryClientProvider client={queryClient}>
+        <App /> 
+        <ReactQueryDevtools /> {/* ReactQuery 툴생성 */}
+    </QueryClientProvider>
+);
+
+
+// ################### App.js
+
+import Users from './Users';
+import UserDetail from './UserDetail';
+import { useState } from 'react';
+
+function App() {
+  const [userId, setUserId] = useState();
+
+  return (
+    <>
+      <div style={{ padding: 20, width: '30%', borderRight: '2px solid white' }}>
+        <Users setUserId={setUserId} />
+      </div>
+      <div style={{ padding: 20, width: '70%' }}>
+        <UserDetail userId={userId} />
+      </div>
+    </>
+  );
+}
+
+export default App;
+
+// ################### usersApi.js
+
+import axios from "axios";
+
+const api = axios.create({
+    baseURL: 'http://localhost:3001/',
+}); 
+
+export const getUsers = () => 
+api.get('/users').then(res => res.data);
+
+export const getUser = (id) =>
+api.get(`/users/${id}`).then((res) => res.data);
+
+export const updateUser = ({id, ...updatedUser}) =>
+api.put(`/users/${id}`, updatedUser).then((res) => res.data);
+
+// ################### Users.js
+import React from 'react'
+import { useQuery } from 'react-query';
+import * as api from './usersApi';
+
+function Users({ setUserId }) {
+    const { data, isLoading, isError, error } = useQuery('users', api.getUsers);
+
+    if (isLoading) {
+        return 'Loading users...'
+    }
+
+    if (isError) {
+        return 'Something went wrong.'
+    }
+
+    return (
+        <div>
+            <ul>{data?.map(user =>
+                <li key={user.id}>
+                    {user.name} <button onClick={() => setUserId(user.id)}>View</button>
+                </li>
+                )}
+            </ul>
+        </div>
+    )
+}
+
+export default Users;
+
+// ################### UserDetail.js
+import React from 'react'
+import { useQuery } from 'react-query';
+import * as api from './usersApi';
+import { useState } from 'react';
+import UserForm from './UserForm';
+
+function UserDetail({ userId }) {
+    const [isEditing, setIsEditing] = useState(false);
+
+    const { data, isLoading, isFetching } = useQuery(['user', userId], () =>
+        api.getUser(userId), {
+        enabled: Boolean(userId)    // userId가 있는경우만 useQuery를 작동
+    });
+
+    if (!userId) {
+        return 'Select a user.'
+    }
+
+    if (isLoading) {
+        return 'Loading user details'
+    }
+
+    return (
+        <div>
+            {isFetching && 'Background refetching...'} {/* 캐시에 한번 불러왔던 데이터를 다시 가져올때 (디폴트로 5분 저장) */}
+            <button onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? 'CANCEL' : 'EDIT'}
+            </button>
+
+            {isEditing ? (
+                <UserForm data={data} setIsEditing={setIsEditing} />
+            ) : (<>
+                <h2>id : {data?.id}</h2>
+                <h2>name : {data?.name}</h2>
+                <h2>email : {data?.email}</h2>
+            </>)}
+        </div>
+    )
+}
+
+export default UserDetail
+
+// ################### UserForm.js
+import React, { useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { updateUser } from './usersApi';
+import * as api from './usersApi';
+
+function UserForm({ data, setIsEditing }) {
+
+    const [fields, setFields] = useState({ ...data });
+    const queryClient = useQueryClient();
+
+    const { mutate, isLoading } = useMutation(api.updateUser, {
+        onMutate: (updatedUser) => {
+            queryClient.setQueryData(['user', data.id], updatedUser);
+        }, // 방법1) updatedUser = fields 로 가져오기때문에 서버에서 불러옴 없이 데이터를 실시간으로 보여줌
+        onSuccess: () => {
+            // queryClient.invalidateQueries(['user', data.id])
+            // 방법2) 유효성을 제거하여 캐싱되어있는 데이터를 보여주지 않고 서버에 새롭게 데이터를 요청
+            setIsEditing(false);
+        }
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFields({ ...fields, [name]: value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        mutate(fields) // 서버에 데이터를 수정
+    }
+
+    if(isLoading){
+        return 'Saving your changes...';
+    }
+
+    return (
+        <div style={{ paddingTop: 20 }}>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    name:{''}
+                    <input
+                        name='name'
+                        type='text'
+                        value={fields.name}
+                        onChange={handleChange}
+                        style={{ width: '100%', marginBottom: 20 }}
+                    />
+                </label>
+                <label>
+                    email:{''}
+                    <input
+                        name='email'
+                        type='email'
+                        value={fields.email}
+                        onChange={handleChange}
+                        style={{ width: '100%', marginBottom: 70 }}
+                    />
+                </label>
+                <button type='submit'>Save</button>
+            </form>
+        </div>
+    )
+}
+
+export default UserForm
