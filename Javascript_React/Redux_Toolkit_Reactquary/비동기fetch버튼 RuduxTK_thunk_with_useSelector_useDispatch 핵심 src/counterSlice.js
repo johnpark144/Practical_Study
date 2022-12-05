@@ -31,7 +31,7 @@ const counterSlice = createSlice({
       })
   }
 })
-
+ 
 export default counterSlice;
 export const { up } = counterSlice.actions;
 export { asyncUpFetch }
