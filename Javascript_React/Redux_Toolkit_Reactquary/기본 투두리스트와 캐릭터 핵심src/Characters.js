@@ -23,7 +23,7 @@ function Characters() {
     return <div>Error</div>;
   }
 
-  const paginations = [...Array(data?.info.pages)]  // [...Array(number)] 숫자만큼배열을 만들어줌
+  const paginations = [...Array(data?.info.pages)]  // [...Array(number)] 숫자만큼 배열을 만들어줌
 
 return (<>
 {/* 페이지네이션 */}
