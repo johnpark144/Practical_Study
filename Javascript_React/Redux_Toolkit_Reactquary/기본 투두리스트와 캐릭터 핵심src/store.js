@@ -1,4 +1,4 @@
-//##################################### 일반 리덕스 #########################################
+//######################################### 일반 리덕스 #############################################
 // import { legacy_createStore as createStore} from 'redux';
 // import { createAction, createReducer } from "@reduxjs/toolkit";
 
@@ -39,7 +39,7 @@
 
 // export default store;
 
-//##################################### 리덕스 툴킷 #########################################
+//######################################### 리덕스 툴킷 #############################################
 // import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
 
 // const addToDo = createAction("ADD");    // createAction(type) // addToDo.type == 'ADD'
