@@ -4,96 +4,6 @@
 
 // npm install react-query  // reactquery
 
-// ####### 생활코딩 redux의 원리 ######################################################################################################################
-// ###### Redux (with useSelector, useDispatch)######################################################################################################
-import React from "react";
-import { legacy_createStore as createStore } from 'redux';
-import { Provider, useSelector, useDispatch } from 'react-redux';
-
-// ################ store 부분
-function reducer(state, action) {
-  if(action.type === 'up'){
-    return {...state, value:state.value + action.step}
-  }
-  return state;
-}
-
-const initialState = { value: 0 }
-const store = createStore(reducer, initialState);
-
-// ################ 작동하는 부분
-function Counter() {
-  const dispatch = useDispatch();
-  const count = useSelector(state => state.value);
-  return <div>
-    <button onClick={()=>{
-      dispatch({type:'up', step:2});
-    }}>+</button> {count}
-  </div>
-}
-
-// ################ 범위 부분
-function App() {
-  return (
-    <Provider store={store}>
-      <div>
-        <Counter></Counter>
-      </div>
-    </Provider>
-  );
-}
-
-export default App;
-
-// ###### Redux Toolkit (with createSlice, useSelector, useDispatch) ####################################################################################
-import React from "react";
-import { Provider, useSelector, useDispatch } from 'react-redux';
-import { createSlice, configureStore } from "@reduxjs/toolkit";
-
-// ################ store 부분
-const counterSlice = createSlice({
-  name:'counterSlice',
-  initialState: { value: 0 },
-  reducers:{
-    up:(state, action)=>{
-      state.value = state.value + action.payload;
-    }
-  }
-})
-
-const store = configureStore({
-  reducer:{
-    counter:counterSlice.reducer
-  }
-})
-
-// ################ 작동하는 부분
-function Counter() {
-  const dispatch = useDispatch();
-  const count = useSelector(state => {
-    return state.counter.value
-  })
-  return <div>
-    <button onClick={()=>{
-      dispatch(counterSlice.actions.up(2)); 
-    }}>+</button> {count}
-  </div>
-}
-
-// ################ 범위 부분
-function App() {
-  return (
-    <Provider store={store}>
-      <div>
-        <Counter></Counter>
-      </div>
-    </Provider>
-  );
-}
-
-export default App;
-
-
 // ####### 노마드코더 ToDolist만들기 ##############################################################################################################################
 // ###### Redux (with connect) #####################################################################################################################################
 // ################## index.js
@@ -311,7 +221,103 @@ import { deleteToDo } from "./store";
 // actionCreators의 흔적을 
 
 
+// ####### 생활코딩 async fetch 버튼 #####################################################################################################################
+// ####### Redux Toolkit-thunk(비동기작업) with useDispatch, useSelector (no connect) ####################################################################
+// ################### index.js (범위 부분)
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { Provider } from 'react-redux';
+import store from './store';
 
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+    <Provider store={store}>
+    <App />
+    </Provider>
+);
+
+// ################### store.js (slice 저장소 부분)
+import { configureStore } from "@reduxjs/toolkit";
+import counterSlice from './counterSlice';
+
+const store = configureStore({
+    reducer: {
+        counter: counterSlice.reducer
+    }
+})
+
+export default store;
+
+// ################### App.js(작동하는 부분)
+import React from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { up } from './counterSlice';
+import { asyncUpFetch } from './counterSlice'
+
+function App() {
+  const dispatch = useDispatch();
+  const count = useSelector(state => {
+    return state.counter.value;
+  });
+  const status = useSelector(state => {
+    return state.counter.status;
+  });
+
+  return (<>
+    <button onClick={() => {
+      dispatch(up(2));
+    }}>+</button>
+
+    <button onClick={() => {
+      dispatch(asyncUpFetch());
+    }}>+ async fetch </button>
+    <br/>
+
+    <div>{count} | {status} </div>
+  </>);
+}
+
+export default App;
+
+// ################### counterSlice.js (createAsyncThunk, slice부분)
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+const asyncUpFetch = createAsyncThunk(
+  'counterSlice/asyncUpFetch',
+  async () => {
+    const resp = await fetch('https://api.countapi.xyz/hit/opesaljkdfslkjfsadf.com/visits')
+    const data = await resp.json();
+    return data.value;
+  }
+)
+
+const counterSlice = createSlice({
+  name: 'counterSlice',
+  initialState: { value: 0, status: 'welcome' },
+  reducers: { // 동기적
+    up: (state, action) => {
+      state.value = state.value + action.payload;
+    }
+  },
+  extraReducers: (builder) => { // 비동기적
+    builder
+      .addCase(asyncUpFetch.pending, (state, action) => {
+        state.status = 'Loading';
+      })
+      .addCase(asyncUpFetch.fulfilled, (state, action) => {
+        state.value = action.payload;
+        state.status = 'Complete';
+      })
+      .addCase(asyncUpFetch.rejected, (state, action) => {
+        state.status = 'Fail';
+      })
+  }
+})
+
+export default counterSlice;
+export const { up } = counterSlice.actions;
+export { asyncUpFetch }
 
 
 // ########################################################################################################################################################
