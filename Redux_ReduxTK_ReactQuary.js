@@ -6,11 +6,10 @@
 
 // ####### 노마드코더 ToDolist만들기 ##############################################################################################################################
 // ###### Redux (with connect) #####################################################################################################################################
-// ################## index.js
+// ################## index.js (사용범위 부분)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-
 import { Provider } from 'react-redux';
 import store from './store';
 
@@ -21,7 +20,7 @@ root.render(
   </Provider>
 ); // Provider안에 있는 모든 컴포넌트에 store를 제공
 
- // ################### App.js
+ // ################### App.js (라우트)
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Home';
 
@@ -37,7 +36,7 @@ function App() {
 
 export default App;
 
- // ################### store.js
+ // ################### store.js (slice 저장소 부분)
 import { legacy_createStore as createStore } from 'redux';
 
 const ADD = "ADD";
@@ -77,7 +76,7 @@ export const actionCreators = {
 
 export default store;
 
- // ################### Home.js
+ // ################### Home.js(작동하는 부분)
 import { useState } from "react";
 import { connect } from 'react-redux';
 import { actionCreators } from "./store";
@@ -111,7 +110,7 @@ function Home({ toDos, addToDo }) {
     );
 }
 
-// state를 가진 함수 (value를가진 key를 connect를통에 Home에 전달) // function 이름은 바꿔도 무난함
+// state를 가진 함수 (value를가진 key를 connect를통에 Home에 전달)
 function mapStateToProps(state, ownProps){
     return { 
         toDos : state
@@ -129,7 +128,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home);
 // connect의 첫번째 함수인자(mapStateToProps)는 store의 state를 인자로 가졌고 리턴값을 Home의 props로 준다 (두번째인자로 ownProps)
 // connect의 두번째 함수인자(mapDispatchToProps)는 store의 dispatch를 인자로 가졌고 리턴값을 Home의 props로 준다 (두번째인자로 ownProps)
 
- // ################### ToDo.js
+ // ################### ToDo.js(작동하는 부분)
 import React from "react";
 import { connect } from "react-redux"
 import { actionCreators } from "./store";
@@ -223,7 +222,7 @@ import { deleteToDo } from "./store";
 
 // ####### 생활코딩 async fetch 버튼 #####################################################################################################################
 // ####### Redux Toolkit-thunk(비동기작업) with useDispatch, useSelector (no connect) ####################################################################
-// ################### index.js (범위 부분)
+// ################### index.js (사용범위 부분)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
