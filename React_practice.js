@@ -808,5 +808,57 @@ function App(){
 
 export default App;
 
-// #### UseReducer ###############################################################################################################################
-// #### 은행 : input에 액수(number)를 입력한뒤 + or -를 누르면 계산됨(money) ########################################################################
+// #### UseRef 1 ###############################################################################################################################
+// #### useRef, useState 비교 ################################################################################################################
+import { useRef, useState } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(0); // 초기값 0
+
+  const addCountState = () => {
+    setCount(count + 1);
+  };
+
+  const addCountRef = () => {
+    countRef.current = countRef.current + 1;  //  값은 올라가지만 재렌더가 되지않음
+  };
+
+  return (<>
+    <div>
+      <p>State: {count}</p>
+      <button onClick={addCountState}>State 올려</button>
+    </div>
+    <div>
+      <p>State: {countRef.current}</p>
+      <button onClick={addCountRef}>Ref 올려</button>
+    </div>
+  </>)
+}
+
+export default App;
+
+// #### UseRef 2 ###############################################################################################################################
+// #### Dom요소 접근 (화면 들어올때 자동으로 커서가 text창에) #######################################################################################
+import { useEffect, useRef } from 'react';
+
+function App() {
+  const inputRef = useRef();
+
+  useEffect(()=>{
+    inputRef.current.focus();
+  }, []);
+
+  const login = () =>{
+    alert(`Hello ${inputRef.current.value}`);
+  }
+
+  return (<>
+    <div>
+      <input ref={inputRef} type='text' placeholder='username' />  {/* input정보가 inputRef에 담김 */}
+      <button onClick={login}>로그인</button>
+    </div>
+  </>)
+}
+
+export default App;
