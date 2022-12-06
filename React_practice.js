@@ -955,51 +955,63 @@ function Box({ createBoxStyle }) {
 
 export default Box
 
-// #### React.memo ###############################################################################################################################
+// #### React.memo (useMemo, useCallback의 활용) ################################################################################################
 // #### 1) 같은 props로 자주렌더링될때, 2) 렌더링 될때마다 복잡한로직이 처리될때 만 사용 #############################################################
 // ############ App.js
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import Child from './Child';
 
 function App() {
   const [parentAge, setParentAge] = useState(0);
   const [childAge, setChildAge] = useState(0);
 
-  const increaseParentAge = () =>{
+  const increaseParentAge = () => {
     setParentAge(parentAge + 1);
   };
 
-  const increaseChildAge = () =>{
+  const increaseChildAge = () => {
     setChildAge(childAge + 1);
   };
+  
+  const name = useMemo(() => {  // 리턴할 객체(객체타입)의 주소를 저장
+    return {
+      lastName: '홍',
+      firstName: '길동',
+    };
+  }, []);
+
+  const tellme = useCallback(() => { // 함수(객체타입)의 주소를 저장
+    console.log('길동아!!')
+  }, []);
 
   console.log("부모 컴포넌트 렌더링");
-  
   return (<>
-  <h1>부모</h1>
-  <p>age : {parentAge}</p>
-  <button onClick={increaseParentAge}>부모 나이 증가</button>
-  <button onClick={increaseChildAge}>자녀 나이 증가</button>
-  <Child name={'홍길동'} age={childAge} />
+    <h1>부모</h1>
+    <p>age : {parentAge}</p>
+    <button onClick={increaseParentAge}>부모 나이 증가</button>
+    <button onClick={increaseChildAge}>자녀 나이 증가</button>
+    <Child name={name} age={childAge} tellme={tellme} />
   </>)
-}
+} // name은 useMemo, tellme는 useCallback을 사용하여서 Props가 바뀌지 않는 것으로봄
 export default App;
+
 
 // ############ Child.js
 import React, { memo } from 'react'
 
-function Child({ name, age }) {
+function Child({ name, age, tellme }) {
     console.log('자녀 컴포넌트 렌더링')
 
     return (
         <div style={{ border: '2px solid blue', padding: '10px' }}>
             <h3>자녀</h3>
-            <p>name : {name}</p>
+            <p>lastName : {name.lastName}</p>
+            <p>firstName : {name.firstName}</p>
             <p>age : {age}</p>
+            <button onClick={tellme}>tellme</button>
         </div>
     )
 }
 
 export default memo(Child); // props에 변화가 없는경우 재랜더링이 되지않도록 메모제이션 되있는 기존 컴포넌트 사용
-
 
