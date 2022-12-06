@@ -839,7 +839,7 @@ function App() {
 export default App;
 
 // #### UseRef 2 ###############################################################################################################################
-// #### Dom요소 접근 (화면 들어올때 자동으로 커서가 text창에) #######################################################################################
+// #### Dom요소 접근 : 화면 들어올때 자동으로 커서가 text창에 ######################################################################################
 import { useEffect, useRef } from 'react';
 
 function App() {
@@ -862,3 +862,97 @@ function App() {
 }
 
 export default App;
+
+// #### UseMemo ###############################################################################################################################
+// #### 어려운계산기, 쉬운계산기 : 쉬운계산기 실행시 어려운계산기 실행은 하지않아 딜레이시간을 단축 ###################################################
+
+import { useMemo, useState } from 'react';
+const hardCalc = (num) =>{
+  for(let i = 0; i < 999999999; i++) {} // 생각하는 시간
+  return num + 100;
+};
+
+const easyCalc = (num) =>{
+  return num + 1;
+};
+
+function App() {
+  const [hardNum, setHardNum] = useState(1);
+  const [easyNum, setEasyNum] = useState(1);
+
+  const hardAdd = useMemo(()=>{
+    return hardCalc(hardNum);
+  },[hardNum]);  // 값이 변경 되지 않으면 캐시에 메모이제이션 되있는 값을 그대로 보여줌, 값이 변경될때만 실행 (객체타입 주소를 저장해둘때 유용하게 쓰임)
+
+  const easyAdd = easyCalc(easyNum)
+  
+  return (<>
+    <h3>어려운 계산기</h3>
+    <input
+    type='number'
+    value={hardNum}
+    onChange={(e) => setHardNum(parseInt(e.target.value))}
+    />
+    <span> + 100 = {hardAdd}</span>
+
+    <h3>쉬운 계산기</h3>
+    <input
+    type='number'
+    value={easyNum}
+    onChange={(e) => setEasyNum(parseInt(e.target.value))}
+    />
+    <span> + 1 = {easyAdd}</span>
+  </>)
+}
+
+export default App;
+
+// #### UseCallback ###############################################################################################################################
+// #### 박스크기와 테마변경  : 테마변경시에는 불필요하게 박스사이즈 변경하는 useEffect를 실행시키지 않음 ###################################################
+// ############ App.js
+import { useCallback, useState } from 'react';
+import Box from './Box';
+
+function App() {
+  const [size, setSize] = useState(100);
+  const [isDark, setIsDark] = useState(false);
+
+  const createBoxStyle = useCallback(() => {
+    return {
+      backgroundColor: 'pink',
+      width: `${size}px`,
+      height: `${size}px`,
+    };
+  }, [size]);  // 함수의 주소를 메모이제이션 해둠으로 변경 없이 재실행됨을 방지 (함수도 객체타입에 속함)
+
+  return (<>
+    <div style={{ background: isDark ? 'black' : 'white' }}>
+      <input type='number' value={size} onChange={(e) => setSize(e.target.value)} />
+      <button onClick={() => setIsDark(!isDark)}>테마변경</button>
+      <Box createBoxStyle={createBoxStyle} />
+    </div>
+  </>)
+}
+
+export default App;
+
+// ############ Box.js
+import React from 'react'
+import { useState, useEffect } from 'react';
+
+function Box({ createBoxStyle }) {
+    const [style, setStyle] = useState({});
+
+    useEffect(() => {
+        console.log('박스사이즈변경시 O, 테마변경시 X')
+        setStyle(createBoxStyle());
+    }, [createBoxStyle])
+
+    return (
+        <div style={style}></div>
+    )
+}
+
+export default Box
+
+
