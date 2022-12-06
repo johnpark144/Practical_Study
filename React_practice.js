@@ -956,6 +956,50 @@ function Box({ createBoxStyle }) {
 export default Box
 
 // #### React.memo ###############################################################################################################################
-// #### React.memo ###############################################################################################################################
+// #### 1) 같은 props로 자주렌더링될때, 2) 렌더링 될때마다 복잡한로직이 처리될때 만 사용 #############################################################
+// ############ App.js
+import { useState } from 'react';
+import Child from './Child';
+
+function App() {
+  const [parentAge, setParentAge] = useState(0);
+  const [childAge, setChildAge] = useState(0);
+
+  const increaseParentAge = () =>{
+    setParentAge(parentAge + 1);
+  };
+
+  const increaseChildAge = () =>{
+    setChildAge(childAge + 1);
+  };
+
+  console.log("부모 컴포넌트 렌더링");
+  
+  return (<>
+  <h1>부모</h1>
+  <p>age : {parentAge}</p>
+  <button onClick={increaseParentAge}>부모 나이 증가</button>
+  <button onClick={increaseChildAge}>자녀 나이 증가</button>
+  <Child name={'홍길동'} age={childAge} />
+  </>)
+}
+export default App;
+
+// ############ Child.js
+import React, { memo } from 'react'
+
+function Child({ name, age }) {
+    console.log('자녀 컴포넌트 렌더링')
+
+    return (
+        <div style={{ border: '2px solid blue', padding: '10px' }}>
+            <h3>자녀</h3>
+            <p>name : {name}</p>
+            <p>age : {age}</p>
+        </div>
+    )
+}
+
+export default memo(Child); // props에 변화가 없는경우 재랜더링이 되지않도록 메모제이션 되있는 기존 컴포넌트 사용
 
 
