@@ -18,14 +18,16 @@ let abc:string = 'abc'
 let whatAge:number = 30;
 let isAdult:boolean = true;
 let numArr:number[] = [1,2,3]; // 숫자로된 배열만
-let numArr2:Array<number> = [1,2,3];
+let numArr2:Array<number> = [1,2,3]; // 숫자로된 배열만
 let obj:object = {1:'a', 2:'b', 3:'c'}
 let a1:null = null;
 let a2:undefined = undefined;
+let a3:unknown; // 아직모르니 아무거나 (any보다 권장됨)
 
 let userName1 = 'Bob'   // 아무것도 할당하지않으면 자동으로 처음 타입으로 지정됨
 userName1 = 2
 let userName2: string|number = 'Tom'
+
 // ####### 튜플타입
 let b:[string, number] = ['z',1];
 b = [1,'z'];
@@ -37,7 +39,7 @@ function sayHello1():void{
 
 function sayHello2():void{
     console.log('hello2')
-    return 1
+    return 1    //
 }
 
 // ######## never (에러를 반환하거나 영원히 끝나지 않는 함수 타입)
@@ -119,7 +121,7 @@ console.log(a(20))
 
 // ##### interface와 type의 차이점 ###########################################################################################################
 // interface
-interface PeopleInterface {     // 지정할때 =(equal)사용X // 객체에만 사용가능
+interface PeopleInterface {     // 지정할때 =(equal)사용X // 객체에만 사용가능 (객체사용시 인터페이스 권장)
   name: string
   age: number
 }
