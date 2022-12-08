@@ -117,8 +117,9 @@ console.log(a(20))
 // false 
 // true 
 
-// ##### interface와 type의 차이점 ##############################
-interface PeopleInterface {     // 지정할때 =사용X //
+// ##### interface와 type의 차이점 ###########################################################################################################
+// interface
+interface PeopleInterface {     // 지정할때 =(equal)사용X // 객체에만 사용가능
   name: string
   age: number
 }
@@ -128,8 +129,8 @@ const me1: PeopleInterface = {
   age: 34,
 }
 
-
-type PeopleType = {     // 지정할때 =사용O //
+// type
+type PeopleType = {     // 지정할때 =(equal)사용O // 모든 형태에 사용가능
   name: string
   age: number
 }
@@ -137,6 +138,31 @@ type PeopleType = {     // 지정할때 =사용O //
 const me2: PeopleType = {
   name: 'yc',
   age: 31,
+}
+
+// ##### interface와 type 확장 방법 ###########################
+// interface
+interface PeopleInterface {
+  name: string
+  age: number
+}
+
+interface PeopleInterface {     // interface는 재선언 함으로 같은 인터페이스에 확장가능
+  gender:  'm'|'f'
+}
+
+interface StudentInterface extends PeopleInterface {    // extends로 다른 인터페이스에 확장가능
+  school: string
+}
+
+// type
+type PeopleType = {      // type은 재선언 확장 불가능
+  name: string
+  age: number
+}
+
+type StudentType = PeopleType & {
+  school: string
 }
 
 // ##### implements, extends ################################################################################################################
