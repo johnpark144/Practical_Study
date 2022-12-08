@@ -153,7 +153,7 @@ interface PeopleInterface {     // interface는 재선언 함으로 같은 인�
   gender:  'm'|'f'
 }
 
-interface StudentInterface extends PeopleInterface {    // extends로 다른 인터페이스에 확장가능
+interface StudentInterface extends PeopleInterface {    // extends로 다른 타입 및 인터페이스를 확장가능
   school: string
 }
 
@@ -163,7 +163,7 @@ type PeopleType = {      // type은 재선언 확장 불가능
   age: number
 }
 
-type StudentType = PeopleType & {
+type StudentType = PeopleType & {   // &로 다른 타입 및 인터페이스를 확장가능
   school: string
 }
 
