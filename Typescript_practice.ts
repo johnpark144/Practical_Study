@@ -39,7 +39,7 @@ function sayHello1():void{
 
 function sayHello2():void{
     console.log('hello2')
-    return 1    //
+    return 1    // 에러
 }
 
 // ######## never (에러를 반환하거나 영원히 끝나지 않는 함수 타입)
