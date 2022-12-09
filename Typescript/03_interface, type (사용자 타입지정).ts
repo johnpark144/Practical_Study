@@ -15,7 +15,7 @@ let user:User = {
     age : 30,
     birthYear : 2000,
     1 : 'A',
-    2 : 'E',    // E는 없어서 오류
+    2 : 'E',    // !!에러!!
 }
 
 // ###################################
@@ -27,7 +27,7 @@ const a:IsAdult = (age) =>{
     return age> 19
 }
 
-a('12')
+a('12') // !!에러!!
 
 console.log(a(3))
 console.log(a(20))
