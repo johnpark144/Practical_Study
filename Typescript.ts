@@ -545,14 +545,296 @@ let noNullUndefined3:Type4 = undefined
 
 
 // ############################################################################################################################################
-// ######## 리액트 타입스크립트 #################################################################################################################
+// ######## 투두리스트 드래그앤드롭 with React, Typescript, React-icons, React-beautiful-dnd ####################################################
 // ############################################################################################################################################
-// ########## App.tsx
-const App:React.FC = () => {    // React.FC (리액트함수컴포넌트)
-  return (
-    <div className="App">
-    </div>
-  );
+
+// #################### model.ts // 자주사용하여 export 할 인터페이스 및 타입
+export interface Todo{
+    id: number;
+    todo: string;
+    isDone :boolean;
 }
 
+// #################### App.tsx
+import React, { useState } from "react";
+import InputField from "./components/InputField";
+import TodoList from "./components/TodoList";
+import { Todo } from "./model";
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
+import "./App.css";
+
+const App: React.FC = () => { // React.FC 는 리액트 함수형 컴포넌트의 타입
+  const [todo, setTodo] = useState<string>("");
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [completedTodos, setCompletedTodos] = useState<Todo[]>([]);
+
+  const handleAdd = (e: React.FormEvent) => { // React.FormEvent는 event의타입
+    e.preventDefault();
+
+    if (todo) {
+      setTodos([...todos, { id: Date.now(), todo, isDone: false }]);
+      setTodo("");
+    }
+  };
+
+  // 드래그앤 드롭
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+    if(!destination || 
+      (destination.droppableId === source.droppableId && destination.index === source.index)) return;
+
+      let add,
+      active = todos,
+      complete = completedTodos;
+
+      if(source.droppableId === 'TodosList' ){
+        add = active[source.index];
+        active.splice(source.index, 1)
+      } else {
+        add = complete[source.index];
+        complete.splice(source.index, 1)
+      }
+
+      if(destination.droppableId === 'TodosList' ){
+        active.splice(destination.index, 0, add)
+      } else {
+        complete.splice(destination.index, 0, add)
+      }
+
+      setCompletedTodos(complete);
+      setTodos(active);
+  }
+
+  return (
+    // Drag and Drop 사용 전체범위
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className="App">
+        <span className="heading">Taskify</span>
+        {/* Task 입력창 */}
+        <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
+        {/* Active Tasks와 Completed Tasks */}
+        <TodoList todos={todos} setTodos={setTodos} completedTodos={completedTodos} setCompletedTodos={setCompletedTodos}/>
+      </div>
+    </DragDropContext>
+  );
+};
+
+export default App;
+
+// #################### InputField.tsx
+import React, { useRef } from "react";
+
+// 타입 및 인터페이스
+interface Props {
+  todo: string;
+  setTodo: React.Dispatch<React.SetStateAction<string>>; // useState의 setTodo부분 타입 (마우스올려서 확인가능)
+  handleAdd: (e: React.FormEvent) => void; // void는 리턴값이 없는 함수 형태의 타입
+}
+
+// export 디폴트 함수
+const InputField: React.FC<Props> = ({ todo, setTodo, handleAdd }) => {
+  const inputRef = useRef<HTMLInputElement>(null); // uref부분의 타입 (마우스올려서 확인가능)
+  
+  return (
+    <form
+      className="input"
+      onSubmit={(e) => {
+        handleAdd(e);
+        inputRef.current?.blur(); {/* blur는 검색창에서 커서 X */}
+      }}
+    >
+      <input
+        ref={inputRef}
+        type="input"
+        value={todo}
+        placeholder="Enter a task"
+        className="input__box"
+        onChange={(e) => setTodo(e.target.value)}
+      />
+      <button className="input_submit" type="submit">
+        Go
+      </button>
+    </form>
+  );
+};
+
+export default InputField;
+
+
+// #################### TodoList.tsx
+import React from "react";
+import { Todo } from "../model";
+import SingleTodo from "./SingleTodo";
+import { Droppable } from "react-beautiful-dnd";
+
+// 타입 및 인터페이스
+interface Props {
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>; // useState의 setTodos부분 타입 (마우스올려서 확인가능)
+  completedTodos: Todo[];
+  setCompletedTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+}
+
+// export 디폴트 함수
+const TodoList: React.FC<Props> = ({ todos, setTodos, completedTodos, setCompletedTodos }) => {
+
+  return (
+    <div className="container">
+      
+      {/* Active Tasks를 Droppable 하는부분 */}
+      <Droppable droppableId="TodosList">
+        {(provided, snapshot) => (
+          <div
+            className={`todos ${snapshot.isDraggingOver ? 'dragactive' : ''}`}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <span className="todos__heading">Active Tasks</span>
+            {todos.map((todo, idx) => (
+              <SingleTodo
+              idx={idx}
+                todo={todo}
+                todos={todos}
+                key={todo.id}
+                setTodos={setTodos}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+
+      {/* Completed Tasks를 Droppable 하는부분 */}
+      <Droppable droppableId="TodosRemove">
+        {(provided, snapshot) => (
+          <div
+            className={`todos remove ${snapshot.isDraggingOver ? 'dragcomplete' : ''}`}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <span className="todos__heading">Completed Tasks</span>
+            {completedTodos.map((todo, idx) => (
+              <SingleTodo
+              idx={idx}
+                todo={todo}
+                todos={completedTodos}
+                key={todo.id}
+                setTodos={setCompletedTodos}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </div>
+  );
+};
+
+export default TodoList;
+
+// #################### SingleTodo.tsx
+import React, { useRef, useState, useEffect } from "react";
+import { Todo } from "../model";
+import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import { MdDone } from "react-icons/md";
+import { Draggable } from "react-beautiful-dnd";
+
+// 타입 및 인터페이스
+type Props = {
+  idx: number;
+  todo: Todo;
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+};
+
+// export 디폴트 함수
+const SingleTodo = ({ idx, todo, todos, setTodos }: Props) => {
+  const [edit, setEdit] = useState<boolean>(false);
+  const [editTodo, setEditTodo] = useState<string>(todo.todo);
+
+  // IsDone
+  const handleDone = (id: number) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
+      )
+    );
+  };
+
+  // 삭제
+  const handleDelete = (id: number) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+  // 수정
+  const handleEdit = (e: React.FormEvent, id: number) => {
+    e.preventDefault();
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, todo: editTodo } : todo))
+    );
+    setEdit(false);
+  };
+
+  const inputRef = useRef<HTMLInputElement>(null); // input의 DOM의 타입
+
+  // 수정 시작시 커서
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [edit]);
+
+  return (
+    // Draggable 드래그 할 박스
+    <Draggable draggableId={todo.id.toString()} index={idx}> 
+      {(provided, snapshot) => (  
+        <form 
+          className={`todos__single ${snapshot.isDragging ? 'drag' : ''}`}
+          onSubmit={(e) => handleEdit(e, todo.id)}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          {edit ? (
+            // 수정모드인 경우
+            <input
+              ref={inputRef}
+              value={editTodo}
+              onChange={(e) => setEditTodo(e.target.value)}
+              className="todos__single--text"
+            />
+          ) : todo.isDone ? (
+            // 일반모드 Isdone된경우
+            <s className="todos__single--text">{todo.todo}</s> // s태그는 텍스트 가운데 선긋기
+          ) : (
+            // 일반모드 Isdone안된경우
+            <span className="todos__single--text">{todo.todo}</span>
+          )}
+          {/* 아이콘 */}
+          <div>
+            {/* 수정 아이콘 */}
+            <span
+              className="icon"
+              onClick={() => {
+                if (!edit && !todo.isDone) {
+                  setEdit(!edit);
+                }
+              }}
+            >
+              <AiFillEdit />
+            </span>
+            {/* 삭제 아이콘 */}
+            <span className="icon" onClick={() => handleDelete(todo.id)}>
+              <AiFillDelete />
+            </span>
+            {/* 체크 아이콘 */}
+            <span className="icon" onClick={() => handleDone(todo.id)}>
+              <MdDone />
+            </span>
+          </div>
+        </form>
+      )}
+    </Draggable>
+  );
+};
+
+export default SingleTodo;
 
