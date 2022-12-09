@@ -24,12 +24,12 @@ let a2:undefined = undefined;
 let a3:unknown; // 아직모르니 아무거나 (any보다 권장됨)
 
 let userName1 = 'Bob'   // 아무것도 할당하지않으면 자동으로 처음 타입으로 지정됨
-userName1 = 2
+userName1 = 2   // !!에러!!
 let userName2: string|number = 'Tom'
 
 // ####### 튜플타입
 let b:[string, number] = ['z',1];
-b = [1,'z'];
+b = [1,'z'];    // !!에러!!
 
 // ####### void (함수에서 아무것도 반환하지 않을때)
 function sayHello1():void{
@@ -38,7 +38,7 @@ function sayHello1():void{
 
 function sayHello2():void{
     console.log('hello2')
-    return 1    // 에러
+    return 1    // !!에러!!
 }
 
 // ######## never (에러를 반환하거나 영원히 끝나지 않는 함수 타입)
@@ -80,8 +80,6 @@ let myOs:Os = Os.Window2    // 타입이 지정해준 Os타입
 console.log(myOs)
 // 1
 
-let myOs2:Os = Os.Window3 // 존재X
-
 // ##### interface와 type(사용자 타입지정) ###################################################################################################
 
 type Score = 'A' | 'B' | 'C' | 'F' // type변수 (첫글자 대문자)
@@ -99,7 +97,7 @@ let user:User = {
     age : 30,
     birthYear : 2000,
     1 : 'A',
-    2 : 'E',    // E는 없어서 오류
+    2 : 'E',    // !!에러!!
 }
 
 // ###################################
@@ -111,7 +109,7 @@ const a:IsAdult = (age) =>{
     return age> 19
 }
 
-a('12')
+a('12') // !!에러!!
 
 console.log(a(3))
 console.log(a(20))
@@ -217,7 +215,6 @@ const hello = (name?:string) =>{
     return `Hello, ${name || "world"}`;
 }
 
-hello(2)
 console.log(hello())
 console.log(hello('john'))
 // "Hello, world" 
@@ -361,7 +358,7 @@ abstract class Car5{    // abstract class 는 상속용 class
     start(){
         console.log('start');
         console.log(this.name);
-        console.log(this.wheels) // static은 this 사용불가
+        console.log(this.wheels) // !!에러!! // static은 this 사용불가 
         console.log(Car5.wheels) // static은 클래스명 사용
     }
     abstract doSomething():void; // abstract class의 abstract 메서드는 상속받은쪽에서 구현해줘야함
@@ -373,7 +370,7 @@ class Bmw5 extends Car5{
         super(color);
     }
     showName(){
-        console.log(super.name);  // extends 하여도 private인 name은 사용불가
+        console.log(super.name);  // !!에러!! // extends 하여도 private인 name은 사용불가
         console.log(super.color);  // extends 하면 protected된 color는 자식 class에서 사용가능
     }
     doSomething(){
@@ -383,10 +380,10 @@ class Bmw5 extends Car5{
 
 const z4 = new Bmw5('black');
 
-const taxi = new Car5('red')    // abstract때문에 클래스 사용불가
+const taxi = new Car5('red')    // !!에러!! // abstract때문에 클래스 사용불가
 
-console.log(z4.name)  // private이라서 사용불가
-console.log(z4.color)   // protected라서 밖에서 사용불가
+console.log(z4.name)  // !!에러!! // private이라서 사용불가
+console.log(z4.color) // !!에러!! // protected라서 밖에서 사용불가
 
 // ###### 제네릭 (타입을 미리 정하지 않고 사용할때 결정하게함) #############################################################################
 function getSize<T>(arr: T[]): number{
@@ -442,7 +439,7 @@ interface User4{
 type UserKey = keyof User4;
 
 const uk1:UserKey = 'id'
-const uk2:UserKey = 'email'
+const uk2:UserKey = 'email' // !!에러!!
 
 // ######## Partial<T> (부분적으로만 사용)
 // interface User5{
@@ -488,7 +485,7 @@ let admin3: Readonly<User6> ={
     name:'Bob',
 };
 
-admin3.name = 'john' // Readonly는 변경불가
+admin3.name = 'john' // !!에러!! // Readonly는 변경불가
 
 // ######## Record<K, T> (key값의 타입, value의 타입 따로지정)
 interface User7{
@@ -516,11 +513,11 @@ interface User8{
 const admin4: Pick<User8, 'id'|'name'> = {
     id: 0,
     name: 'Bob',
-    age: 1  // id랑 name만 pick했기때문에 age는 사용불가
+    age: 1  // !!에러!! // id랑 name만 pick했기때문에 age는 사용불가
 } 
 
 const admin5: Omit<User8, 'id'> = {
-    id: 0,  // id를 Omit했기 때문에 사용불가
+    id: 0,  // !!에러!! // id를 Omit했기 때문에 사용불가
     name: 'Bob',
     age: 1 
 } 
@@ -531,7 +528,7 @@ type Type1 = string | number | boolean;
 type Type2 = Exclude<Type1,  number | boolean>; // Type1에서 제거할 타입 설정
 
 let myName1:Type2 = 'john';
-let myName2:Type2 = 12;
+let myName2:Type2 = 12; // !!에러!!
 
 // ########  NonNullable<T> (undefined도 사용불가)
 
@@ -539,8 +536,8 @@ type Type3 = string | null | undefined | void;
 type Type4 = NonNullable<Type3>;  // Type3에서 null과 undefined 사용불가
 
 let noNullUndefined:Type3 = null
-let noNullUndefined2:Type4 = null
-let noNullUndefined3:Type4 = undefined
+let noNullUndefined2:Type4 = null  // !!에러!!
+let noNullUndefined3:Type4 = undefined  // !!에러!!
 
 
 // ############################################################################################################################################
