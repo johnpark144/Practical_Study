@@ -4,7 +4,6 @@ const hello = (name?:string) =>{
     return `Hello, ${name || "world"}`;
 }
 
-hello(2)
 console.log(hello())
 console.log(hello('john'))
 // "Hello, world" 
