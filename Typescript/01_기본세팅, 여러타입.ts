@@ -24,12 +24,12 @@ let a2:undefined = undefined;
 let a3:unknown; // 아직모르니 아무거나 (any보다 권장됨)
 
 let userName1 = 'Bob'   // 아무것도 할당하지않으면 자동으로 처음 타입으로 지정됨
-userName1 = 2
+userName1 = 2   // !!에러!!
 let userName2: string|number = 'Tom'
 
 // ####### 튜플타입
 let b:[string, number] = ['z',1];
-b = [1,'z'];
+b = [1,'z'];    // !!에러!!
 
 // ####### void (함수에서 아무것도 반환하지 않을때)
 function sayHello1():void{
@@ -38,7 +38,7 @@ function sayHello1():void{
 
 function sayHello2():void{
     console.log('hello2')
-    return 1    // 에러
+    return 1    // !!에러!!
 }
 
 // ######## never (에러를 반환하거나 영원히 끝나지 않는 함수 타입)
