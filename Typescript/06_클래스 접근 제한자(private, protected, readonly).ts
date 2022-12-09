@@ -16,7 +16,7 @@ abstract class Car5{    // abstract class 는 상속용 class
     start(){
         console.log('start');
         console.log(this.name);
-        console.log(this.wheels) // static은 this 사용불가
+        console.log(this.wheels) // !!에러!! // static은 this 사용불가 
         console.log(Car5.wheels) // static은 클래스명 사용
     }
     abstract doSomething():void; // abstract class의 abstract 메서드는 상속받은쪽에서 구현해줘야함
@@ -28,7 +28,7 @@ class Bmw5 extends Car5{
         super(color);
     }
     showName(){
-        console.log(super.name);  // extends 하여도 private인 name은 사용불가
+        console.log(super.name);  // !!에러!! // extends 하여도 private인 name은 사용불가
         console.log(super.color);  // extends 하면 protected된 color는 자식 class에서 사용가능
     }
     doSomething(){
@@ -38,7 +38,7 @@ class Bmw5 extends Car5{
 
 const z4 = new Bmw5('black');
 
-const taxi = new Car5('red')    // abstract때문에 클래스 사용불가
+const taxi = new Car5('red')    // !!에러!! // abstract때문에 클래스 사용불가
 
-console.log(z4.name)  // private이라서 사용불가
-console.log(z4.color)   // protected라서 밖에서 사용불가
+console.log(z4.name)  // !!에러!! // private이라서 사용불가
+console.log(z4.color) // !!에러!! // protected라서 밖에서 사용불가
