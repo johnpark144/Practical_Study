@@ -613,7 +613,7 @@ function UserForm({ data, setIsEditing }) {
         }, // 방법1) updatedUser = fields 로 가져오기때문에 서버에서 불러옴 없이 데이터를 실시간으로 보여줌
         onSuccess: () => {
             // queryClient.invalidateQueries(['user', data.id])
-            // 방법2) 유효성을 제거하여 캐싱되어있는 데이터를 보여주지 않고 서버에 새롭게 데이터를 요청
+            // 방법2) 기존에 수정되기전 데이터의 유효성을 제거하여 캐싱되어있는 데이터를 보여주지 않고 서버에 새롭게 데이터를 요청되어 화면이 실시간으로 바뀜
             setIsEditing(false);
         }
     });
