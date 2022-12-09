@@ -25,5 +25,3 @@ console.log(Os[10]) // 역방향으로도 출력이 됨
 let myOs:Os = Os.Window2    // 타입이 지정해준 Os타입
 console.log(myOs)
 // 1
-
-let myOs2:Os = Os.Window3 // 존재X
