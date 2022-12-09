@@ -1,10 +1,6 @@
 // npm install -g typescript
-// tsc -w  // 타입스크립트 -> 자바스크립트
-
-// npx create-react-app myapp --template typescript // 타입스크립트를 이용한 새로운 리액트 앱생성
-// npm install --save typescript @types/node @types/react @types/react-dom @types/jest  // 기존 리액트 앱에 타입스크리트 추가 설치
-
-// ######## tsconfig.json (ESNext는 최신버전)
+// tsc -w  // 명령어(타입스크립트 -> 자바스크립트)
+// ######## tsconfig.json (자바스크립트로 변경시 필요한파일 / ESNext는 최신버전)
 // {
 //     "compilerOptions": {
 //         "target": "ESNext",
@@ -12,6 +8,9 @@
 //     }
 // }
 
+// ######## 타입스크립트, 리액트
+// npx create-react-app myapp --template typescript // 타입스크립트를 이용한 새로운 리액트 앱생성
+// npm install --save typescript @types/node @types/react @types/react-dom @types/jest  // 기존 리액트 앱에 타입스크리트 추가 설치
 
 // ########## 여러 타입 ######################################################################################################################
 let abc:string = 'abc'
