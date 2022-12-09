@@ -10,7 +10,7 @@ interface User4{
 type UserKey = keyof User4;
 
 const uk1:UserKey = 'id'
-const uk2:UserKey = 'email'
+const uk2:UserKey = 'email' // !!에러!!
 
 // ######## Partial<T> (부분적으로만 사용)
 // interface User5{
@@ -56,7 +56,7 @@ let admin3: Readonly<User6> ={
     name:'Bob',
 };
 
-admin3.name = 'john' // Readonly는 변경불가
+admin3.name = 'john' // !!에러!! // Readonly는 변경불가
 
 // ######## Record<K, T> (key값의 타입, value의 타입 따로지정)
 interface User7{
@@ -84,11 +84,11 @@ interface User8{
 const admin4: Pick<User8, 'id'|'name'> = {
     id: 0,
     name: 'Bob',
-    age: 1  // id랑 name만 pick했기때문에 age는 사용불가
+    age: 1  // !!에러!! // id랑 name만 pick했기때문에 age는 사용불가
 } 
 
 const admin5: Omit<User8, 'id'> = {
-    id: 0,  // id를 Omit했기 때문에 사용불가
+    id: 0,  // !!에러!! // id를 Omit했기 때문에 사용불가
     name: 'Bob',
     age: 1 
 } 
@@ -99,7 +99,7 @@ type Type1 = string | number | boolean;
 type Type2 = Exclude<Type1,  number | boolean>; // Type1에서 제거할 타입 설정
 
 let myName1:Type2 = 'john';
-let myName2:Type2 = 12;
+let myName2:Type2 = 12; // !!에러!!
 
 // ########  NonNullable<T> (undefined도 사용불가)
 
@@ -107,5 +107,5 @@ type Type3 = string | null | undefined | void;
 type Type4 = NonNullable<Type3>;  // Type3에서 null과 undefined 사용불가
 
 let noNullUndefined:Type3 = null
-let noNullUndefined2:Type4 = null
-let noNullUndefined3:Type4 = undefined
+let noNullUndefined2:Type4 = null  // !!에러!!
+let noNullUndefined3:Type4 = undefined  // !!에러!!
