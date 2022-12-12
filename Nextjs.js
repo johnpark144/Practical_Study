@@ -60,8 +60,9 @@ export default about
 
 // ########### CSS (기존 리액트 .module.css 방법도 잘통함) #####################################################################################################
 // vscode-styled-components 익스텐션 필요
+// ext install vscode-styled-components
 
-// NavBar.js
+// ############ NavBar.js
 // ... 생략 ...
 return 
   <style jsx>{`
@@ -77,7 +78,7 @@ return
 `}</style>
 
 // ########### Custom App #####################################################################################################
-// _app.js (page들을 렌더링 할때 _app.js의 Component파라미터를 거쳐감 -> styled-components를 이용한 CSS를 전역으로 사용가능 , 네비바랑 footer 사용가능)
+// ############ _app.js (page들을 렌더링 할때 _app.js의 Component파라미터를 거쳐감 -> styled-components를 이용한 CSS를 전역으로 사용가능 , 네비바랑 footer 사용가능)
 
 import NavBar from "./../components/NavBar";
 import "../styles/globals.css"; // _app.js에서만 글로벌 CSS사용가능
@@ -101,7 +102,61 @@ function _app({ Component, pageProps }) {
 
 export default _app;
 
+// ########### Head Title Pattern #####################################################################################################
+// ############ components/Seo.js
+import Head from 'next/head';
 
+function Seo({ title }) {
+  return (<>
+    {/* 헤드 타이틀 바꾸기 */}
+    <Head>
+      <title>{title} | Next movies</title>
+    </Head>
+    </>)
+}
 
+export default Seo
 
+// ############ components/Layout.js
+import NavBar from "./NavBar"
+
+function Layout({ children }) {
+  return (
+    <div>
+      <NavBar />
+      <div>{children}</div>
+    </div>
+  )
+}
+
+export default Layout
+
+// ############ _app.js
+import Layout from './../components/Layout';
+
+function _app({ Component, pageProps }) {
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  );
+}
+
+export default _app;
+
+// ############ index.js
+import Seo from '../components/Seo';
+
+function index() {
+  return (
+    <>
+      <Seo title='Home' /> {/* 타이틀 변경 가능 */}
+      <div>"hi"</div>
+    </>
+  );
+}
+
+export default index;
+
+// ########### Head Title Pattern #####################################################################################################
 
