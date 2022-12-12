@@ -10,7 +10,7 @@
 pages안에 폴더랑 파일들
 public안에 파일들
 
-// ########### 라우팅 ########################################################################################################################################
+// ########### 기본 라우팅 ########################################################################################################################################
 // ############ components/NavBar.js
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -250,6 +250,8 @@ API_KEY="453c0ea4912bfd2992005c0b2daf7663"
 .env
 
 // ########### Server Side Rendering (SSR) ###########################################################################################################
+// ############ index.js
+
 import Seo from "../components/Seo";
 
 function index({ data }) {  // SSR props (pageProps)
@@ -301,4 +303,18 @@ export async function getServerSideProps(){ // 백엔드에서 작동되는 부�
 
 export default index;
 
+// ########### Dynamic 라우팅 (폴더사용) ##########################################################################################################################
+// pages/폴더명/index.js -> http://localhost:3000/폴더명
+// pages/폴더명/all.js -> http://localhost:3000/폴더명/all
+// pages/폴더명/[id].js -> http://localhost:3000/폴더명/:id
 
+// ############ pages/movies/[id].js
+import { useRouter } from "next/router";
+
+function Detail() {
+  const router = useRouter();
+  
+  return <div>{router.query.id}</div>;  // 파일명 [id] (주소창에 입력한 id) 와 같은값
+}
+
+export default Detail;
