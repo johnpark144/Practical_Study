@@ -307,19 +307,20 @@ export default index;
 // pages/폴더명/index.js -> http://localhost:3000/폴더명
 // pages/폴더명/all.js -> http://localhost:3000/폴더명/all
 // pages/폴더명/[id].js -> http://localhost:3000/폴더명/:id
+// pages/폴더명/[...params].js -> http://localhost:3000/폴더명/:params[0]/:params[1]/:params[2]...
 
-// ############ pages/movies/[id].js
+// ############ pages/movies/[...params].js
 import { useRouter } from "next/router";
 
 function Detail() {
   const router = useRouter();
   
-  return <div>{router.query.id}</div>;  // 파일명 [id] (주소창에 입력한 id) 와 같은값
+  return <div>{router.query.params}</div>;  // 파일명 [params] (주소창에 입력한 params) 와 같은값
 }
 
 export default Detail;
 
-// ########### Movie Detail ##########################################################################################################################
+// ########### Detail 의 query, pathname 마킹 및 query정보 가져오기 ##############################################################################################
 // ############ next.config.js
 
 // ...생략...
@@ -338,7 +339,7 @@ async rewrites(){
 }
 // ...생략...
 
-// ############ index.js
+// ############ index.js (방법1)
 
 import Seo from "../components/Seo";
 import Link from "next/link";
@@ -366,3 +367,48 @@ function index({ data }) {
       
 // ...생략...
       
+// ############ index.js (방법2)
+      
+import Seo from "../components/Seo";
+import Link from "next/link";
+
+function index({ data }) {
+  return (
+    <div className="container">
+      <Seo title="Home" /> {/* 타이틀 변경 가능 */}
+      
+      {data?.results.map((movie) => (
+        <Link href={`/movies/${movie.original_title}/${movie.id}`} key={movie.id}>  
+          <div className="movie">
+            <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+            <h4>{movie.original_title}</h4>
+          </div>
+        </Link>
+      ))}
+// ...생략...
+      
+// ############ [...params].js
+import { useRouter } from "next/router";
+
+function Detail({ params }) {
+  const router = useRouter();
+  const [title, id] = params || []; // ...params 는 배열형태로 
+  return (
+  <div>
+    <Seo title={title} />
+    {title}
+  </div>
+)}
+
+export async function getServerSideProps({ query:{params} }){ // 백엔드 (getServerSideProps context prop제공)
+  return {
+    props: {
+      params
+    },
+  }
+}
+
+export default Detail;
+
+
+
