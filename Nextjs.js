@@ -410,5 +410,16 @@ export async function getServerSideProps({ query:{params} }){ // 백엔드 (getS
 
 export default Detail;
 
+// ########### Notfound Error (404) ##########################################################################################################################
+// ############ pages/404.js (404.js에 매칭되지 않은 페이지들이 다감)
+function NotFound() {
+  return (
+    <div>
+      Not Found error
+    </div>
+  )
+}
+export default NotFound
+
 
 
