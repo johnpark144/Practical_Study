@@ -318,3 +318,51 @@ function Detail() {
 }
 
 export default Detail;
+
+// ########### Movie Detail ##########################################################################################################################
+// ############ next.config.js
+
+// ...생략...
+async rewrites(){
+    return [
+      {
+        source: "/api/movies",
+        destination: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}` 
+      },
+      {
+        source:"/api/movies/:id",
+        destination: `https://api.themoviedb.org/3/movie/:id?api_key=${API_KEY}`  
+      }
+    ]
+  }
+}
+// ...생략...
+
+// ############ index.js
+
+import Seo from "../components/Seo";
+import Link from "next/link";
+
+function index({ data }) {
+  return (
+    <div className="container">
+      <Seo title="Home" /> {/* 타이틀 변경 가능 */}
+
+      {data?.results.map((movie) => (
+        <Link href={{
+          pathname: `/movies/${movie.id}`,
+          query:{
+            title: movie.original_title,   // ex) ?title=Black+Adam
+          },
+        }} as={`/movies/${movie.id}`} // 기존 pathname과 query를 가진 pathname을 as로 다시 만듬
+        key={movie.id}>
+        
+          <div className="movie">
+            <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+            <h4>{movie.original_title}</h4>
+          </div>
+        </Link>
+      ))}
+      
+// ...생략...
+      
