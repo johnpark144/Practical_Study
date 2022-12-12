@@ -1,15 +1,16 @@
-// ###############################################################################################################################################
+// ###### 영화 정보 사이트 ####################################################################################################################################
+// ##########################################################################################################################################################
 
 // npx create-next-app@latest   // 자바스크립트용
 // npx create-next-app@latest --typescript    // 타입스크립트용
 // code (app이름)   // vscode로 가게함
 // npm run dev
 
-// ########### 삭제할 것들 #####################################################################################################################
+// ########### 삭제할 것들 ##################################################################################################################################
 pages안에 폴더랑 파일들
 public안에 파일들
 
-// ########### 라우팅 #####################################################################################################################
+// ########### 라우팅 ########################################################################################################################################
 // ############ components/NavBar.js
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -78,7 +79,7 @@ return
   }
 `}</style>
 
-// ########### Custom App #####################################################################################################
+// ############### Custom App #############################################################################################################################
 // ############ _app.js (page들을 렌더링 할때 _app.js의 Component파라미터를 거쳐감 -> styled-components를 이용한 CSS를 전역으로 사용가능 , 네비바랑 footer 사용가능)
 
 import NavBar from "./../components/NavBar";
@@ -103,7 +104,7 @@ function _app({ Component, pageProps }) {
 
 export default _app;
 
-// ########### Head Title Pattern #####################################################################################################
+// ########### Head Title Pattern #########################################################################################################################
 // ############ components/Seo.js
 import Head from 'next/head';
 
@@ -159,5 +160,94 @@ function index() {
 
 export default index;
 
-// ########### Fetching Data #####################################################################################################
+// ########### Data fetch (useQuery사용) ###########################################################################################################
+// ############ index.js
+
+import { useQuery } from "react-query";
+import Seo from "../components/Seo";
+
+function index() {
+  const fetchMovies = async () => {
+    const response = await fetch(
+      `/api/movies`
+    );
+    return response.json();
+  };
+
+  const { data, isLoading } = useQuery("movies", fetchMovies);
+
+  return (
+    <div className="container">
+      <Seo title="Home" /> {/* 타이틀 변경 가능 */}
+      {isLoading && <h4>Loading...</h4>}
+      {data?.results.map((movie) => (
+        <div className="movie" key={movie.id}>
+          <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+          <h4>{movie.original_title}</h4>
+        </div>
+      ))}
+
+      <style jsx>{`
+        .container {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          padding: 20px;
+          gap: 20px;
+        }
+        .movie img {
+          max-width: 100%;
+          border-radius: 12px;
+          transition: transform 0.2s ease-in-out;
+          box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        }
+        .movie:hover img {
+          transform: scale(1.05) translateY(-10px);
+        }
+        .movie h4 {
+          font-size: 18px;
+          text-align: center;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+export default index;
+
+// ########### Redirect and Rewrite (API_KEY숨기기) ###########################################################################################################
+// ############ next.config.js  (변경시마다 서버재시작 해줘야함)
+const API_KEY = process.env.API_KEY;
+
+const nextConfig = {
+  reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/contact/:path*",      // 기존 주소 (:는 아무문자나, *는 뒤에 모든것을 캐치함)
+        destination: "/form/:path*",    // 리디렉트할 주소
+        permanent: false,
+      },
+    ]
+  },
+  
+  async rewrites(){
+    return [
+      {
+        source: "/api/movies",    // 기존 주소
+        destination: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`    // 가져올 정보의 주소(즉 API_KEY를 보이지 않고 정보가져오기 가능)
+      },
+    ]
+  }
+}
+
+module.exports = nextConfig
+
+// ############ .env
+API_KEY="453c0ea4912bfd2992005c0b2daf7663"
+
+// ############ .gitignore  (.env의 정보를 업로드하지 않게 함)
+# API_KEY
+.env
+
+// ########### ###########################################################################################################
 
