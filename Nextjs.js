@@ -485,7 +485,7 @@ module.exports = {
   // ... 생략 ...
 };
 
-// ######## 헤더 with tailwind Css #############################################################################################################################
+// ######## Header with tailwind Css ########################################################################################################
 // ############ Header.tsx
 import React from "react";
 import Image from "next/image";
@@ -495,8 +495,8 @@ import LoggoutButton from './LoggoutButton';
 function Header() { // nextjs13에선 Header가 예약어로 되있어서 header라는 페이지가 만들어지지 않음
     const session = true;
 
-    if (session)
-      return (
+    if (session)  
+      return (  // 로그인하기전 헤더
         <header className="sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm">
           <div className="flex space-x-2">
             <Image
@@ -513,11 +513,11 @@ function Header() { // nextjs13에선 Header가 예약어로 되있어서 header
             </div>
           </div>
 
-          <LoggoutButton />
+          <LoggoutButton /> // 로그아웃 버튼
         </header>
       );
 
-  return (
+  return (  // 로그인후 헤더
     <header className="sticky top-0 z-50 bg-white flex justify-center items-center p-10 shadow-sm">
       <div className="flex flex-col items-center space-y-5">
         <div className="flex space-x-2 items-center">
@@ -539,7 +539,6 @@ function Header() { // nextjs13에선 Header가 예약어로 되있어서 header
     </header>
   );
 }
-
 export default Header;
 
 // ############ LoggoutButton.tsx
@@ -556,5 +555,191 @@ function LoggoutButton() {
 
 export default LoggoutButton;
 
+// ######## ChatInput 컴포넌트 with tailwind Css ########################################################################################################
+// ############ page.tsx
+import React from 'react'
+import MessageList from './MessageList';
+import ChatInput from './ChatInput';
 
-// ######## 헤더 with tailwind Css #############################################################################################################################
+function HomePage() {
+  return (
+    <div>
+        <MessageList />
+        <ChatInput />
+    </div>
+  )
+}
+export default HomePage
+
+// ############ MessageList.tsx
+import React from 'react'
+
+function MessageList() {   // 아직 완성되지 않음
+  return (  
+    <div>
+        <p>message</p> 
+        <p>message</p>
+        <p>message</p>
+    </div>
+  )
+}
+export default MessageList
+
+// ############ ChatInput.tsx
+'use client';   // 리액트 use를 사용하려면 적어둬야함
+import React, { useState } from "react";
+
+function ChatInput() {
+    const [input, setInput] = useState("");
+
+    const addMessage = (e:React.FormEvent<HTMLFormElement>) =>{   // 아직 완성되지 않음
+        e.preventDefault()
+        if(!input) return;
+
+        const messageToSend = input;  
+
+        setInput('');
+    }
+
+  return (
+    <form onSubmit={addMessage} className="fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t border-gray-100">
+      <input
+        type="text"
+        value={input}
+        onChange={e => setInput(e.target.value)}
+        placeholder="Enter message here..."
+        className="flex-1 rounded border border-gray-300 focus:outline-none focus:ring-2
+        focus:ring-blue-600 focus:border-transparent px-5 py-3 disabled:opacity-50disabled:cursor-not-allowed"
+      />
+      <button
+        type="submit"
+        disabled={!input}
+        className="bg-blue-500 hover:bg-blue-700 text-whtie font-bold py-2 px-4 rounded
+      disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        send
+      </button>
+    </form>
+  );
+}
+export default ChatInput;
+
+
+// ######## Upstash #############################################################################################################################
+// https://console.upstash.com/  // 사이트 참고
+// npm install ioredis
+
+// npm install uuid
+// npm i --save-dev @types/uuid
+
+// ############ redis.ts
+import Redis from 'ioredis';
+
+const redis = new Redis(process.env.REDIS_URL!)
+
+export default redis;
+
+// ############ .env
+REDIS_URL="redis://default:472fc2e8a5bf470dadf7f3dd282d63f8@global-main-goldfish-30669.upstash.io:30669"
+
+// ############ app/ChatInput.tsx
+"use client"; // 리액트 use를 사용하려면 적어둬야함
+import React, { useState } from "react";
+import { v4 as uuid } from "uuid";
+import { Message } from "../typings";
+
+function ChatInput() {
+  const [input, setInput] = useState("");
+
+  const addMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    // 아직 완성되지 않음
+    e.preventDefault();
+    if (!input) return;
+
+    const messageToSend = input;
+
+    setInput("");
+
+    const id = uuid();
+
+    const message: Message = {
+      // 타입은 typings.d.ts에 따로보관
+      id,
+      message: messageToSend,
+      created_at: Date.now(),
+      username: "John park",
+      profilePic:
+        "https://play-lh.googleusercontent.com/38AGKCqmbjZ9OuWx4YjssAz3Y0DTWbiM5HB0ove1pNBq_o9mtWfGszjZNxZdwt_vgHo=w240-h480-rw",
+      email: "abc@gmail.com",
+    };
+
+    const uploadMessageToUpstash = async () => {
+      const res = await fetch("/api/addMessage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+        }),
+      });
+
+      const data = await res.json();
+      console.log("msg added----------->", data); 
+    };
+
+    uploadMessageToUpstash();
+  };
+
+  return (
+// ... 생략 ...
+  );
+}
+
+export default ChatInput;
+
+// ############ typings.d.ts (타입들 보관)
+export type Message = {
+    id: string;
+    message: string;
+    created_at: number;
+    username: string;
+    profilePic: string;
+    email: string;
+};
+
+// ############ pages/api/addMessage.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+import redis from '../../redis';
+import { Message } from '../../typings';
+
+type Data = {
+    message: Message;
+}
+
+type ErrorData = {
+    body: string;
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data | ErrorData>
+) {
+    if(req.method !== 'POST'){
+        res.status(405).json({ body: 'Method Not Allowed' })
+        return;
+    }
+    const { message } = req.body;
+
+    const newMessge = {
+        ...message,
+        created_at: Date.now()  // 유저의 시간을 서버의 시간으로 교체
+    }
+
+    await redis.hset('messages', message.id, JSON.stringify(newMessge));
+
+  res.status(200).json({ message: newMessge })
+}
+
+// ######## Upstash #############################################################################################################################
+// ############ 
