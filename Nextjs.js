@@ -3,11 +3,12 @@
 
 // npx create-next-app@latest   // 자바스크립트용
 // npx create-next-app@latest --typescript    // 타입스크립트용
+// npx create-next-app -e with-tailwindcss  // tailwindcss용
+
 // code (app이름)   // vscode로 가게함
 // npm run dev
 
 // ########### 삭제할 것들 ##################################################################################################################################
-pages안에 폴더랑 파일들
 public안에 파일들
 
 // ########### 기본 라우팅 ########################################################################################################################################
@@ -421,3 +422,139 @@ function NotFound() {
 }
 export default NotFound
 
+
+
+// @@@@@@ Meta 메신저 (nextjs13, Tailwind, Typescript, Upstash, Redis, NextAuth) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// ############ next.config.js  (appDir:true설정 -> pages에 index, _app삭제 -> 서버 재시작)
+/** @type {import('next').NextConfig} */
+module.exports = {
+  reactStrictMode: true,
+  experimental:{
+    appDir: true, // app 폴더를 사용가능하게(nextjs13)
+  },
+};
+
+// ############ app/layout.tsx
+import '../styles/globals.css'  // globals.css에있는 TailwindCSS 전역 적용
+
+// ######## 이미지 컴포넌트 #####################################################################################################################################
+// ############ app/Header.tsx
+import React from 'react'
+import Image from 'next/image';
+
+function Header() { // nextjs13에선 Header가 예약어로 되있어서 header라는 페이지가 만들어지지 않음
+  return (
+    <header>
+      <div>
+        <div>
+            <Image
+             src='http://links.papareact.com/jne'
+             height={10}
+             width={50}
+             alt='Logo'
+             />
+        </div>
+      </div>
+    </header>
+  )
+}
+export default Header
+
+// ############ app/layout.tsx
+import Header from './Header';
+
+// ... 생략 ...
+return (
+    <html>
+      <head />
+      <body>
+        <Header />
+        {children}
+      </body>
+    </html>
+  );
+
+// ############ next.config.js
+/** @type {import('next').NextConfig} */
+module.exports = {
+  reactStrictMode: true,
+  images:{
+    domains: ['links.papareact.com'],   // 특정 도메인으로 이미지컴포넌트 사용가능 하게
+  },
+  // ... 생략 ...
+};
+
+// ######## 헤더 with tailwind Css #############################################################################################################################
+// ############ Header.tsx
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import LoggoutButton from './LoggoutButton';
+
+function Header() { // nextjs13에선 Header가 예약어로 되있어서 header라는 페이지가 만들어지지 않음
+    const session = true;
+
+    if (session)
+      return (
+        <header className="sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm">
+          <div className="flex space-x-2">
+            <Image
+              className="rounded-full mx-2 object-contain"
+              height={10}
+              width={50}
+              src="http://links.papareact.com/jne"
+              alt="Profile picture"
+            />
+
+            <div>
+              <p className="text-blue-400">Logged in as:</p>
+              <p className="font-bold text-lg">john</p>
+            </div>
+          </div>
+
+          <LoggoutButton />
+        </header>
+      );
+
+  return (
+    <header className="sticky top-0 z-50 bg-white flex justify-center items-center p-10 shadow-sm">
+      <div className="flex flex-col items-center space-y-5">
+        <div className="flex space-x-2 items-center">
+          <Image
+            src="http://links.papareact.com/jne"
+            height={10}
+            width={50}
+            alt="Logo"
+          />
+          <p className="text-blue-400">Welcome to Meta Messenger</p>
+        </div>
+        <Link
+          href="/auth/signin"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          sign in
+        </Link>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
+
+// ############ LoggoutButton.tsx
+import React from "react";
+
+function LoggoutButton() {
+  return (
+    <button
+     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      sign out
+    </button>
+  );
+}
+
+export default LoggoutButton;
+
+
+// ######## 헤더 with tailwind Css #############################################################################################################################
