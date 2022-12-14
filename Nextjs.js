@@ -795,7 +795,7 @@ export default async function handler(
   res.status(200).json({ messages })
 }
 
-// ######## 실시간 Pusher ############################################################################################################################
+// ######## 실시간 기능 Pusher ############################################################################################################################
 // https://dashboard.pusher.com/ (create App)
 
 // ######## pusher.ts  (Getting Started메뉴와 App Keys에 나와있는 정보를 이와같이 복사)
@@ -889,19 +889,15 @@ import MessageComponent from './MessageComponent';
 function MessageList() {
   // 메시지 데이터를 서버에서 받아오기
   const { data:messages, refetch } = useQuery<Message[]>("/api/getMessages", fetcher);
-  const { mutate } = useMutation(fetcher, {
-    onSuccess: () => {
-        refetch();
-    }
-  })
 
+  // 실시간으로 데이터 가져오기
   useEffect(()=>{
     const channel = clientPusher.subscribe('messages');
 
     channel.bind('new-message', async (data: Message) => {
       if(messages?.find((msg)=>msg.id === data.id)) return;
       if(!messages) return;
-        mutate()
+      refetch()
     })
   },[messages, clientPusher])
 
@@ -915,8 +911,6 @@ function MessageList() {
 }
 
 export default MessageList
-
-
 
 
 
