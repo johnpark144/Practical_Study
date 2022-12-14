@@ -625,7 +625,7 @@ function ChatInput() {
 export default ChatInput;
 
 
-// ######## Upstash #############################################################################################################################
+// ######## Upstash (Data GET, POST) #############################################################################################################################
 // https://console.upstash.com/  // 사이트 참고
 // npm install ioredis
 
@@ -642,28 +642,47 @@ export default redis;
 // ############ .env
 REDIS_URL="redis://default:472fc2e8a5bf470dadf7f3dd282d63f8@global-main-goldfish-30669.upstash.io:30669"
 
+// ############ utils/fetchMessages.ts
+import { Message } from "../typings";
+
+const fetcher = async () => {
+    const res = await fetch('/api/getMessages');
+    const data = await res.json();
+    const messages: Message[] = data.messages;
+
+    return messages;
+}
+
+export default fetcher;
+
 // ############ app/ChatInput.tsx
 "use client"; // 리액트 use를 사용하려면 적어둬야함
 import React, { useState } from "react";
 import { v4 as uuid } from "uuid";
 import { Message } from "../typings";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import fetcher from "../utils/fetchMessages";
 
 function ChatInput() {
   const [input, setInput] = useState("");
 
-  const addMessage = (e: React.FormEvent<HTMLFormElement>) => {
-    // 아직 완성되지 않음
+  // 메시지 데이터를 서버에서 받아오기
+  const {
+    data: Message,
+    isLoading,
+    isError,
+    error,
+  } = useQuery("/api/getMessages", fetcher);
+
+  // 메시지 데이터를 서버에 보내기
+  const addMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input) return;
-
     const messageToSend = input;
-
     setInput("");
-
     const id = uuid();
 
     const message: Message = {
-      // 타입은 typings.d.ts에 따로보관
       id,
       message: messageToSend,
       created_at: Date.now(),
@@ -685,10 +704,12 @@ function ChatInput() {
       });
 
       const data = await res.json();
-      console.log("msg added----------->", data); 
+      if(res.ok){
+        console.log('Message sent')
+      }
     };
 
-    uploadMessageToUpstash();
+    uploadMessageToUpstash()
   };
 
   return (
@@ -741,5 +762,36 @@ export default async function handler(
   res.status(200).json({ message: newMessge })
 }
 
-// ######## Upstash #############################################################################################################################
+// ############ pages/api/getMessages.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+import redis from '../../redis';
+import { Message } from '../../typings';
+
+type Data = {
+    messages: Message[];
+}
+
+type ErrorData = {
+    body: string;
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data | ErrorData>
+) {
+    if(req.method !== 'GET'){
+        res.status(405).json({ body: 'Method Not Allowed' })
+        return;
+    }
+    
+    const messagesRes = await redis.hvals('messages')
+    const messages: Message[] =
+        messagesRes.map((message) => JSON.parse(message)).sort((a, b) => b.created_at - a.created_at); // 오름차순
+
+
+
+  res.status(200).json({ messages })
+}
+
+// ####################################################################################################################################
 // ############ 
