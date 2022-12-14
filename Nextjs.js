@@ -891,15 +891,20 @@ function MessageList() {
   const { data:messages, refetch } = useQuery<Message[]>("/api/getMessages", fetcher);
 
   // 실시간으로 데이터 가져오기
-  useEffect(()=>{
-    const channel = clientPusher.subscribe('messages');
+  useEffect(() => {
+    const channel = clientPusher.subscribe("messages");
 
-    channel.bind('new-message', async (data: Message) => {
-      if(messages?.find((msg)=>msg.id === data.id)) return;
-      if(!messages) return;
-      refetch()
-    })
-  },[messages, clientPusher])
+    channel.bind("new-message", async (data: Message) => {
+      if (!messages) return;
+      if (messages?.find((msg) => msg.id === data.id)) return; // 트리거된 데이터의 id와 현재 데이터의 id가 중복되면
+      refetch();
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [messages, clientPusher]);
 
   return (
     <div className='space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto'>
