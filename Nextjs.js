@@ -792,12 +792,62 @@ export default async function handler(
     const messages: Message[] =
         messagesRes.map((message) => JSON.parse(message)).sort((a, b) => b.created_at - a.created_at); // 오름차순
 
-
-
   res.status(200).json({ messages })
 }
 
-// ####################################################################################################################################
+// ######## 실시간 Pusher ############################################################################################################################
+// npm install swr
+
+// ######## MessageList.tsx(swr로 구현하기)
+// "use client"; // 리액트 use를 사용하려면 적어둬야함
+// import React, { useEffect } from "react";
+// import useSWR from "swr";
+// import { clientPusher } from "../pusher";
+// import { Message } from "../typings";
+// import fetcher from "../utils/fetchMessages";
+// import MessageComponent from "./MessageComponent";
+
+// function MessageList() {
+//   // useSWR로 메시지 데이터를 서버에서 받아오기
+//   const { data: messages, mutate } = useSWR<Message[]>(
+//     "/api/getMessages",
+//     fetcher
+//   );
+
+//   useEffect(() => {
+//     const channel = clientPusher.subscribe("messages");
+
+//     channel.bind("new-message", async (data: Message) => {
+//       if (messages?.find((msg) => msg.id === data.id)) return;
+//       if (!messages) {
+//         mutate(fetcher);
+//       } else {
+//         mutate(fetcher, {
+//           optimisticData: [data, ...messages!],
+//           rollbackOnError: true,
+//         });
+//       }
+//     });
+
+//     return () => {
+//       channel.unbind_all();
+//       channel.unsubscribe();
+//     };
+//   }, [messages, mutate, clientPusher]);
+
+//   return (
+//     <div className="space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto">
+//       {messages?.map((msg) => (
+//         <MessageComponent key={msg.id} msg={msg} />
+//       ))}
+//     </div>
+//   );
+// }
+
+// export default MessageList;
+
+// ######## MessageList.tsx(reactquery로 구현하기)
+
 
 
 
