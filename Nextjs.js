@@ -987,8 +987,83 @@ function Loading() {
 
 export default Loading;
 
-// ######## NextAuth ###################################################################################################################
-// ######## loading.tsx
+// ######## NextAuth (Facebook 아이디) ##########################################################################################################################
+// https://next-auth.js.org/
+// npm install next-auth
+
+// ######## pages/api/auth/[...nextauth].tsx
+import NextAuth from "next-auth"
+import FacebookProvider from "next-auth/providers/facebook"
+
+export const authOptions = {
+  // Configure one or more authentication providers
+  providers: [
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID!,  // https://developers.facebook.com/apps에서 받아서 .env에 보관
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+    }),
+    // ...add more providers here
+  ],
+  secret: process.env.NEXTAUTH_SECRET!,
+  pages: {
+    signIn: '/auth/signin'
+  },
+}
+export default NextAuth(authOptions)
+
+// ######## app/auth/signin/page.tsx
+import { getProviders } from "next-auth/react";
+import Image from 'next/image';
+import SignInComponent from './SignInComponent';
+
+async function SignInPage() {
+  const providers = await getProviders();
+
+  return (
+    <div className="grid justify-center">
+      <div>
+        <Image className="rounded-full mx-2 object-cover" width={700} height={700} src="https://links.papareact.com/161" alt="Profile Picture" />
+      </div>
+
+      <SignInComponent providers={providers} />
+    </div>
+  );
+}
+
+export default SignInPage;
+
+
+// ######## app/auth/signin/SignInComponent.tsx
+'use client'
+import { getProviders } from "next-auth/react";
+import { signIn } from "next-auth/react"
+
+type Props = {
+    providers: Awaited<ReturnType<typeof getProviders>>;
+}
+
+function SignInComponent({ providers }: Props) {
+  return (
+    <div className="flex justify-center">
+      {Object.values(providers!).map((provider) => (
+        <div key={provider.name}>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded "
+            onClick={()=> signIn(provider.id, {
+                callbackUrl: process.env.VERCEL_URL || 'http://localhost:3000',
+            })}>
+                sign in with {provider.name}
+            </button>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default SignInComponent
+
+// ######## 로그인 세션 #############################################################################################################################
+// ######## app/auth/signin/page.tsx
+
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 그외에 쓸만한 것들 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
