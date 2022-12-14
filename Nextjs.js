@@ -917,6 +917,45 @@ function MessageList() {
 
 export default MessageList
 
+// ######## 서버사이드 렌더링 (SSR) ##########################################################################################################################
+// ######## page.tsx
+import React from 'react'
+import MessageList from './MessageList';
+import ChatInput from './ChatInput';
+import { Message } from '../typings';
+
+async function HomePage() {;
+  const data = await fetch(`${process.env.VERCEL_URL || 'http://localhost:3000'}/api/getMessages`).then((res) => res.json()) // 그냥 SSR됨
+  const messages: Message[] = data.messages;
+
+  return (
+    <div>
+        <MessageList initialMsg={messages} />
+        <ChatInput />
+    </div>
+  )
+}
+
+export default HomePage
+
+
+// ######## MessageList.tsx
+// ... 생략 ...
+type Props = {
+  initialMsg: Message[];
+}
+
+function MessageList({ initialMsg }: Props) {
+// ... 생략 ...
+return (
+    <div className="space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto">
+      {(messages || initialMsg).map((msg) => (
+        <MessageComponent key={msg.id} msg={msg} />
+      ))}
+    </div>
+  );
+
+// ######## 서버사이드 렌더링 (SSR) ##########################################################################################################################
 
 
 
