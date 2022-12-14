@@ -796,9 +796,40 @@ export default async function handler(
 }
 
 // ######## 실시간 Pusher ############################################################################################################################
-// npm install swr
+// https://dashboard.pusher.com/ (create App)
 
-// ######## MessageList.tsx(swr로 구현하기)
+// ######## pusher.ts  (Getting Started메뉴와 App Keys에 나와있는 정보를 이와같이 복사)
+import Pusher from "pusher";
+import ClientPusher from "pusher-js";
+
+export const serverPusher = new Pusher({  // 백엔드
+  appId: "1524994",
+  key: process.env.CLIENT_ID!,
+  secret: process.env.SERVER_SECRET!,
+  cluster: "us2",
+  useTLS: true,
+});
+
+export const clientPusher = new ClientPusher('218a5df1343502f27233', {  // 프론트엔드
+  cluster: "us2",
+  forceTLS: true,
+});
+
+// ######## .env
+REDIS_URL="redis://default:472fc2e8a5bf470dadf7f3dd282d63f8@global-main-goldfish-30669.upstash.io:30669"
+CLIENT_ID="218a5df1343502f27233"
+SERVER_SECRET="7fc77533a3747a9ecaca"
+
+// ######## addMessage.ts
+import { serverPusher } from '../../pusher';
+
+// ... 생략 ...
+  await redis.hset('messages', message.id, JSON.stringify(newMessge));
+  serverPusher.trigger('messages', 'new-message', newMessge)  // Channel, Event, Content (데이터 보낼때 Pusher에도 realtime위해서 전해줌)
+ res.status(200).json({ message: newMessge })
+}
+
+// ######## MessageList.tsx // 방법1) (swr로 구현하기) // npm install swr
 // "use client"; // 리액트 use를 사용하려면 적어둬야함
 // import React, { useEffect } from "react";
 // import useSWR from "swr";
@@ -846,7 +877,44 @@ export default async function handler(
 
 // export default MessageList;
 
-// ######## MessageList.tsx(reactquery로 구현하기)
+// ######## MessageList.tsx // 방법2) (reactquery로 구현하기)
+"use client"; // 리액트 use를 사용하려면 적어둬야함
+import React, { useEffect } from 'react'
+import { useQuery, useMutation } from 'react-query';
+import { clientPusher } from '../pusher';
+import { Message } from '../typings';
+import fetcher from '../utils/fetchMessages';
+import MessageComponent from './MessageComponent';
+
+function MessageList() {
+  // 메시지 데이터를 서버에서 받아오기
+  const { data:messages, refetch } = useQuery<Message[]>("/api/getMessages", fetcher);
+  const { mutate } = useMutation(fetcher, {
+    onSuccess: () => {
+        refetch();
+    }
+  })
+
+  useEffect(()=>{
+    const channel = clientPusher.subscribe('messages');
+
+    channel.bind('new-message', async (data: Message) => {
+      if(messages?.find((msg)=>msg.id === data.id)) return;
+      if(!messages) return;
+        mutate()
+    })
+  },[messages, clientPusher])
+
+  return (
+    <div className='space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto'>
+        {messages?.map(msg=>(
+          <MessageComponent key={msg.id} msg={msg} />
+        ))}
+    </div>
+  )
+}
+
+export default MessageList
 
 
 
