@@ -1062,8 +1062,25 @@ function SignInComponent({ providers }: Props) {
 export default SignInComponent
 
 // ######## 로그인 세션 #############################################################################################################################
-// ######## app/auth/signin/page.tsx
+// ######## app/providers.tsx
+"use client";
+import { SessionProvider } from "next-auth/react";
 
+export function Providers({ session, children }: any) {
+  return <SessionProvider session={session}>{children}</SessionProvider>;
+}
+
+export default Providers;
+
+// ######## app/layout.tsx
+import Providers from "./providers";
+import { unstable_getServerSession } from 'next-auth/next';
+// ... 생략 ...
+const session = await unstable_getServerSession();
+// ... 생략 ...
+  <Providers session={session}>
+    {children}
+  </Providers>
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 그외에 쓸만한 것들 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
