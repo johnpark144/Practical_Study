@@ -673,6 +673,7 @@ function ChatInput() {
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery("/api/getMessages", fetcher);
 
   // 메시지 데이터를 서버에 보내기
@@ -693,27 +694,29 @@ function ChatInput() {
       email: "abc@gmail.com",
     };
 
-    const uploadMessageToUpstash = async () => {
-      const res = await fetch("/api/addMessage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message,
-        }),
-      });
+    const res = await fetch("/api/addMessage", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        message,
+    }),
+    });
 
-      const data = await res.json();
-      if(res.ok){
-        console.log('Message sent')
-      }
-    };
-
-    uploadMessageToUpstash()
   };
 
+  const { mutate } = useMutation(addMessage, {
+    onSuccess: (data) => {
+        refetch();
+    }
+  })
+  
   return (
+    <form
+      onSubmit={(e) => mutate(e)}
+      className="fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t border-gray-100"
+    >
 // ... 생략 ...
   );
 }
