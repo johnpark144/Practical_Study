@@ -1149,6 +1149,26 @@ async function Header() {
     const session = await unstable_getServerSession();
 // ... 생략 ...
 
+
+// ######## app/MessageComponent.tsx
+// parant 컴포넌트가 "use client"여서 안적어도됨
+import Image from "next/image";
+import { Message } from "../typings";
+import { useSession } from "next-auth/react"
+
+type Prop = {
+  msg: Message;
+};
+
+function MessageComponent({ msg }: Prop) {
+  const {data : session} = useSession();  // 클라이언트 사이드 세션가져오기
+  const isUser = session?.user?.email === msg.email;
+// ... 생략 ...
+
+// ######## 
+
+
+
 // ########  #############################################################################################################################
 // ######## 
 
