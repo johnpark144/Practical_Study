@@ -3,7 +3,8 @@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // npx create-next-app@latest   // 자바스크립트용
 // npx create-next-app@latest --typescript    // 타입스크립트용
-// npx create-next-app -e with-tailwindcss  // tailwindcss용
+
+// npx create-next-app -e with-tailwindcss  // 자바스크립트 + tailwindcss용
 
 // code (app이름)   // vscode로 가게함
 // npm run dev
