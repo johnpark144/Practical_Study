@@ -995,7 +995,6 @@ import NextAuth from "next-auth"
 import FacebookProvider from "next-auth/providers/facebook"
 
 export const authOptions = {
-  // Configure one or more authentication providers
   providers: [
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,  // https://developers.facebook.com/apps에서 받아서 .env에 보관
@@ -1060,26 +1059,101 @@ function SignInComponent({ providers }: Props) {
 
 export default SignInComponent
 
-// ######## 로그인 세션 #############################################################################################################################
+// ######## 로그인 세션 및 로그아웃 #############################################################################################################################
 // ######## app/providers.tsx
 "use client";
 import { SessionProvider } from "next-auth/react";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 export function Providers({ session, children }: any) {
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+  return (
+    <SessionProvider session={session}>
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    </SessionProvider>
+  );
 }
 
-export default Providers;
+// ######## app/page.tsx
+import { Message } from "../typings";
+import ChatInput from "./ChatInput";
+import MessageList from "./MessageList";
+import { unstable_getServerSession } from "next-auth/next";
+import { Providers } from "./providers";
+
+async function HomePage() {
+  const data = await fetch(
+    `${process.env.VERCEL_URL || "http://localhost:3000"}/api/getMessages`
+  ).then((res) => res.json()); // 그냥 SSR됨
+  const messages: Message[] = data.messages;
+  const session = await unstable_getServerSession();
+
+  return (
+    <Providers session={session}>
+        <main>
+          <MessageList initialMsg={messages} />
+          <ChatInput session={session} />
+        </main>
+    </Providers>
+  );
+}
+
+export default HomePage;
+
 
 // ######## app/layout.tsx
-import Providers from "./providers";
-import { unstable_getServerSession } from 'next-auth/next';
+import "../styles/globals.css";
+import Header from "./Header";
+
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html>
+      <head />
+      <body>
+        <Header />
+        {children}
+      </body>
+    </html>
+  );
+}
+
+// ######## app/LoggoutButton.tsx
+"use client";
+import { signOut } from "next-auth/react";
+
+function LoggoutButton() {
+  return (
+    <button
+      onClick={() => signOut()}
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    >
+      sign out
+    </button>
+  );
+}
+
+export default LoggoutButton;
+
+// ######## app/Header.tsx
 // ... 생략 ...
-const session = await unstable_getServerSession();
+import { unstable_getServerSession } from 'next-auth';
+
+async function Header() {
+    const session = await unstable_getServerSession();
 // ... 생략 ...
-  <Providers session={session}>
-    {children}
-  </Providers>
+
+// ########  #############################################################################################################################
+// ######## 
+
+
+
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 그외에 쓸만한 것들 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
