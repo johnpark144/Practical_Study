@@ -440,7 +440,6 @@ import '../styles/globals.css'  // globals.css에있는 TailwindCSS 전역 적�
 
 // ######## 이미지 컴포넌트 ##################################################################################################################################
 // ############ app/Header.tsx
-import React from 'react'
 import Image from 'next/image';
 
 function Header() { // nextjs13에선 Header가 예약어로 되있어서 header라는 페이지가 만들어지지 않음
@@ -487,7 +486,6 @@ module.exports = {
 
 // ######## Header with tailwind Css ######################################################################################################################
 // ############ Header.tsx
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LoggoutButton from './LoggoutButton';
@@ -1142,7 +1140,6 @@ function LoggoutButton() {
 export default LoggoutButton;
 
 // ######## app/Header.tsx
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LoggoutButton from './LoggoutButton';
