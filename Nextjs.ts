@@ -426,7 +426,9 @@ export default NotFound
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ Meta 메신저 (nextjs13, Tailwind, Typescript, Upstash, Redis, NextAuth) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// ############ next.config.js  (app폴더 생성 -> appDir:true설정 -> pages에 index, _app삭제 -> 서버 재시작)
+// app폴더를 생성 // (Layout, Page, Loading, Error, Template, Head, Not Found) 프레임워크 예약어
+
+// ############ next.config.js  (appDir:true설정 -> pages에 index, _app삭제 -> 서버 재시작)
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
