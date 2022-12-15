@@ -614,7 +614,7 @@ function ChatInput() {
       <button
         type="submit"
         disabled={!input}
-        className="bg-blue-500 hover:bg-blue-700 text-whtie font-bold py-2 px-4 rounded
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
       disabled:opacity-50 disabled:cursor-not-allowed"
       >
         send
