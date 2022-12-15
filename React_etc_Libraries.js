@@ -1,5 +1,5 @@
 
-// ######## React-icons #################################################################################################################
+// ######## React-icons (머티리얼아이콘이나 폰트어썸처럼 여러 아이콘들사용) ######################################################################################
 // https://react-icons.github.io/react-icons/
 // npm install react-icons --save
 
@@ -19,7 +19,7 @@ import { MdDone } from 'react-icons/md';
   <TimeAgo date={new Date(msg.created_at)} />   {/* // 참고로 msg.created_at = Date.now() // 기존 시간 나타날때는 new Date(msg.created_at).toLocaleString() */}  
 // ... 생략 ...
 
-// ######## React-beautiful-dnd #################################################################################################################
+// ######## React-beautiful-dnd (박스 끌어다놓기) ###########################################################################################################
 // https://www.npmjs.com/package/react-beautiful-dnd
 // npm i react-beautiful-dnd
 // npm i @types/react-beautiful-dnd
