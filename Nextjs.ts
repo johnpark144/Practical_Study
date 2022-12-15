@@ -496,7 +496,7 @@ function Header() { // nextjs13에선 Header가 예약어로 되있어서 header
     const session = true;
 
     if (session)  
-      return (  // 로그인하기전 헤더
+      return (  // 로그인후 헤더
         <header className="sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm">
           <div className="flex space-x-2">
             <Image
@@ -517,7 +517,7 @@ function Header() { // nextjs13에선 Header가 예약어로 되있어서 header
         </header>
       );
 
-  return (  // 로그인후 헤더
+  return (   // 로그인하기전 헤더
     <header className="sticky top-0 z-50 bg-white flex justify-center items-center p-10 shadow-sm">
       <div className="flex flex-col items-center space-y-5">
         <div className="flex space-x-2 items-center">
