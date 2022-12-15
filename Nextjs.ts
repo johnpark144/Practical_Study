@@ -1142,11 +1142,36 @@ function LoggoutButton() {
 export default LoggoutButton;
 
 // ######## app/Header.tsx
-// ... 생략 ...
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import LoggoutButton from './LoggoutButton';
 import { unstable_getServerSession } from 'next-auth';
 
-async function Header() {
+async function Header() { // nextjs13에선 Header가 예약어로 되있어서 Header라는 페이지가 만들어지지 않음
     const session = await unstable_getServerSession();
+
+    if (session)
+      return (  // 로그인후 헤더
+        <header className="sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm">
+          <div className="flex space-x-2">
+            <Image
+              className="rounded-full mx-2 object-contain"
+              height={10}
+              width={50}
+              src={session.user?.image!}  // 로그인한 유저의 페북이미지
+              alt="Profile picture"
+            />
+
+            <div>
+              <p className="text-blue-400">Logged in as:</p>
+              <p className="font-bold text-lg">{session.user?.name}</p> {/* 로그인한 유저의 페북 유저이름 */}
+            </div>
+          </div>
+
+          <LoggoutButton />
+        </header>
+      );
 // ... 생략 ...
 
 
@@ -1165,15 +1190,39 @@ function MessageComponent({ msg }: Prop) {
   const isUser = session?.user?.email === msg.email;
 // ... 생략 ...
 
-// ######## 
+// ######## app/ChatInput.tsx
+// ... 생략 ...
+// 메시지 데이터를 서버에 보내기
+  const addMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!input || !session) return;
+    const messageToSend = input;
+    setInput("");
+    const id = uuid();
 
+    const message: Message = {
+      id,
+      message: messageToSend,
+      created_at: Date.now(),
+      username: session?.user?.name!,
+      profilePic: session?.user?.image!,
+      email: session?.user?.email!,
+    };
+// ... 생략 ...
 
+// ######## react-timeago (몇초전, 몇분전) ###################################################################################################################
+// npm install react-timeago
+// npm i --save-dev @types/react-timeago (타입스크립트)
 
-// ########  #############################################################################################################################
-// ######## 
+// ######## MessageComponent.tsx  ({new Date(msg.created_at).toLocaleString()} 이부분을 대체함)
+// ... 생략 ...
+  <TimeAgo date={new Date(msg.created_at)} />
+// ... 생략 ...
 
-
-
+// ######## 미들웨어 (로그인 안되있으면 로그인페이지로 이동시키기)#################################################################################################
+// ######## middleware.ts
+export { default } from "next-auth/middleware";
+export const config = { matcher: ["/"] };  // 로그인 안된상태에서 '/'페이지로 갔을때 [...nextauth]에 지정해둔 페이지로감
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 그외에 쓸만한 것들 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
