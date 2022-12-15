@@ -1,3 +1,4 @@
+
 // ######## React-icons #################################################################################################################
 // https://react-icons.github.io/react-icons/
 // npm install react-icons --save
@@ -8,6 +9,15 @@ import { MdDone } from 'react-icons/md';
 <AiFillEdit /> // React-icons 사이트에서 복사한 컴포넌트
 <AiFillDelete />
 <MdDone />
+  
+// ######## react-timeago (몇초전, 몇분전) ###################################################################################################################
+// npm install react-timeago
+// npm i --save-dev @types/react-timeago (타입스크립트)
+
+// ######## MessageComponent.tsx  ({new Date(msg.created_at).toLocaleString()} 이부분을 대체함)
+// ... 생략 ...
+  <TimeAgo date={new Date(msg.created_at)} />   {/* // 참고로 msg.created_at = Date.now() // 기존 시간 나타날때는 new Date(msg.created_at).toLocaleString() */}  
+// ... 생략 ...
 
 // ######## React-beautiful-dnd #################################################################################################################
 // https://www.npmjs.com/package/react-beautiful-dnd
