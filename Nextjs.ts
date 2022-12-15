@@ -426,7 +426,7 @@ export default NotFound
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ Meta 메신저 (nextjs13, Tailwind, Typescript, Upstash, Redis, NextAuth) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// app폴더를 생성 // (Layout, Page, Loading, Error, Template, Head, Not Found) 프레임워크 예약어
+// app폴더를 생성 // (layout, head, page, Loading, Error, Template, Not Found) 프레임워크 파일 예약어
 
 // ############ next.config.js  (appDir:true설정 -> pages에 index, _app삭제 -> 서버 재시작)
 /** @type {import('next').NextConfig} */
@@ -436,6 +436,9 @@ module.exports = {
     appDir: true, // app 폴더를 사용가능하게(nextjs13)
   },
 };
+
+// ############ app/page.tsx (page페이지 생성하면 head, layout 자동생성)
+// rfce
 
 // ############ app/layout.tsx
 import '../styles/globals.css'  // globals.css에있는 TailwindCSS 전역 적용
