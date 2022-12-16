@@ -7,7 +7,11 @@
 // npx create-next-app -e with-tailwindcss  // 자바스크립트 + tailwindcss용
 
 // code (app이름)   // vscode로 가게함
-// npm run dev
+
+// npm run dev  // 서버사이드 렌더만
+
+// nup run build // ssg테스트는 build한 뒤에 start로 확인 가능
+// nup run start
 
 // ########### 삭제할 것들 ##################################################################################################################################
 public안에 파일들
