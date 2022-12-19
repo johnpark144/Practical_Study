@@ -353,12 +353,28 @@ function Loading() {
 export default Loading
 
 // ########### 번외) Suspense fallback 로딩 ###########################################################################################################
+import React, { Suspense } from "react";
+import TodosList from './(user)/todos/TodosList';
+
 <Suspense fallback={<p>Loading the Todos</p>}> // TodosList가 보일때까지 fallback을 렌더링
   {/* @ts-ignore */}
   <TodosList />
 </Suspense>
 
 // ########### 번외) 폰트 ###########################################################################################################
+// npm i @next/font // nextjs 폰트 설치
+
+// ########### layout.tsx
+// ... 생략 ...
+import { Roboto } from '@next/font/google'; // 글꼴 종류별로 변경 가능
+
+const roboto = Roboto({
+  subsets: ['latin'],  
+  weight: ['400', '700']   // 글꼴옵션 (구글아이콘 참고)
+})
+// ... 생략 ...
+<html className={roboto.className}> {/* 글꼴 전체 지정 */}
+// ... 생략 ...
 
 // ########### 번외) 미들웨어업데이트 ###########################################################################################################
 
