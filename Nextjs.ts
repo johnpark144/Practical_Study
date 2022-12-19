@@ -361,7 +361,7 @@ import TodosList from './(user)/todos/TodosList';
   <TodosList />
 </Suspense>
 
-// ########### 번외) 폰트 ###########################################################################################################
+// ########### 번외) 폰트 ##############################################################################################################################
 // npm i @next/font // nextjs 폰트 설치
 
 // ########### layout.tsx
@@ -376,7 +376,23 @@ const roboto = Roboto({
 <html className={roboto.className}> {/* 글꼴 전체 지정 */}
 // ... 생략 ...
 
-// ########### 번외) 미들웨어업데이트 ###########################################################################################################
+// ########### 번외) 미들웨어 ################################################################################################################################
+// https://nextjs.org/docs/advanced-features/middleware  참고
+// middleware.ts(또는 .js) 파일을 src디렉토리와 같은 루트 에 생성
+// ########### middleware.ts (예시)
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'// 타입스크립트 전용
+
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith('/about')) {
+    return NextResponse.rewrite(new URL('/about-2', request.url))
+  }
+
+// matcher에 특정 경로에서 실행되도록 미들웨어를 필터링함
+export const config = {
+  matcher: '/about/:path*',
+}
 
 // ########### 번외) 터포팩 ###########################################################################################################
 
