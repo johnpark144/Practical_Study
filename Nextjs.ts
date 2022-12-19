@@ -320,18 +320,6 @@ async function SearchResults({ params: { searchTerm } }: PageProps) {
 }
 
 export default SearchResults;
-// ########### loading.tsx
-import React from 'react'
-
-function Loading() {
-  return (
-    <div>
-      Loading SearchResults
-    </div>
-  )
-}
-
-export default Loading
 
 // ########### error.tsx (docs 에있는 예시)
 'use client';
@@ -352,6 +340,26 @@ export default function Error({ error, reset }: {
     </div>
   );
 }
+
+// ########### loading.tsx
+import React from 'react'
+
+function Loading() {
+  return (
+    <div>
+      Loading SearchResults
+    </div>
+  )
+}
+
+export default Loading
+
+// ########### 번외) Suspense fallback 로딩 ###########################################################################################################
+<Suspense fallback={<p>Loading the Todos</p>}> // TodosList가 보일때까지 fallback을 보임
+  {/* @ts-ignore */}
+  <TodosList />
+</Suspense>
+
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 영화 정보 사이트 (노마드 코더 nextjs12) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
