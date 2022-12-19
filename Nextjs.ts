@@ -1,6 +1,4 @@
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// @@@@@@ 영화 정보 사이트 (노마드 코더 nextjs12) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 // npx create-next-app@latest   // 자바스크립트용
 // npx create-next-app@latest --typescript    // 타입스크립트용
 
@@ -9,30 +7,271 @@
 
 // code (app이름)   // vscode로 가게함
 
-// npm run dev  // 서버사이드 렌더만
+// npm run dev  // 개발자모드 (서버사이드 렌더만)
 
 // nup run build // ssg테스트는 build한 뒤에 start로 확인 가능
 // nup run start
 
-// ########### CSS (기존 리액트 .module.css 방법도 잘통함) ##############################################################################################
-// vscode-styled-components 익스텐션 필요
-// ext install vscode-styled-components
+이미지, 폰트, 미들웨어업데이트, 터포팩
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@ 투두리스트API, 구글서치API (nextjs12) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// ############ 기본 세팅 ###################################################################################################################################
+// app폴더를 생성 // (layout, head, page, loading, not-found, Error, Template) 프레임워크 파일 예약어
 
-// ############ NavBar.js
+// ############ next.config.js  (appDir:true설정 -> pages에 index, _app삭제 -> 서버 재시작)
+/** @type {import('next').NextConfig} */
+module.exports = {
+  reactStrictMode: true,
+  experimental:{
+    appDir: true, // app 폴더를 사용가능하게(nextjs13)
+  },
+};
+
+// ############ app/page.tsx (page페이지 생성하면 head, layout 자동생성)
+// rfce
+
+// ############ app/layout.tsx
+import '../styles/globals.css'  // globals.css에있는 TailwindCSS 전역 적용
+import Header from "./Header";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <html>
+        <head />
+        <body>
+          <Header />
+          {children}
+        </body>
+      </html>
+      
+    </>
+  );
+}
+
+// ############ app/Header.tsx
+import React from 'react'
+import Link from 'next/link';
+
+function Header() {
+  return (
+    <div className='p-5 bg-blue-500'>
+      <Link href='/' className='px-2 py-1 mx-1 bg-white text-blue-500 rounded-lg'>Home</Link>
+      <Link href='/todos' className='px-2 py-1 mx-1 bg-white text-blue-500 rounded-lg'>Todos</Link>
+      <Link href='/search' className='px-2 py-1 mx-1 bg-white text-blue-500 rounded-lg'>Search</Link>
+    </div>
+  )
+}
+
+export default Header
+
+// ############ 라우팅 및 컴포넌트 ##############################################################################################################################
+// ############ app/todos/page.tsx
+import React from 'react'
+
+function Todos() {
+  return (
+    <div>
+        <h1>This is where the Todos will be listed...</h1>
+    </div>
+  )
+}
+
+export default Todos
+
+// ############ app/todos/layout.tsx
+import TodosList from './TodosList'
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <main className='flex'>
+        <div>
+        {/* @ts-ignore */}  {/* 타입스크립트 에러무시 주석 */}
+        <TodosList />
+        </div>
+        <div className='flex-1'>{children}</div>
+    </main>
+  );
+}
+
+// ############ app/todos/TodosList.tsx
+import React from "react";
+import Link from "next/link";
+import { Todo } from "../../../typings";
+
+const fetchTodos = async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos/");
+  const todos: Todo[] = await res.json();
+  return todos;
+};
+
+async function TodosList() {
+  const todos = await fetchTodos();
+
+  return <>
+    {todos.map((todo)=>(
+        <p key={todo.id}>
+            <Link href={`/todos/${todo.id}`}>Todo:{todo.id}</Link> 
+        </p>
+    ))}
+  </>;
+}
+
+export default TodosList;
+// ############ typings.d.ts
+export type Todo = {
+    userId: number;
+    id: number;
+    title: string;
+    completed: boolean;
+};
+
+// ##### 다이나믹 라우팅과 params // NotFound // 서버사이드렌더링(SSR), Static Site Generator(SSG), Incremental Static Regeneration(ISR) ##############################
+// ############ app/todos/[todoId]/page.tsx
+import React from "react";
+import { notFound } from "next/navigation"
+import { Todo } from "../../../../typings";
+
+type PageProps = {
+  params: {
+    todoId: string;
+  };
+};
+
+const fetchTodo = async (todoId: string) => {
+  const res = await fetch(
+    `https://jsonplaceholder.typicode.com/todos/${todoId}`,
+    { next: { revalidate: 60 } }
+  ); // SSR은 { cache: "no-cache" }, SSG는 { cache: "force-cache" }, ISR은 { next: { revalidate: 60 } } 숫자는 시간(초)
+  const todo: Todo = await res.json();
+  return todo;
+};
+
+async function TodoPage({ params: { todoId } }: PageProps) {
+  const todo = await fetchTodo(todoId);
+
+  if (!todo.id) return notFound() // id가 없는 부분은 notfound에러
+
+  return (
+    <div className="p-10 bg-yellow-200 border-2 m-2 shadow-lg">
+      <p>
+        #{todo.id}:{todo.title}
+      </p>
+      <p>complete: {todo.completed ? "Yes" : "No"}</p>
+
+      <p className="border-t border-black mt-5 text-right">
+        By User: {todo.userId}
+      </p>
+    </div>
+  );
+}
+
+export default TodoPage;
+
+// SSG나 ISR를 사용하는경우 todoId 캐시를 미리 생성하기위해 만들어놈 (nup run build 해야함) // SSR은 사용자가 접속했을때 캐시저장
+export async function generateStaticParams() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos/");
+  const todos: Todo[] = await res.json();
+
+  const trimmedTodos = todos.splice(0, 10); // api 리퀘스트 제한 떄문에 10번만 시범으로 
+
+  return trimmedTodos.map(todo => ({
+    todoId : todo.id.toString(),  // 무조건 숫자는 string으로 바꿔줘야함
+  }))
+}
+
+// ############ app/todos/[todoId]/not-found.tsx
+import React from 'react'
+
+function NotFound() {
+  return (
+    <div>
+      404 NotFound
+    </div>
+  )
+}
+
+export default NotFound
+
+// ########### 클라이언트 사이드 렌더링 (CSR) #####################################################################################################################
+// ############ app/search/layout.tsx
+'use client' // CSR 사용선언 (layout에 선언하면 그밑에 다 적용됨)
+import Search from "./Search";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <main className="flex space-x-4 divide-x-2 p-5">
+      <div className="search">
+        <h1>Search</h1>
+      </div>
+      <div className="flex-1 pl-5">
+        <Search />
+
+        <div>{children}</div>
+      </div>
+
+      <style jsx>{`
+        .search {
+          color: blue;
+        }
+      `}</style>
+    </main>
+  );
+}
+// ############ app/search/page.tsx
 // ... 생략 ...
-return 
-  <style jsx>{`
-  nav {
-      background-color: tomato;
-  }
-  span{
-      text-decoration:none
-  }
-  .active{
-      color: blue;
-  }
-`}</style>
+]
+// ############ app/search/Search.tsx
+import { useRouter } from 'next/navigation';
+import React, { FormEvent, useState } from 'react';
 
+function Search() {
+    const [search, setSearch] = useState('');
+    const router = useRouter();
+
+    const handleSearch = async (e:FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setSearch('');
+        router.push(`/search/${search}`);
+    };
+
+    return(
+        <form onSubmit={handleSearch}>
+            <input
+            type='text'
+            value={search}
+            placeholder="Enter the Search term"
+            onChange={(e)=>setSearch(e.target.value)}
+            />
+            <button type='submit' className='bg-blue-500 text-white font-bold py-2 px-4 rounded-lg btn'>
+                Search
+            </button>
+        </form>
+    )
+}
+
+export default Search
+
+// ########### #####################################################################################################################
+
+
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@ 영화 정보 사이트 (노마드 코더 nextjs12) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 // ########### Redirect and Rewrite (API_KEY숨기기) ###########################################################################################################
 // ############ next.config.js  (변경시마다 서버재시작 해줘야함)
@@ -158,26 +397,9 @@ export async function getServerSideProps({ query:{params} }){ // 백엔드 (getS
 
 export default Detail;
 
-
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ Meta 메신저 (nextjs13, Tailwind, Typescript, Upstash, Redis, NextAuth) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// app폴더를 생성 // (layout, head, page, Loading, not-found, Error, Template) 프레임워크 파일 예약어
-
-// ############ next.config.js  (appDir:true설정 -> pages에 index, _app삭제 -> 서버 재시작)
-/** @type {import('next').NextConfig} */
-module.exports = {
-  reactStrictMode: true,
-  experimental:{
-    appDir: true, // app 폴더를 사용가능하게(nextjs13)
-  },
-};
-
-// ############ app/page.tsx (page페이지 생성하면 head, layout 자동생성)
-// rfce
-
-// ############ app/layout.tsx
-import '../styles/globals.css'  // globals.css에있는 TailwindCSS 전역 적용
 
 // ######## 이미지 컴포넌트 ##################################################################################################################################
 // ############ app/Header.tsx
