@@ -12,8 +12,8 @@
 
 // npm run dev  // 개발자모드 (서버사이드 렌더만)
 
-// nup run build // ssg테스트는 build한 뒤에 start로 확인 가능
-// nup run start
+// npm run build // ssg테스트는 build한 뒤에 start로 확인 가능
+// npm run start
 
 // next dev --turbo // 터보팩 서버
 
