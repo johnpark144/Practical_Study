@@ -5,12 +5,17 @@
 // npx create-next-app -e with-tailwindcss  // 자바스크립트 + tailwindcss용
 // npx create-next-app styled-components-ex // 자바스크립트 + styled-components용
 
+// npx create-next-app --example with-turbopack // 터보팩
+// npx create-next-app@latest --example with-turbopack -e with-tailwindcss
+
 // code (app이름)   // vscode로 가게함
 
 // npm run dev  // 개발자모드 (서버사이드 렌더만)
 
 // nup run build // ssg테스트는 build한 뒤에 start로 확인 가능
 // nup run start
+
+// next dev --turbo // 터보팩 서버
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 투두리스트API, 구글서치API (nextjs13) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
