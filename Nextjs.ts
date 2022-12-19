@@ -13,8 +13,9 @@
 // nup run start
 
 이미지, 폰트, 미들웨어업데이트, 터포팩
+
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// @@@@@@ 투두리스트API, 구글서치API (nextjs12) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@ 투두리스트API, 구글서치API (nextjs13) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // ############ 기본 세팅 ###################################################################################################################################
 // app폴더를 생성 // (layout, head, page, loading, not-found, Error, Template) 프레임워크 파일 예약어
@@ -71,6 +72,8 @@ function Header() {
 export default Header
 
 // ############ 라우팅 및 컴포넌트 ##############################################################################################################################
+// 소괄호 () 를 폴더 이름에 붙이면 라우팅 생략하여 폴더 정리가능
+
 // ############ app/todos/page.tsx
 import React from 'react'
 
@@ -233,7 +236,6 @@ export default function RootLayout({
 }
 // ############ app/search/page.tsx
 // ... 생략 ...
-]
 // ############ app/search/Search.tsx
 import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react';
@@ -265,9 +267,91 @@ function Search() {
 
 export default Search
 
-// ########### #####################################################################################################################
+// ########### Params에 단어 구글검색하는 API // 로딩(loading) //에러(error)  #################################################################################
+// ########### app/search/[searchTerm]/page.tsx
+import React from "react";
+
+type PageProps = {
+  params: {
+    searchTerm: string;
+  };
+};
+
+type SearchResult = {
+    organic_results: [
+        {
+            position: number;
+            title: string;
+            link: string;
+            thumbnail: string;
+            snippet: string;
+        }
+    ]
+}
+
+const search = async (searchTerm: string) => {
+  const res = await fetch(
+    `http://serpapi.com/search.json?q=${searchTerm}&api_key=${process.env.API_KEY}`
+  ); // https://serpapi.com/
+
+  // throw new Error('somthing broke!') // 에러 유발
+
+  const data: SearchResult = await res.json();
+  return data;
+};
 
 
+async function SearchResults({ params: { searchTerm } }: PageProps) {
+  const searchResults = await search(searchTerm);
+  return (
+  <div>
+    <p className="text-gray-500 text-sm">You searched for: {searchTerm}</p>
+    
+    <ol className="space-y-5 p-5">
+    {searchResults.organic_results.map((result) => (
+        <li key={result.position} className='list-decimal'>
+            <p className="font-bold">{result.title}</p>
+            <p>{result.snippet}</p>
+        </li>
+    ))}
+    </ol> 
+  </div>
+  );
+}
+
+export default SearchResults;
+// ########### loading.tsx
+import React from 'react'
+
+function Loading() {
+  return (
+    <div>
+      Loading SearchResults
+    </div>
+  )
+}
+
+export default Loading
+
+// ########### error.tsx (docs 에있는 예시)
+'use client';
+import { useEffect } from 'react';
+
+export default function Error({ error, reset }: {
+  error: Error;
+  reset: () => void;
+}) {
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
+
+  return (
+    <div>
+      <p>Something went wrong!</p>
+      <button onClick={() => reset()}>Reset error boundary</button>
+    </div>
+  );
+}
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 영화 정보 사이트 (노마드 코더 nextjs12) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
