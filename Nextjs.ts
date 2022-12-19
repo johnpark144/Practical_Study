@@ -6,7 +6,6 @@
 // npx create-next-app styled-components-ex // 자바스크립트 + styled-components용
 
 // npx create-next-app --example with-turbopack // 터보팩
-// npx create-next-app@latest --example with-turbopack -e with-tailwindcss
 
 // code (app이름)   // vscode로 가게함
 
