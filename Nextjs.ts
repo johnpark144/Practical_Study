@@ -2,8 +2,8 @@
 // npx create-next-app@latest   // 자바스크립트용
 // npx create-next-app@latest --typescript    // 타입스크립트용
 
-// npx create-next-app -e with-tailwindcss  // 자바스크립트 + tailwindcss용
-// npx create-next-app styled-components-ex // 자바스크립트 + styled-components용
+// npx create-next-app@latest -e with-tailwindcss  // 자바스크립트 + tailwindcss용
+// npx create-next-app@latest styled-components-ex // 자바스크립트 + styled-components용
 
 // https://blog.theashishmaurya.me/using-tailwind-css-in-nextjs-13-with-turbopack // 터보팩 tailwindcss 참고
 // npx create-next-app --example with-turbopack // 터보팩
