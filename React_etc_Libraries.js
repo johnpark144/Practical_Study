@@ -9,11 +9,146 @@ import { MdDone } from 'react-icons/md';
 <AiFillEdit /> // React-icons 사이트에서 복사한 컴포넌트
 <AiFillDelete />
 <MdDone />
-// ######## Next-Themes (다크모드, 야간모드) ##############################################################################################################
   
+// ######## Next-Themes (다크모드, 야간모드) //!! 리액트 warning이 여전히 있을수 있음 ################################################################################
+// npm i next-themes
   
+// ######## layout.tsx
+'use client'  // 클라이언트 사이드에서만 사용가능
+import '../styles/globals.css'  // globals.css에있는 TailwindCSS 전역 적용
+import Header from "./Header";
+import Footer from "./Footer";
+import { ThemeProvider } from 'next-themes'
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html>
+      <head />
+      <body>
+        <ThemeProvider attribute='class'> // 사용범위 Provider 지정
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <div className="flex-grow">{children}</div>
+            <Footer />
+          </div>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
   
-  
+// ######## page.tsx
+function HomePage() {
+  return (
+    <section className="mt-16">
+      <h1 className="text-7xl font-bold">
+        Hi I'm <span className="dark:text-purple-600">John</span>
+      </h1>
+      <h3 className="text-4xl my-3">I am Web Designer</h3>
+      <p className="text-gray-700 mb-8 dark:text-white">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
+        quibusdam autem doloremque beatae iure, nihil fugit doloribus cum soluta
+        modi!
+      </p>
+      <button className={`p-2 rounded-md hover:ring-2 hover:ring-gray-300 "bg-purple-600 text-white px-6`}>
+        Hire Me!
+      </button>
+    </section>
+  );
+}
+
+export default HomePage;
+
+// ######## Header.tsx
+import Link from "next/link";
+import Button from "./Button";
+import { BsFillMoonFill, BsFillSunFill } from "react-icons/Bs";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+
+function Header() {
+  const { systemTheme, theme, setTheme } = useTheme();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []); // 다크모드떄 새로고침해도 태양모양 아이콘 유지시키려고
+
+  // 다크모드 설정 및 아이콘
+  const renderThemeChanger = () => {
+    if (!mounted) return null; // 다크모드떄 새로고침해도 태양모양 아이콘 유지시킴
+
+    const currentTheme = theme === "s" ? systemTheme : theme; // systemTheme은 항상 light (일반모드 light 디폴트)
+
+    if (currentTheme === "dark") {
+      // 다크모드인경우
+      return (
+        <button
+          className={`p-2 rounded-md hover:ring-2 hover:ring-gray-300 bg-gray-200 dark:bg-gray-600`}
+          onClick={() => setTheme("light")}
+        >
+          <BsFillSunFill />
+        </button>
+      );
+    } else {
+      // 일반모드인경우
+      return (
+        <button
+          className={`p-2 rounded-md hover:ring-2 hover:ring-gray-300 bg-gray-200`}
+          onClick={() => setTheme("dark")}
+        >
+          <BsFillMoonFill />
+        </button>
+      );
+    }
+  };
+
+  // navigations 이름과 경로
+  const navigations = [
+    { label: "Home", path: "/" },
+    { label: "About", path: "/" },
+  ];
+
+  return (
+    <header className="h-16 flex items-center justify-between bg-red-300 dark:bg-gray-700">
+      <ul className="flex gap-4">
+        {navigations.map((nav) => (
+          <Link
+            key={nav.label}
+            href={nav.path}
+            className="font-semibold text-gray-400 hover:text-gray-500"
+          >
+            {nav.label}
+          </Link>
+        ))}
+      </ul>
+      {renderThemeChanger()}
+    </header>
+  );
+}
+
+export default Header;
+
+// ######## tailwind.config.tsx
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,ts,jsx,tsx}',
+  ],
+  darkMode: 'class',  // tailwind로 다크모드 사용 할 수 있도록
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
 // ######## react-timeago (몇초전, 몇분전) ###################################################################################################################
 // npm install react-timeago
 // npm i --save-dev @types/react-timeago (타입스크립트)
