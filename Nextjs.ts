@@ -5,17 +5,21 @@
 // npx create-next-app@latest -e with-tailwindcss  // 자바스크립트 + tailwindcss용
 // npx create-next-app@13.0.6 styled-components-ex // 자바스크립트 + styled-components용 // 오류해결전까지 @13.0.6
 
-// https://blog.theashishmaurya.me/using-tailwind-css-in-nextjs-13-with-turbopack // 터보팩 tailwindcss 참고
-// npx create-next-app --example with-turbopack // 터보팩
-// npx add2next tailwind --turbo
-
 // code (app이름)   // vscode로 가게함
 
 // npm run dev  // 개발자모드 (서버사이드 렌더만)
-// npm run dev --turbo // 터보팩 서버
 
 // npm run build // ssg테스트는 build한 뒤에 start로 확인 가능
 // npm run start
+
+
+// ######### 터보팩
+// https://blog.theashishmaurya.me/using-tailwind-css-in-nextjs-13-with-turbopack // 터보팩 tailwindcss 참고
+// npx create-next-app --example with-turbopack // 터보팩
+// npx add2next tailwind --turbo
+// "dev": "concurrently \"next dev\" \"tailwindcss --input ./app/styles/globals.css --output ./app/styles/dist.css --watch\"",
+// "build": "tailwindcss ./app/styles/globals.css --output ./app/styles/dist.css && next build",
+// npm run dev --turbo // 터보팩 서버
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 투두리스트API, 구글서치API (nextjs13) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
