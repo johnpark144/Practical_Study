@@ -13,13 +13,16 @@
 // npm run start
 
 
-// ######### 터보팩
+// ######### 터보팩 #######################################################################################################################################
 // https://blog.theashishmaurya.me/using-tailwind-css-in-nextjs-13-with-turbopack // 터보팩 tailwindcss 참고
+
 // npx create-next-app --example with-turbopack // 터보팩
-// npx add2next tailwind --turbo
+// npx add2next tailwind --turbo // tailwindcss
+// npm run dev --turbo // 터보팩 서버
+
+// ######### package.json
 // "dev": "concurrently \"next dev\" \"tailwindcss --input ./app/styles/globals.css --output ./app/styles/dist.css --watch\"",
 // "build": "tailwindcss ./app/styles/globals.css --output ./app/styles/dist.css && next build",
-// npm run dev --turbo // 터보팩 서버
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@ 투두리스트API, 구글서치API (nextjs13) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
