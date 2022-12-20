@@ -54,7 +54,7 @@ function HomePage() {
         quibusdam autem doloremque beatae iure, nihil fugit doloribus cum soluta
         modi!
       </p>
-      <button className={`p-2 rounded-md hover:ring-2 hover:ring-gray-300 "bg-purple-600 text-white px-6`}>
+      <button className={'p-2 rounded-md hover:ring-2 hover:ring-gray-300 bg-purple-600 text-white px-6'}>
         Hire Me!
       </button>
     </section>
@@ -89,7 +89,7 @@ function Header() {
       // 다크모드인경우
       return (
         <button
-          className={`p-2 rounded-md hover:ring-2 hover:ring-gray-300 bg-gray-200 dark:bg-gray-600`}
+          className={'p-2 rounded-md hover:ring-2 hover:ring-gray-300 bg-gray-200 dark:bg-gray-600'}
           onClick={() => setTheme("light")}
         >
           <BsFillSunFill />
@@ -99,7 +99,7 @@ function Header() {
       // 일반모드인경우
       return (
         <button
-          className={`p-2 rounded-md hover:ring-2 hover:ring-gray-300 bg-gray-200`}
+          className={'p-2 rounded-md hover:ring-2 hover:ring-gray-300 bg-gray-200'}
           onClick={() => setTheme("dark")}
         >
           <BsFillMoonFill />
