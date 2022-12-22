@@ -154,6 +154,7 @@ module.exports = {
 // npm i --save-dev @types/react-timeago (타입스크립트)
 
 // ######## MessageComponent.tsx  ({new Date(msg.created_at).toLocaleString()} 이부분을 대체함)
+import TimeAgo from "react-timeago";
 // ... 생략 ...
   <TimeAgo date={new Date(msg.created_at)} />   {/* // 참고로 msg.created_at = Date.now() // 기존 시간 나타날때는 new Date(msg.created_at).toLocaleString() */}  
 // ... 생략 ...
