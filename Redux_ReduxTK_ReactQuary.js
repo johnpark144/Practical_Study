@@ -1,3 +1,5 @@
+//  redux-persist 사용법 공부하기 npm i redux-persist!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 // npm install redux  // 기본 redux
 // npm install react-redux  // react redux
 // npm install @reduxjs/toolkit // reduxTK
