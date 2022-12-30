@@ -1,3 +1,28 @@
+// ######## lodash debounce (타이머와 타이머캔슬기능) ######################################################################################
+// npm i --save lodash.debounce
+
+import React, { useState } from "react";
+import { debounce } from "lodash";
+
+export default function App() {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const debouncedHandleMouseEnter = debounce(() => setIsHovered(true), 500);
+
+  const handlOnMouseLeave = () => {
+    setIsHovered(false);
+    debouncedHandleMouseEnter.cancel();
+  };
+
+  return (
+    <div
+      onMouseEnter={debouncedHandleMouseEnter}
+      onMouseLeave={handlOnMouseLeave}
+    >
+      hover me
+    </div>
+  );
+}
 
 // ######## React-icons (머티리얼아이콘이나 폰트어썸처럼 여러 아이콘들사용) ######################################################################################
 // https://react-icons.github.io/react-icons/
