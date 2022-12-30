@@ -1,5 +1,5 @@
 // ######## lodash debounce (타이머와 타이머캔슬기능) ######################################################################################
-// npm i --save lodash.debounce
+// npm install --save @types/lodash.debounce
 
 import React, { useState } from "react";
 import { debounce } from "lodash";
