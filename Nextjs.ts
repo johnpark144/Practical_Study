@@ -17,7 +17,7 @@
 // https://blog.theashishmaurya.me/using-tailwind-css-in-nextjs-13-with-turbopack // 터보팩 tailwindcss 참고
 
 // npx create-next-app --example with-turbopack // 터보팩
-// npm i -- save-dev concurrently // 
+// npm i -- save-dev concurrently // 서버, 클라이언트 동시실행
 
 // npm run dev --turbo // 터보팩 서버
 
