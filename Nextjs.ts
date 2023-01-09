@@ -21,9 +21,7 @@
 
 // npm run dev --turbo // 터보팩 서버
 
-
-// !!!! 임시 !!!! 틀릴수 
-// npm install -D tailwindcss postcss autoprefixer
+// npm install -D tailwindcss postcss autoprefixer // tailwind
 // npx tailwindcss init -p
 
 
