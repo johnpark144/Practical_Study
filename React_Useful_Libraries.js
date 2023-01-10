@@ -3,8 +3,143 @@
 // npm install --save react-date-range  // 라이브러리
 // npm install --save react date-fns  // peerDependencies
 
+// ######## DateSelect.tsx (일반 달력 싱글 날짜 선택)
+'use client'
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+
+import { Calendar } from 'react-date-range';
+import format from 'date-fns/format';
+import { useEffect, useState, useRef } from 'react';
+
+function DateSelect() {
+    const [calendar, setCalendar] = useState<Date>();
+    const [open, setOpen] = useState(false);
+    const refOne = useRef<HTMLInputElement>(null);    // 달력Dom에 접근
+
+    // 기본 세팅 및 서버 클라이언트 날짜 에러 해결
+    useEffect(() => {
+        setCalendar(new Date())
+        document.addEventListener("keydown", hideOnEscape, true)    // 키보드버튼 눌릴경우 실행됨
+        document.addEventListener("click", hideOnClickOutside, true) // 마우스클릭될때 실행됨
+    }, []);
+
+    // 달력 접기 
+    const hideOnEscape = (e:KeyboardEvent) => {
+        if(e.key === "Escape"){     // 눌린버튼이 Esc버튼인경우
+            setOpen(false)
+        }
+    }
+    const hideOnClickOutside = (e:Event) => {
+        if(refOne.current && !refOne.current.contains(e.target as Node)){   // 마우스버튼이 달력Dom 밖에 눌린경우
+            setOpen(false)
+        }
+    }
+
+    // 날짜 선택
+    const handleSelect = (date:Date) => {
+        setCalendar(date)
+    }
+  
+    // 날짜를 보기좋게 형식 변경
+   const selected = calendar ? format(calendar, 'MM/dd/yyyy') :""
+   
+  return (
+    <>
+      <div>React Date Select</div>
+      <input value={ selected } onClick={()=>setOpen(!open)} readOnly className='inputBox' />
+      <span ref={refOne}>
+      {open && 
+      <Calendar
+        date={calendar ? calendar : new Date()}
+        className="calendarElement"
+        onChange={handleSelect}
+        months={1}
+        color="#26af5b"
+        // minDate={new Date()}
+        // maxDate={new Date()}
+        // direction="horizontal"  // 2개 이상 months인경우 위치
+        // disabledDates={[new Date('2023-01-01')]}
+      />
+    }
+    </span>
+    </>
+  );
+}
+
+export default DateSelect;
+
+// ######## DateRangeSelect.tsx (일반 달력 날짜 범위 선택)
+'use client'
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+
+import format from 'date-fns/format';
+import { addDays } from 'date-fns';
+
+import { useEffect, useState, useRef } from 'react';
+import { DateRange } from 'react-date-range';
+
+function DateRangeSelect() {
+    const [range, setRange] = useState<any>([
+        {
+            startDate: new Date(),
+            endDate: addDays(new Date(), 7),
+            key: 'selection'
+        }
+    ]);
+    const [open, setOpen] = useState(false);
+    const refOne = useRef<HTMLInputElement>(null);    // 달력Dom에 접근
+
+    // 기본 세팅 및 서버 클라이언트 날짜 에러 해결
+    useEffect(() => {
+        document.addEventListener("keydown", hideOnEscape, true)    // 키보드버튼 눌릴경우 실행됨
+        document.addEventListener("click", hideOnClickOutside, true) // 마우스클릭될때 실행됨
+    }, []);
+
+    // 달력 접기 
+    const hideOnEscape = (e:KeyboardEvent) => {
+        if(e.key === "Escape"){     // 눌린버튼이 Esc버튼인경우
+            setOpen(false)
+        }
+    }
+    const hideOnClickOutside = (e:Event) => {
+        if(refOne.current && !refOne.current.contains(e.target as Node)){   // 마우스버튼이 달력Dom 밖에 눌린경우
+            setOpen(false)
+        }
+    }
+
+  return (
+    <>
+      <div>React Date Range Select</div>
+      <input value={ `${format(range[0].startDate,'MM/dd/yyyy')} to ${format(range[0].endDate,'MM/dd/yyyy')}` }
+      onClick={()=>setOpen(!open)} readOnly className='inputBox' />
+      <span ref={refOne}>
+      {open && 
+      <DateRange
+        className="calendarElement"
+        onChange={item => setRange([item.selection])} // [startDate, endDate, key]
+        editableDateInputs={true}
+        moveRangeOnFirstSelection={false}
+        ranges={range} // range가 바뀐대로 범위를 보여줌
+        months={1}
+        color="#26af5b"
+        direction="horizontal"  // 2개 이상 months인경우 위치
+        // minDate={new Date()}
+        // maxDate={new Date()}
+        // disabledDates={[new Date('2023-01-01')]}
+      />
+    }
+    </span>
+    </>
+  );
+}
+
+export default DateRangeSelect;
+
+// ######## DateRangePicker.tsx (일반 달력 날짜 범위 선택)
+
+
 
 
 // ######## lodash debounce (타이머와 타이머캔슬기능) ######################################################################################
