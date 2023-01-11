@@ -1,4 +1,3 @@
-
 // npx create-next-app@latest   // 자바스크립트용
 // npx create-next-app@latest --typescript    // 타입스크립트용
 
