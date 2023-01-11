@@ -39,7 +39,6 @@ return내용들
 
 index.css 모든 내용들
 
-
 // ################################################################################### State의 객체와 배열 ###########################
 
 // const [value, setValue] = useState(Primitive);           ex) string, number, bigint, boolean, undefined, symbol, null 인경우
