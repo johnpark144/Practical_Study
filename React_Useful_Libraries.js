@@ -55,7 +55,7 @@ function DateSelect() {
         className="calendarElement"
         onChange={handleSelect}
         months={1}
-        color="#26af5b"
+        rangeColors={["#26af5b"]}  // 범위지정시 컬러
         // minDate={new Date()}
         // maxDate={new Date()}
         // direction="horizontal"  // 2개 이상 months인경우 위치
