@@ -1,6 +1,8 @@
 // ######## react-leaflet(지도) ##########################################################################################################
 // https://react-leaflet.js.org/
 // https://cloud.maptiler.com/maps/ (맵종류 TileLayer url)
+// https://nominatim.org/release-docs/latest/api/Overview/
+
 // npm install leaflet react-leaflet
 
 // ######## React-date-range (달력 선택) ######################################################################################
