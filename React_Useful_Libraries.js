@@ -78,7 +78,7 @@ import format from 'date-fns/format';
 import { addDays } from 'date-fns';
 
 import { useEffect, useState, useRef } from 'react';
-import { DateRange } from 'react-date-range';
+import { DateRange, DateRangePicker } from 'react-date-range';  // 심플달력, 자세한달력
 
 function DateRangeSelect() {
     const [range, setRange] = useState<any>([
@@ -116,7 +116,7 @@ function DateRangeSelect() {
       onClick={()=>setOpen(!open)} readOnly className='inputBox' />
       <span ref={refOne}>
       {open && 
-      <DateRange
+      <DateRange    // ---> DateRangePicker로 태그를 바꿔주면 자세한 달력이 나옴
         className="calendarElement"
         onChange={item => setRange([item.selection])} // [startDate, endDate, key]
         editableDateInputs={true}
