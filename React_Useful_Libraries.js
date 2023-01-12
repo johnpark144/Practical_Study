@@ -41,6 +41,29 @@ const icon = L.icon({
   iconSize: [38, 38]
 })
 
+// 마크하기위한 함수
+function AddMarkerToClick() {
+
+  const [markers, setMarkers] = useState([]);
+
+  const map = useMapEvents({
+    click(e) {
+      const newMarker = e.latlng
+      setMarkers([...markers, newMarker]);
+    },
+  })
+  console.log(markers);
+  return (
+    <>
+      {markers?.map(marker => 
+        <Marker position={marker} key={`${marker.lat}${marker.lng}`} icon={icon}>
+          <Popup><div>Marker is</div></Popup>
+        </Marker>
+      )}
+    </>
+  )
+}
+
 // selectPosition 변경시마다 새로운 주소로 리렌더링
 const ResetCenterView = ({ selectPosition }) => {
   const map = useMap();
@@ -59,6 +82,16 @@ const ResetCenterView = ({ selectPosition }) => {
 
   return null
 }
+
+// 도형 각 포인트 위치
+const multiPolygon = [
+  [
+    [51.51, -0.12],
+    [51.51, -0.13],
+    [51.53, -0.13],
+    [51.53, -0.12],
+  ],
+]
 
 // 디폴트 함수
 function Maps({ selectPosition }) {
@@ -80,6 +113,8 @@ function Maps({ selectPosition }) {
       </Marker>
       )}
       <ResetCenterView selectPosition={selectPosition} />
+      {/* <Polygon pathOptions={{ color: 'purple' }} positions={multiPolygon} />  // 도형식 */}
+      <AddMarkerToClick />
     </MapContainer>
   )
 }
