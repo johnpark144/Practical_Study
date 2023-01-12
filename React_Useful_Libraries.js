@@ -190,6 +190,13 @@ function SearchBox({ setSelectPosition }) {
 
 export default SearchBox
 
+// ################ globals.css
+@import url("leaflet/dist/leaflet.css");  
+
+.leaflet-container {
+  width: 100%;
+  height: 100vh;
+}
 
 // ######## React-date-range (달력 선택) ######################################################################################
 // https://www.npmjs.com/package/react-date-range
