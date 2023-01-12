@@ -5,6 +5,156 @@
 
 // npm install leaflet react-leaflet
 
+// ################ page.tsx
+'use client';
+import dynamic from 'next/dynamic';
+import SearchBox from './SearchBox';
+const Maps = dynamic(()=>import('./Maps'),{ssr:false}); // ssr없이 import // window is not defined오류방지 
+import { useState } from 'react';
+
+export default function Page() {
+  // 경도와 위도를 미리 지정안하면 MapContainer에 center가 초기화면
+  const [selectPosition, setSelectPosition] = useState();
+  return (
+    <>
+      <div className='flex rounded-lg w-[100vw] h-[100vh]'>
+        <div className='w-[50vw] h-[100vh]'>
+          <Maps selectPosition={selectPosition} />
+        </div>
+        <div className='w-[50vw]'>
+          <SearchBox setSelectPosition={setSelectPosition}  />
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ################ Maps.tsx
+'use client'
+import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
+import L from "leaflet";
+import { ReactNode, useEffect } from 'react';
+
+// 핀 아이콘
+const icon = L.icon({
+  iconUrl: "./placeholder.png", // public 폴더에
+  iconSize: [38, 38]
+})
+
+// selectPosition 변경시마다 새로운 주소로 리렌더링
+const ResetCenterView = ({ selectPosition }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if(selectPosition){
+      map.setView(
+        L.latLng(selectPosition?.lat, selectPosition?.lon),
+        map.getZoom(),
+        {
+          animate: true
+        }
+      )
+      }
+  }, [selectPosition]);
+
+  return null
+}
+
+// 디폴트 함수
+function Maps({ selectPosition }) {
+  const locationSelection:number[] = [selectPosition?.lat, selectPosition?.lon]
+
+  return (
+    // center 처음화면 위도 경도 // zoom 숫자가 높으면 확대 // scrollWheelZoom={false}
+    <MapContainer center={[45.505, -75.09]} zoom={8} className="w-full h-full">
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=HF5XlbsiSdkFlJq0cfDr"  // 맵종류
+      />
+      {selectPosition && (
+        // position pin위치 // icon 핀 아이콘 // Popup안 내용은 핀눌렀을때 뜰 내용
+      <Marker position={locationSelection} icon={icon}>
+        <Popup>
+          <div>{selectPosition?.display_name}</div>
+        </Popup>
+      </Marker>
+      )}
+      <ResetCenterView selectPosition={selectPosition} />
+    </MapContainer>
+  )
+}
+export default Maps
+
+// ################ SearchBox.tsx
+import { Dispatch, SetStateAction, useState } from "react";
+
+// 주소정보 담긴 API
+const NOMINATIM_BASE_URL ="https://nominatim.openstreetmap.org/search?"
+
+// 디폴트 함수
+function SearchBox({ setSelectPosition }) {
+  const [searchText, setSearchText] = useState("");
+  const [listPlace, setListPlace] = useState([]);
+  
+  // 검색할시 작동하는 함수
+  const searchMap = async () => {
+    const params = {
+      q: searchText,
+      format:'json',
+      addressdetails: 1,
+      polygon_geojson: 0
+    };
+    const queryString = new URLSearchParams(params).toString();
+    const reqestOptions = {
+      method: "GET",
+      redirect: "follow"
+    };
+
+    fetch(`${NOMINATIM_BASE_URL}${queryString}`,reqestOptions)
+    .then((res)=>res.text())
+    .then((result)=>{
+      setListPlace(JSON.parse(result));
+    })
+    .catch((err)=>console.log("err:",err));
+  }
+
+  return (
+    <>
+      <div className="flex-col">
+        <div className="flex">
+          {/* 검색창 */}
+          <input
+            type="text"
+            className="border-2 border-solid border-red-200 w-[40vw]"
+            value={searchText}
+            onChange={(e)=>setSearchText(e.target.value)}
+          />
+          {/* 검색 버튼 */}
+          <div className="flex items-center py-[20px]">
+            <button onClick={searchMap} className="border-2 border-solid border-black">
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* 검색된 리스트 */}
+      <ul>
+        {listPlace.map((item) => {
+          return (
+          <li key={item?.place_id} className="flex" onClick={()=>{
+            setSelectPosition(item)
+          }}>
+            <img src="./placeholder.png" alt="placeholder" className="w-9 h-9" />
+            <h1>{item?.display_name}</h1>
+          </li>
+        )})}
+      </ul>
+    </>
+  );
+}
+
+export default SearchBox
+
 
 // ######## React-date-range (달력 선택) ######################################################################################
 // https://www.npmjs.com/package/react-date-range
