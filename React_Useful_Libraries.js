@@ -1,7 +1,7 @@
 // ######## react-leaflet(지도) ##########################################################################################################
 // https://react-leaflet.js.org/
-// https://cloud.maptiler.com/maps/ (맵종류 TileLayer url)
-// https://nominatim.org/release-docs/latest/api/Overview/
+// https://cloud.maptiler.com/maps/    // 맵종류 TileLayer url
+// https://nominatim.org/release-docs/latest/api/Overview/    // Nominatim API
 
 // npm install leaflet react-leaflet
 
