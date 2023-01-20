@@ -1,3 +1,5 @@
+// URL변경하는법은 https://www.youtube.com/watch?v=W3jKJ3V_4V4&list=PLiY8mHmShYeXjPXi188A7Tnj00ps2HM2X&index=6&t=350s 참고
+
 // ########### vercel #########################################################################################################################
 // https://vercel.com/
 // npm i -g vercel
@@ -8,5 +10,8 @@
 // ? Link to existing project? [y/N] n
 // ? What’s your project’s name? doortodoor
 // ? In which directory is your code located? ./
+
+// Settings -> Environment Variables -> .env복사 -> pase
+
 
 // ###########  #########################################################################################################################
