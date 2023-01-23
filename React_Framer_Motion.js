@@ -1,6 +1,9 @@
 // https://www.framer.com/motion/   // 효과 참고 웹사이트
 // npm i framer-motion
 
+// 
+// https://velog.io/@forest0501/Framer-Motion%EC%9D%84-%EC%98%A4%EB%9E%9C%EB%A7%8C%EC%97%90-%EC%93%B8-%EB%95%8C-%EB%B3%B4%EB%8A%94-%EA%B0%84%EB%8B%A8%ED%95%9C-%ED%8F%AC%EC%8A%A4%ED%8A%B8
+
 
 // ##### Animate (에니메이션 효과) ###############################################################################################################
 import { motion } from 'framer-motion';
@@ -75,7 +78,21 @@ return(
   <span className={spanClass}>{topping}</span>
 </motion.li>
 
-// ##### Varients (변형) ############################################################################################################################
+// 기타 효과들 :
+// whileHover
+// : 커서가 컴포넌트 위로 이동하거나 떠날 때 동안의 애니메이션 속성.
+// whileTap
+// : 컴포넌트를 클릭하고 있는 동안의 애니메이션 속성
+// whileFocus
+// : 컴포넌트를 클릭해 포커스된 동안의 애니메이션 속성
+// whileDrag
+// : 끌기 제스쳐가 발생하는 동안의 애니메이션 속성
+// whileInView
+// : 보통 스크롤 할 때 사용, 내리면서 컴포넌트가 뷰포트에 있는 동안의 애니메이션 속성
+
+// ##### Varients (변수나 상수 지정 사용) ################################################################################################################
+import { motion } from "framer-motion";
+
 const containerVariants = {
   hidden: { // 이름 자유롭게 변경가능
     opacity: 0,
@@ -84,9 +101,13 @@ const containerVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { // transition을 따로 지정 하지않고 이와같이 variants를 이용 할수 있음
-      type: "spring", delay: 0.5 
-    }
+    transition: {// transition을 따로 지정 하지않고 이와같이 variants를 이용 할수 있음
+      type: "spring",
+      mass: 4,  // 질량 (크면클수록 무거워진느낌)
+      damping: 8, // 숫자가 크면 제동이 줄어듬(더 미끌려나감)
+      staggerChildren: 0.4,  //  자식 컴포넌트 하나 나타나고 그다음 컴포넌트에 0.4초 딜레이 부여
+      when: "beforeChildren", // beforeChildren는 Children들중 애니메이션이 있는경우 이게 먼저 발생한 뒤 Children 애니메이션 발생
+    },
   }
 }
 const nextVariants = {
@@ -110,12 +131,66 @@ function Base({ setToWhere, addBase, pizza }) {
       initial="hidden"  // 상수로 지정해준것 중 hidden의효과
       animate="visible" // 상수로 지정해준것 중 visible의효과
     >
-   </motion.div>
-
    <motion.div
        className="next"
-       variants={nextVariants} // 한번 위에  initial="hidden"와 animate="visible"를 사용해서 비록 다른Varients지만 initial과 animate을 적어둘 필요X
+       variants={nextVariants} // 한번 위에  initial="hidden"와 animate="visible"를 사용해서 디폴트가되어, 비록 다른Varients지만 initial과 animate을 스킵 가능
        onClick={() => setToWhere("toppings")}
      >
     </motion.div>
-// #####  () ############################################################################################################################
+   </motion.div>
+
+// ##### Keyfrane (키프레임, 배열로인한 작동 순서) ################################################################################################################
+const buttonVariants = {
+  visible: {
+    x: [0, -20, 20, -20, 20, 0], // 배열안에 있는 숫자 순서대로 실행됨 (animate)
+    transition: { delay: 2 }
+  },
+  hover: {
+    scale: [1,1.1,1,1.1,1,1.1,1],   // 배열안에 있는 숫자 순서대로 실행됨 (whileHover)
+    textShadow: "0px 0px 8px rgb(255,255,255)",
+    boxShadow: "0px 0px 8px rgb(255,255,255)",
+  }
+}
+
+export default function page() {
+   return (
+      <motion.button
+         onClick={() => setToWhere("base")}
+         variants={buttonVariants}
+         animate="visible" // animate
+         whileHover="hover" // whileHover
+       >
+         create your pizza
+       </motion.button>
+      )
+}
+
+// ##### Repeating (애니메이션 반복) #########################################################################################################################
+const buttonVariants = {
+  visible: {
+    x: -20,
+    transition: { delay: 2, repeat: 10, repeatType: 'reverse'  }, // 반복 횟수 : 10회 
+  },
+  hover: {
+    scale: 1.1,
+    textShadow: "0px 0px 8px rgb(255,255,255)",
+    boxShadow: "0px 0px 8px rgb(255,255,255)",
+    transition: {
+      repeat: Infinity, // 반복 횟수 : 무한
+      repeatType: 'reverse' // 반복 방식
+    },
+  },
+};
+
+export default function page() {
+   return (
+      <motion.button
+         onClick={() => setToWhere("base")}
+         variants={buttonVariants}
+         animate="visible" // animate
+         whileHover="hover" // whileHover
+       >
+         create your pizza
+       </motion.button>
+      )
+}
