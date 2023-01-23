@@ -45,8 +45,23 @@ return(
 >
 </motion.div>
 
-<motion.div className='title' initial={{ y: -250 }} animate={{ y: -10 }} transition={{ delay: 0.2, type: "spring" }} >  {/* 에니메이션 타입 */}
+<motion.div className='title'
+   initial={{ y: -250 }}
+   animate={{ y: -10 }}
+   transition={{ delay: 0.2, type: "spring", stiffness: 200 }} // 에니메이션 타입(spring은 바운스 효과, stiffness는 바운스강도 -> 100 디폴트)
+> 
   <h1>Pizza joint</h1>
 </motion.div>
 
-// ##### Transition Options (옵션) ##################################################################################################################
+// ##### Hover (하버) ############################################################################################################################
+ <motion.button
+   onClick={() => setToWhere("base")}
+   whileHover={{ // 하버가 될때 효과
+     scale: 1.1, // 1이 디폴트
+     textShadow: "0px 0px 8px rgb(255,255,255)",
+     boxShadow: "0px 0px 8px rgb(255,255,255)",
+   }}
+ >
+   create your pizza
+ </motion.button>
+
