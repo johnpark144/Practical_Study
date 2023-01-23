@@ -1,4 +1,6 @@
+// https://www.framer.com/motion/   // 효과 참고 웹사이트
 // npm i framer-motion
+
 
 // ##### Animate (에니메이션 효과) ###############################################################################################################
 import { motion } from 'framer-motion';
@@ -64,4 +66,56 @@ return(
  >
    create your pizza
  </motion.button>
+<motion.li
+  key={topping}
+  onClick={() => addTopping(topping)}
+  whileHover={{ scale: 1.3, originX: 0, color: "#f83112" }}  {/* originX는 scale효과에 X축이 움직이는 정도 (0이면 그자리) */}
+  transition={{ type:'spring', stiffness: 300 }}  {/* Hover에도 transition이 먹힘 */}
+>
+  <span className={spanClass}>{topping}</span>
+</motion.li>
 
+// ##### Varients (변형) ############################################################################################################################
+const containerVariants = {
+  hidden: { // 이름 자유롭게 변경가능
+    opacity: 0,
+    x: '100vw'
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { // transition을 따로 지정 하지않고 이와같이 variants를 이용 할수 있음
+      type: "spring", delay: 0.5 
+    }
+  }
+}
+const nextVariants = {
+  hidden: {
+    x: '-100vw'
+  },
+  visible: {
+    x: 0,
+    transition: {
+      type: "spring", stiffness: 120
+    }
+  }
+}
+
+function Base({ setToWhere, addBase, pizza }) {
+  const bases = ["Classic", "Thin & Crispy", "Thick Crust"];
+  return (
+    <motion.div
+      className="base container"
+      variants={containerVariants}  // 위에 상수로 지정해둔것을 사용한다고 선언
+      initial="hidden"  // 상수로 지정해준것 중 hidden의효과
+      animate="visible" // 상수로 지정해준것 중 visible의효과
+    >
+   </motion.div>
+
+   <motion.div
+       className="next"
+       variants={nextVariants} // 한번 위에  initial="hidden"와 animate="visible"를 사용해서 비록 다른Varients지만 initial과 animate을 적어둘 필요X
+       onClick={() => setToWhere("toppings")}
+     >
+    </motion.div>
+// #####  () ############################################################################################################################
