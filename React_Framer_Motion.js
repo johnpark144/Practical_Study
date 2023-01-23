@@ -1,7 +1,7 @@
 // https://www.framer.com/motion/   // 효과 참고 웹사이트
 // npm i framer-motion
 
-// 
+// npm install uuid // uuid 고유키 생성하기위해
 // https://velog.io/@forest0501/Framer-Motion%EC%9D%84-%EC%98%A4%EB%9E%9C%EB%A7%8C%EC%97%90-%EC%93%B8-%EB%95%8C-%EB%B3%B4%EB%8A%94-%EA%B0%84%EB%8B%A8%ED%95%9C-%ED%8F%AC%EC%8A%A4%ED%8A%B8
 
 
