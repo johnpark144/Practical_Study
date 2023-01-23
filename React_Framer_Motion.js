@@ -167,10 +167,6 @@ export default function page() {
 
 // ##### Repeating (애니메이션 반복) #########################################################################################################################
 const buttonVariants = {
-  visible: {
-    x: -20,
-    transition: { delay: 2, repeat: 10, repeatType: 'reverse'  }, // 반복 횟수 : 10회 
-  },
   hover: {
     scale: 1.1,
     textShadow: "0px 0px 8px rgb(255,255,255)",
@@ -194,3 +190,32 @@ export default function page() {
        </motion.button>
       )
 }
+
+// ##### AnimatePresence ( useState로 없애는 태그들, useLocation 으로 링크변경시에도 애니메이션 효과 가능 ) ################################################
+'use client'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from "framer-motion";
+
+export default function Order({ pizza }) {
+  const [showTitle, setShowTitle] = useState(true);
+  setTimeout(()=>{
+    setShowTitle(false)
+  }, 4000)
+   
+return(
+   <AnimatePresence exitBeforeEnter> {/* AnimatePresence안 태그들이 사라질떄 애니메이션 효과를 줄수있음 // exitBeforeEnter  새로운 컴포넌트가 나타나기 전에 이전 컴포넌트가 사라지게함 */}
+     {showTitle && <motion.h2 key="msg" exit={{ y: -1000 }} >Thank you for order !</motion.h2>}  {/* key를 반드시 적어줘야함 // exit할때 효과 */}
+   </AnimatePresence>
+)
+
+// const containerVariants = {
+//   hidden: {
+//     opacity: 0,
+//   },
+//   exit: {
+//     x: '-100vw',
+//     transition: { ease: "easeInOut" }
+//   }
+// }        // 이와같이 variants로도 사용가능
+
+// ##### (  ) ######################################################################################
