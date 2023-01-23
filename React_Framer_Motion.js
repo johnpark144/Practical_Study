@@ -1,7 +1,6 @@
 // https://www.framer.com/motion/   // 효과 참고 웹사이트
 // npm i framer-motion
 
-// npm install uuid // uuid 고유키 생성하기위해
 // https://velog.io/@forest0501/Framer-Motion%EC%9D%84-%EC%98%A4%EB%9E%9C%EB%A7%8C%EC%97%90-%EC%93%B8-%EB%95%8C-%EB%B3%B4%EB%8A%94-%EA%B0%84%EB%8B%A8%ED%95%9C-%ED%8F%AC%EC%8A%A4%ED%8A%B8
 
 
@@ -133,7 +132,7 @@ function Base({ setToWhere, addBase, pizza }) {
     >
    <motion.div
        className="next"
-       variants={nextVariants} // 한번 위에  initial="hidden"와 animate="visible"를 사용해서 디폴트가되어, 비록 다른Varients지만 initial과 animate을 스킵 가능
+       variants={nextVariants} // 부모요소에  initial="hidden"와 animate="visible"를 사용해서 디폴트가되어, 비록 다른Varients지만 initial과 animate을 스킵 가능
        onClick={() => setToWhere("toppings")}
      >
     </motion.div>
@@ -203,7 +202,8 @@ export default function Order({ pizza }) {
   }, 4000)
    
 return(
-   <AnimatePresence exitBeforeEnter> {/* AnimatePresence안 태그들이 사라질떄 애니메이션 효과를 줄수있음 // exitBeforeEnter  새로운 컴포넌트가 나타나기 전에 이전 컴포넌트가 사라지게함 */}
+    {/* AnimatePresence안 태그들이 사라질떄 애니메이션 효과를 줄수있음 // mode="wait"  새로운 컴포넌트가 나타나기 전에 이전 컴포넌트가 사라지게함  // onExitComplete는 exit될때 자동으로 실행 */}
+   <AnimatePresence mode="wait"  onExitComplete={() => setShowModal(false)}>
      {showTitle && <motion.h2 key="msg" exit={{ y: -1000 }} >Thank you for order !</motion.h2>}  {/* key를 반드시 적어줘야함 // exit할때 효과 */}
    </AnimatePresence>
 )
@@ -218,4 +218,4 @@ return(
 //   }
 // }        // 이와같이 variants로도 사용가능
 
-// ##### (  ) ######################################################################################
+// ##### Animating SVG ######################################################################################
