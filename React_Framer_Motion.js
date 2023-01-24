@@ -104,6 +104,7 @@ const containerVariants = {
       type: "spring",
       mass: 4,  // 질량 (크면클수록 무거워진느낌)
       damping: 8, // 숫자가 크면 제동이 줄어듬(더 미끌려나감)
+      delayChildren: 0.4, // 첫 자식 컴포넌트에 0.4초 딜레이 부여
       staggerChildren: 0.4,  //  자식 컴포넌트 하나 나타나고 그다음 컴포넌트에 0.4초 딜레이 부여
       when: "beforeChildren", // beforeChildren는 Children들중 애니메이션이 있는경우 이게 먼저 발생한 뒤 Children 애니메이션 발생
     },
@@ -218,4 +219,101 @@ return(
 //   }
 // }        // 이와같이 variants로도 사용가능
 
-// ##### Animating SVG ######################################################################################
+// ##### Animating SVG (그림 그리기) ###########################################################################################################
+const svgVariants = {
+  hidden: { rotate: -180, opacity: 0 },   // 180도 돌아있다
+  visible: {
+    rotate: 0,                            // 180도 돌아 제자리로
+    opacity: 1,
+    transition: { duration: 1 }
+  }
+}
+const pathVariants = {
+  hidden: {
+    opacity: 0,
+    pathLength: 0    // 0이면 path를 하나도 그리지않음
+  },
+  visible: {
+    opacity: 1,
+    pathLength: 1,   // svg 안에 motion.path에 d로되있는 path를 순차례로 그려줌
+    transition: {
+      duration: 2,
+      ease: "easeInOut"
+    }
+  }
+}
+
+export default function page() {
+   return (
+   <div className="logo">
+       <motion.svg
+         className="pizza-svg"
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 100 100"
+         variants={svgVariants}
+         initial="hidden"
+         animate="visible"
+       >
+         <motion.path
+           fill="none"
+           d="M40 40 L80 40 C80 40 80 80 40 80 C40 80 0 80 0 40 C0 40 0 0 40 0Z" // path를 그려지는 순서
+           variants={pathVariants}
+         />
+         <motion.path
+           fill="none"
+           d="M50 30 L50 -10 C50 -10 90 -10 90 30 Z" // path를 그려지는 순서
+           variants={pathVariants}
+         />
+       </motion.svg>
+   </div>
+   )
+}
+
+// ##### Loader와 useCycle (반복적인 두 로더만들기) ##############################################################################################################
+import { motion, useCycle } from "framer-motion";
+
+const loaderVariants = {
+    animation1: {
+        x: [-30, 30],
+        y: [0, -60],
+        transition: {
+            x: {
+                repeat: Infinity,
+                repeatType: 'reverse',
+                duration: 1
+            },
+            y: {
+                repeat: Infinity,
+                repeatType: 'reverse',
+                duration: 0.5,
+                ease: 'easeOut'
+            }
+        }
+    },
+    animation2: {
+        x: [0, -40],
+        y: 0,
+        transition: {
+            y: {
+                repeat: Infinity,
+                repeatType: 'reverse',
+                duration: 0.25,
+                ease: 'easeOut'
+            }
+        }
+    }
+}
+
+export default function Loader() {
+    const [animation, cycleAnimation] = useCycle("animation1", "animation2");
+  return (
+    <>
+    <motion.div className="loader" variants={loaderVariants} animate={animation} /> {/* 토글 변경된 animation */}
+    <div onClick={()=>cycleAnimation()}>Cycle Loader</div>    {/* 클릭시 토글 */}
+    </>
+  )
+}
+
+
+// ##### Dragging item  ( ) #########################################################################################################################
+
