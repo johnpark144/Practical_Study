@@ -1,9 +1,32 @@
+// ######## Email JS (이메일) ##########################################################################################################
+// npm i @emailjs/browser
+
+// ################ page.jsx
+
+
+// ######## Animate.css (애니메이션 키프레임 역할) #############################################################################################
+// npm i animate.css
+// https://animate.style/
+.text-animate {
+    display: inline-block;
+    opacity: 0;
+    animation: bounceIn 1s 1s;    // bounceIn 부분을 바꿔줌
+    min-width: 10px;
+}
+
+// ######## GreenSock (GSAP, 에니메이션) #####################################################################################################
+// npm i gsap-trial
+
+// ######## loader.css (로더) ##############################################################################################################
+// npm i loaders.css
+// npm i react-loaders
+
 // ######## react-leaflet(지도) ##########################################################################################################
 // https://react-leaflet.js.org/
 // https://cloud.maptiler.com/maps/    // 맵종류 TileLayer url
 // https://nominatim.org/release-docs/latest/api/Overview/    // Nominatim API
 
-// npm install leaflet react-leaflet
+// npm i leaflet react-leaflet
 
 // ################ page.tsx
 'use client';
@@ -198,7 +221,7 @@ export default SearchBox
   height: 100vh;
 }
 
-// ######## React-date-range (달력 선택) ######################################################################################
+// ######## React-date-range (달력 선택) ###################################################################################################
 // https://www.npmjs.com/package/react-date-range
 // npm install --save react-date-range  // 라이브러리
 // npm install --save react date-fns  // peerDependencies
@@ -524,7 +547,7 @@ import TimeAgo from "react-timeago";
   <TimeAgo date={new Date(msg.created_at)} />   {/* // 참고로 msg.created_at = Date.now() // 기존 시간 나타날때는 new Date(msg.created_at).toLocaleString() */}  
 // ... 생략 ...
 
-// ######## React-beautiful-dnd (박스 끌어다놓기) ###########################################################################################################
+// ######## React-beautiful-dnd (박스 끌어다놓기, 드래그앤 드롭) ################################################################################################
 // https://www.npmjs.com/package/react-beautiful-dnd
 // npm i react-beautiful-dnd
 // npm i @types/react-beautiful-dnd
@@ -615,4 +638,3 @@ return (
 // snapshot.isDraggingOver 는 Droppable존에 클래스변화 시켜줄때 주로 사용
 // snapshot.isDragging 는 Draggable안에 박스에 클래스변화 시켜줄때 주로 사용
 
-// ######## Framer Motion #################################################################################################################
