@@ -316,4 +316,9 @@ export default function Loader() {
 
 
 // ##### Dragging item  ( ) #########################################################################################################################
-
+<motion.div className="logo"
+    drag    // 드래그 가능하게 만듬
+    dragConstraints={{ left: 0, top: 0, right: 0, bottom: 0 }} // 이 이상 드래그 된경우 이자리로 돌아옴
+    dragElastic={0.5} // 드래그할떄 뻣뻣한 정도  (디폴트 1 // 숫자가 낮으면 뻣뻣해짐)
+   >
+</motion.div>
