@@ -6,7 +6,6 @@
 // ################ dashboard 링크에서 아이디만들고 이와같이 진행
 // add new service -> gmail -> connect acount -> continue -> create service -> Email templates -> create new template
 
-
 // Subject : New message from {{subject}}
 Hello ,
 
@@ -70,7 +69,6 @@ export const ContactUs = () => {
     </form>
   );
 };
-
 
 
 // ######## Animate.css (애니메이션 키프레임 역할) #############################################################################################
