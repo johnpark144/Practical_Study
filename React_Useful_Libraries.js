@@ -16,6 +16,35 @@
 
 // ######## GreenSock (GSAP, 에니메이션) #####################################################################################################
 // npm i gsap-trial
+// https://greensock.com/st-demos/  // docs및 참고 자료
+
+import React, { useRef, useEffect } from 'react'
+import Image from 'next/image'
+import gsap from 'gsap-trial';
+import { DrawSVGPlugin } from 'gsap-trial/DrawSVGPlugin';
+
+export default function Logo() {
+    const bgRef = useRef();
+    const outlineLogoRef = useRef();
+    const solidLogoRef = useRef();
+
+    useEffect(() => {
+        gsap.registerPlugin(DrawSVGPlugin)
+
+        gsap.timeline()
+        .to(bgRef.current, {    // useRef Dom에 해당 css를 부여
+            delay: 1,
+            duration: 10,
+            opacity: 1
+        })
+    }, []);
+
+  return (
+    <div className='logo-container' ref={bgRef}>
+        <Image ref={solidLogoRef} className='solid-logo' src={LogoS} alt="S" />
+     </div>
+  )
+}
 
 // ######## loader.css (로더) ##############################################################################################################
 // npm i loaders.css
