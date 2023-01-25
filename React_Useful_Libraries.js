@@ -48,11 +48,15 @@ export const ContactUs = () => {
     e.preventDefault();
 
     emailjs.sendForm('EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', form.current, 'EMAILJS_PUBLIC_KEY')
-      .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
-      });
+     .then(
+          (result) => {
+            alert('Your Message successfully sent!')
+            window.location.reload(false)
+          },
+          (error) => {
+            alert('Failed to send the massage, please try again')
+          }
+        )
   };
 
   return (
