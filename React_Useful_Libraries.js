@@ -50,6 +50,31 @@ export default function Logo() {
 // npm i loaders.css
 // npm i react-loaders
 
+// ################ page.jsx
+import Loader from 'react-loaders'
+export default function page() {
+  return (
+    <>
+      <Loader type="pacman" />  // pacman (타입에서 종류 확인 가능)
+    </>
+  )
+}
+
+// ################ css
+@import '~loaders.css/src/animations/pacman.scss';  // pacman scss불러옴
+.loader-active {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    height: 50px;
+    animation: fadeOut 1s 1s forwards;
+}
+
 // ######## react-leaflet(지도) ##########################################################################################################
 // https://react-leaflet.js.org/
 // https://cloud.maptiler.com/maps/    // 맵종류 TileLayer url
