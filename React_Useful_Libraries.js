@@ -254,7 +254,7 @@ function Maps({ selectPosition }) {
       />
       {selectPosition && (
         // position pin위치 // icon 핀 아이콘 // Popup안 내용은 핀눌렀을때 뜰 내용
-      <Marker position={locationSelection} icon={icon}> {/* icon안적으면  */}
+      <Marker position={locationSelection} icon={icon}> 
         <Popup>
           <div>{selectPosition?.display_name}</div>
         </Popup>
