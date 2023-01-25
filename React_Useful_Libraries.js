@@ -1,7 +1,76 @@
 // ######## Email JS (이메일) ##########################################################################################################
 // npm i @emailjs/browser
+// https://www.emailjs.com/docs/examples/reactjs/  // docs
+// https://dashboard.emailjs.com/admin  // dashboard
+
+// ################ dashboard 링크에서 아이디만들고 이와같이 진행
+// add new service -> gmail -> connect acount -> continue -> create service -> Email templates -> create new template
+
+
+// Subject : New message from {{subject}}
+Hello ,
+
+You got a new message from {{name}}:
+
+Email ID : {{email}}
+
+Message : {{message}}
+
+// From Name : {{name}}
+
+// ################ .env (It's sample)
+EMAILJS_PUBLIC_KEY="Xo9YR5YY5ws22PwtP"
+EMAILJS_TEMPLATE_ID="template_lcbqydj"
+EMAILJS_SERVICE_ID="service_isf8o79"
+
+// ################ next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    appDir: true,
+  },
+  env: {
+    EMAILJS_PRIVATE_KEY: process.env.EMAILJS_PRIVATE_KEY,
+    EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID,
+    EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID,
+  }
+}
+
+module.exports = nextConfig
 
 // ################ page.jsx
+import React, { useRef } from 'react';
+import emailjs from '@emailjs/browser';
+
+export const ContactUs = () => {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm('EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', form.current, 'EMAILJS_PUBLIC_KEY')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
+  };
+
+  return (
+    <form ref={form} onSubmit={sendEmail}>
+      <label>Name</label>
+      <input type="text" name="name" />
+      <label>Email</label>
+      <input type="email" name="email" />
+      <label>Subject</label>
+      <input type="text" name="subject" />
+      <label>Message</label>
+      <textarea name="message" />
+      <input type="submit" value="Send" />
+    </form>
+  );
+};
+
 
 
 // ######## Animate.css (애니메이션 키프레임 역할) #############################################################################################
