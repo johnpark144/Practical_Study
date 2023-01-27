@@ -1,2 +1,29 @@
 // npm i sass
 
+// ##################
+.nav-bar {
+    background: #181818;
+
+    .logo {
+        display: block;
+
+        img {
+            display: block;
+            margin: 8px auto;
+            width: 24px;
+            height: auto;
+
+            &.sub-logo {    // &는 여기서 img를뜻함
+                width: 50px;
+            }
+        }
+    }
+}
+
+// ##################
+ // Scss 안에서 for문
+@for $i from 1 through 46 {
+    .text-animate._#{$i} {
+        animation-delay: #{$i / 10}s;
+    }
+}
