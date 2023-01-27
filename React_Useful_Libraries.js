@@ -78,6 +78,9 @@ export const ContactUs = () => {
 // ######## Animate.css (애니메이션 키프레임 역할) #############################################################################################
 // npm i animate.css
 // https://animate.style/
+
+@import 'animate.css';
+
 .text-animate {
     display: inline-block;
     opacity: 0;
@@ -133,6 +136,7 @@ export default function page() {
 
 // ################ css
 @import '~loaders.css/src/animations/pacman.scss';  // pacman scss불러옴
+
 .loader-active {
     display: block;
     position: absolute;
