@@ -19,6 +19,20 @@ module.exports = {
   plugins: [],
 }
 
+// next js tailwind.config.js 설정
+module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+
 // index.css
 @tailwind base;
 @tailwind components;
