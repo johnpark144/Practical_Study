@@ -1,3 +1,16 @@
+// ######## 전체 라이브러리들 ##############################################################################
+ctrl f -> react-hook-form / react-simple-typewriter / Email JS / Animate.css / GreenSock / loader.css / react-leaflet / React-date-range / lodash debounce /
+    React-icons / Next-Themes / react-timeago / React-beautiful-dnd
+
+
+// ######## react-hook-form (리액트 훅 form) ##############################################################################
+// npm i react-hook-form
+
+
+
+
+
+
 // ######## react-simple-typewriter (타입라이터, 글쓰기효과) ##############################################################################
 // npm i react-simple-typewriter
 // https://www.npmjs.com/package/react-simple-typewriter
