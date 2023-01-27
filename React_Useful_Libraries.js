@@ -1,3 +1,30 @@
+// ######## react-simple-typewriter (타입라이터, 글쓰기효과) ##############################################################################
+// npm i react-simple-typewriter
+// https://www.npmjs.com/package/react-simple-typewriter
+
+// ################ page.jsx
+'use client'
+import { Cursor, useTypewriter } from "react-simple-typewriter"
+
+export default function Hero() {
+    const [text, count] = useTypewriter({   // 타이핑 속성
+        words: [
+            "Hi, My Name is John Park",
+            "who like to web-develope",
+            "Thank you for visiting my portfolio website",
+        ],
+        loop: true,
+        delaySpeed: 2000,
+    })
+
+  return (
+    <div className="bg-[rgb(36,36,36)] text-white h-screen">
+        <span>{text}</span>  {/* 타이핑 글자 나오는 곳 */}
+        <Cursor cursorColor="#F7AB0A" /> {/* 커서 위치 */}
+    </div>
+  )
+}
+
 // ######## Email JS (이메일) ##########################################################################################################
 // npm i @emailjs/browser
 // https://www.emailjs.com/docs/examples/reactjs/  // docs
