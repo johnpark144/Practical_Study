@@ -5,7 +5,7 @@ ctrl f -> react-hook-form / react-simple-typewriter / Email JS / Animate.css / G
 
 // ######## react-hook-form (리액트 훅 form) ##############################################################################
 // npm i react-hook-form
-// https://react-hook-form.com/
+// https://react-hook-form.com/     // 타입스크립트용 예시도 
 // 리액트에서 폼형식을 사용할때 필요했던 input에 onchange함수 만들어줘야했던 번거로움을 덜어주고 폼을 심플하게 만들어줌
 
 // ################ ContactMe.jsx
