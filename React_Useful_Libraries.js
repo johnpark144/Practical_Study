@@ -2,7 +2,7 @@
 ctrl f -> react-scroll-horizontal/ tailwind-scrollbar / react-hook-form / react-simple-typewriter / Email JS / Animate.css / GreenSock / loader.css 
 / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes / react-timeago / React-beautiful-dnd
 
-// ######## react-scroll-horizontal (가로 스크롤) ####################################################################################################
+// ######## react-scroll-horizontal (가로 스크롤, 대안있으면 바꾸기) ##########################################################################################
 // npm i react-scroll-horizontal
 // npm i react-scroll-horizontal --legacy-peer-deps // 위에거 안되면
 // https://www.npmjs.com/package/react-scroll-horizontal
