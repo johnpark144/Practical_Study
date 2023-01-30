@@ -1,8 +1,17 @@
 // ######## 전체 라이브러리들 ##############################################################################
-ctrl f -> tailwind-scrollbar / react-hook-form / react-simple-typewriter / Email JS / Animate.css / GreenSock / loader.css / react-leaflet / React-date-range / lodash debounce /
-    React-icons / Next-Themes / react-timeago / React-beautiful-dnd
+ctrl f -> react-scroll-horizontal/ tailwind-scrollbar / react-hook-form / react-simple-typewriter / Email JS / Animate.css / GreenSock / loader.css 
+/ react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes / react-timeago / React-beautiful-dnd
 
-// ######## tailwind-scrollbar ####################################################################################################
+// ######## react-scroll-horizontal (가로 스크롤) ####################################################################################################
+// npm i react-scroll-horizontal
+// npm i react-scroll-horizontal --legacy-peer-deps // 위에거 안되면
+// https://www.npmjs.com/package/react-scroll-horizontal
+
+// ######## 
+
+
+
+// ######## tailwind-scrollbar (스크롤 색 바꾸기) ####################################################################################################
 // npm install --save-dev tailwind-scrollbar
 // https://www.npmjs.com/package/tailwind-scrollbar
 
