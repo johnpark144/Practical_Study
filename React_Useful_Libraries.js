@@ -12,7 +12,7 @@ plugins: [
     require('tailwind-scrollbar'),
 ],
 // ########
-    <div className='scrollbar scrollbar-track-gray-400/20 scrollbar-thumb-[#f7ab0a]/80 '>
+    <div className='scrollbar scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#f7ab0a]/80 '>
 
 // ######## react-hook-form (리액트 훅 form) #########################################################################################
 // npm i react-hook-form
