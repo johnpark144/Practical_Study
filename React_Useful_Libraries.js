@@ -13,15 +13,20 @@ import { useForm } from "react-hook-form";
 
 export default function ContactMe() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data); // 출력 예시 : {name: '박영환', email: 'vyckd354@gmail.com'}
+    
+    const onSubmit = data => { // 출력 예시 : {name: '박영환', email: 'vyckd354@gmail.com'}
+      window.location.href = `mailto:vyckd354@gmail?subject=${data.subject}&body=Hi my name is ${data.name} ${data.message} (${data.email})`
+    }  // 쿼리 보내는법 (mailto:보낼사람주소)
   
     return (
       // ...register("") 부분은 객체에서 key부분
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register("name")} placeholder="Name" type="text" />
-        <input {...register("email", { required: true })} placeholder="Email" type="email"  />
+      <form className="flex flex-col space-y-2 text-black w-fit mx-auto" onSubmit={handleSubmit(onSubmit)}>
+        <input {...register("name")} placeholder="Name" className="contactInput" type="text" />
+        <input {...register("email", { required: true })} placeholder="Email" className="contactInput" type="email"  />
         {errors.exampleRequired && <span>This field is required</span>}
-        <input type="submit" />
+        <input {...register("subject")} placeholder="Subject" className="contactInput" type="text" />
+        <input {...register("message")} placeholder="Message" className="contactInput" type="text" />
+        <input type="submit" className="bg-[#f7ab0a] py-5 px-10 rounded-md text-black font-bold text-lg" />
       </form>
     );
   }
