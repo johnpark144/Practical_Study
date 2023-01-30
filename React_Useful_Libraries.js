@@ -13,12 +13,13 @@ import { useForm } from "react-hook-form";
 
 export default function ContactMe() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data); // 
+    const onSubmit = data => console.log(data); // 출력 예시 : {name: '박영환', email: 'vyckd354@gmail.com'}
   
     return (
+      // ...register("") 부분은 객체에서 key부분
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register("name")} placeholder="Name" className="contactInput" type="text" />
-        <input {...register("exampleRequired", { required: true })} placeholder="Email" className="contactInput" type="email"  />
+        <input {...register("name")} placeholder="Name" type="text" />
+        <input {...register("email", { required: true })} placeholder="Email" type="email"  />
         {errors.exampleRequired && <span>This field is required</span>}
         <input type="submit" />
       </form>
