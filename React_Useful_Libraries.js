@@ -1,6 +1,27 @@
 // ######## 전체 라이브러리들 ##############################################################################
-ctrl f -> react-scroll-horizontal/ tailwind-scrollbar / react-hook-form / react-simple-typewriter / Email JS / Animate.css / GreenSock / loader.css 
+ctrl f -> react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form / react-simple-typewriter / Email JS / Animate.css / GreenSock / loader.css 
 / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes / react-timeago / React-beautiful-dnd
+
+// ######## react-lottie-player (움직이는 이미지) ##########################################################################################
+// npm i --save react-lottie-player
+// npm i --save react-lottie-player --legacy-peer-deps  // 위에거 안되면
+// https://www.npmjs.com/package/react-lottie-player    // 라이브러리
+// https://lottiefiles.com/     // 파일을 다운
+
+// ######## ContactMe.jsx
+import Lottie from 'react-lottie-player'
+import lottieJson from '../../public/computer.json' // 파일 위치
+
+export default function ContactMe() {
+return (<>
+      <Lottie
+      loop
+      animationData={lottieJson}
+      play
+      style={{ width: 150, height: 150 }}
+    />
+</>);
+}
 
 // ######## react-scroll-horizontal (가로 스크롤, 대안있으면 바꾸기) ##########################################################################################
 // npm i react-scroll-horizontal
