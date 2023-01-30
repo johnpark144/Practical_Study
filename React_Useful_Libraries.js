@@ -8,8 +8,19 @@ ctrl f -> react-scroll-horizontal/ tailwind-scrollbar / react-hook-form / react-
 // https://www.npmjs.com/package/react-scroll-horizontal
 
 // ######## 
+import HorizontalScroll from 'react-scroll-horizontal';
 
-
+return
+  <HorizontalScroll
+    pageLock      = { bool }
+    reverseScroll = { bool }
+    style         = { object }
+    config        = {{ stiffness: int, damping: int }}
+    className     = { string }
+    animValues    = { int }
+    >
+     { children }
+  </HorizontalScroll>
 
 // ######## tailwind-scrollbar (스크롤 색 바꾸기) ####################################################################################################
 // npm install --save-dev tailwind-scrollbar
