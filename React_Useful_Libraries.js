@@ -5,11 +5,25 @@ ctrl f -> react-hook-form / react-simple-typewriter / Email JS / Animate.css / G
 
 // ######## react-hook-form (리액트 훅 form) ##############################################################################
 // npm i react-hook-form
+// https://react-hook-form.com/
+// 리액트에서 폼형식을 사용할때 필요했던 input에 onchange함수 만들어줘야했던 번거로움을 덜어주고 폼을 심플하게 만들어줌
 
+// ################ ContactMe.jsx
+import { useForm } from "react-hook-form";
 
-
-
-
+export default function ContactMe() {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const onSubmit = data => console.log(data); // 
+  
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input {...register("name")} placeholder="Name" className="contactInput" type="text" />
+        <input {...register("exampleRequired", { required: true })} placeholder="Email" className="contactInput" type="email"  />
+        {errors.exampleRequired && <span>This field is required</span>}
+        <input type="submit" />
+      </form>
+    );
+  }
 
 // ######## react-simple-typewriter (타입라이터, 글쓰기효과) ##############################################################################
 // npm i react-simple-typewriter
