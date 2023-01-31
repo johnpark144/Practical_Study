@@ -2,10 +2,10 @@
 // npm i styled-components
 // npm install styled-components@^5.0.0 react@^16.8 react-dom@^16.8 react-is@^16.8  // 위에거 안되면 업데이트
 
-// ######## GSAP (스크롤 에니메이션) #####################################################################################################
+// ######## GSAP (ScrollTrigger 애니메이션) #####################################################################################################
 // npm i gsap
 // npm i gsap --legacy-peer-deps  // 위에거 안되면
-// https://greensock.com/st-demos/  // docs및 참고 자료
+// https://greensock.com/docs/v3/Plugins/ScrollTrigger  // ScrollTrigger docs및 참고 자료
 
 // ######## three js #########################################################################################################
 // npm install three @react-three/fiber
@@ -26,7 +26,7 @@
 // JS파일 3d파일(glb파일) 둘다 필요
 
 
-// #########################################################################################################################
+// ######## Styled-components 기본 시작 #######################################################################################################
 // ################ styles/GlobalStyle.js
 import { createGlobalStyle } from "styled-components";
 import fontLight from "../assets/fonts/SourceSansPro-Light.ttf";
@@ -251,7 +251,8 @@ export default function HeroSection() {
   )
 }
 
-// ################ PhoneModel.jsx (three js)
+// ######## three js 기본  ################################################################################################################
+// ################ PhoneModel.jsx
 import React from 'react'
 import styled from 'styled-components';
 import { Canvas } from '@react-three/fiber';
@@ -289,19 +290,19 @@ export default function PhoneModel() {
 }
 
 
-// ################ three js 이용하기
+// ################ 3d 다운받아 JS파일로 만들기
 // https://github.com/pmndrs/gltfjsx    // glb 파일 입력방법
 // https://sketchfab.com/feed // 3d파일 다운로드 (glb 파일)
 
 // 3d glb파일 public폴더에 저장 -> cmd에서 public폴더로 -> npx gltfjsx apple_iphone_13_pro_max.glb     // npx gltfjsx (다운받은 glb or gltf  파일).glb | .gltf
 // JS파일 3d파일(glb파일) 둘다 필요
 
-// ################ PhoneModel.jsx
+// ################ PhoneModel.jsx (3d파일 불러오기, 주변환경, 처음 Zoom크기)
 import React from 'react'
 import styled from 'styled-components';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { Model } from './../../public/Apple_iphone_13_pro_max';    // 파일 경로
+import { Environment, OrbitControls } from '@react-three/drei';
+import { Model } from './../../public/Apple_iphone_13_pro_max';
 
 const Container = styled.div`
   width: 100vw;
@@ -316,14 +317,61 @@ const Container = styled.div`
 export default function PhoneModel() {
   return (
     <Container id="phone-model">
-        <Canvas>
-            <ambientLight intensity={0.8} /> 
-            <directionalLight position={[1,0,0]} />
-              {/* 다운받은 3D 생성 */}
-              <Model />     
+      {/* Canvas // camera={{fov: 14}} 는 처음 Zoom크기 */}
+        <Canvas camera={{fov: 14}}>
+            <ambientLight intensity={1.25} /> 
+            <directionalLight intensity={0.4} position={[1,0,0]} />
+            {/* 다운받은 3D 생성 */}
+              <Model />
+            {/* 주변환경 세팅  https://github.com/pmndrs/drei#environment  */}
+              <Environment preset='night' />
             <OrbitControls />
         </Canvas>
     </Container>
+  )
+}
+
+// ######## GSAP (ScrollTrigger) ################################################################################################################
+// https://greensock.com/docs/v3/Plugins/ScrollTrigger
+
+// ################ Quote.jsx
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useLayoutEffect, useRef } from 'react';
+
+// ... 생략...
+export default function Quote() {
+  gsap.registerPlugin(ScrollTrigger);  // gsap에 ScrollTrigger 사용한다고 선언 (플러그인)
+  const sectionRef = useRef(null);
+
+  useLayoutEffect(()=>{
+    let Elem = sectionRef.current;
+
+    let trigger = ScrollTrigger.create({
+      trigger: Elem,  // 같이 움직일 Dom
+      start: "top+=200 top",  // 시작 포인트
+      end: "bottom-=500",   // 끝 포인트
+      pin: true,  // 같이 움직이도록 고정
+      markers: true,  // start end 포인트 표시 (개발자용)
+      pinSpacing: false,
+    });
+
+    return () => {
+      if(trigger) trigger.kill();
+    }
+  }, [])
+
+  return (
+    // 컴포넌트로 감싼부분들 적용
+    <Section ref={sectionRef}>
+        <TextContainer>
+            <Text delay="0s"><span>&#8220; You can't connect the dots looking forward;</span></Text>
+            <Text delay="0.4s"><span>&nbsp;&nbsp;&nbsp;you can only connect them looking backward.</span></Text>
+            <Text delay="0.8s"><span>&nbsp;&nbsp;&nbsp;so you have to trust that the dots</span></Text>
+            <Text delay="1.2s"><span> &nbsp;&nbsp;&nbsp;will somehow connect in your future. &#8221;</span></Text>
+            <Text delay="1.6s"><span>&#x23AF; Steve Jobs</span></Text>
+        </TextContainer>
+    </Section>
   )
 }
 
