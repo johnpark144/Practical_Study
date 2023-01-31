@@ -376,3 +376,35 @@ export default function Quote() {
 }
 
 
+// ################ Model.jsx
+
+import React, { useRef, useLayoutEffect } from 'react'
+import { useGLTF } from '@react-three/drei'
+import gsap from 'gsap';
+import { useThree } from '@react-three/fiber';
+
+export function Model(props) {
+  const { nodes, materials } = useGLTF('/apple_iphone_13_pro_max.glb')
+
+  const group = useRef()
+  let camera = useThree(state => state.camera) // useThree(state)의  state는 3d 정보
+
+  useLayoutEffect(() => {
+    let t1 = gsap.timeline({
+      scrollTrigger:{
+        trigger:"#phone-model",
+        start:"top+=100 top",
+        end:"bottom bottom",
+      }
+    })
+    t1.fromTo(camera.position, {y:2}, {y:0})  // 스크롤이 start 포인트닿을때 camera.position을 변경시킴
+  },[])
+
+  return (
+          // ... 생략 ...
+      )
+}
+
+useGLTF.preload('/apple_iphone_13_pro_max.glb')
+
+
