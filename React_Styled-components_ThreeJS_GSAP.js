@@ -16,8 +16,15 @@
 // https://www.npmjs.com/package/@react-three/fiber
 // https://www.npmjs.com/package/@react-three/drei
 
-// https://sketchfab.com/feed // 3d파일 다운로드 (glb 파일)
+// https://docs.pmnd.rs/react-three-fiber/getting-started/introduction  // react-three/fiber docs
+// https://github.com/pmndrs/drei   // react-three/drei docs
+
 // https://github.com/pmndrs/gltfjsx    // glb 파일 입력방법
+// https://sketchfab.com/feed // 3d파일 다운로드 (glb 파일)
+
+// 3d glb파일 public폴더에 저장 -> cmd에서 public폴더로 -> npx gltfjsx apple_iphone_13_pro_max.glb     // npx gltfjsx (다운받은 glb or gltf  파일).glb | .gltf
+// JS파일 3d파일(glb파일) 둘다 필요
+
 
 // #########################################################################################################################
 // ################ styles/GlobalStyle.js
