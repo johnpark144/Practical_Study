@@ -166,7 +166,7 @@ export default function Quote() {
     // 컴포넌트로 감싼부분들 적용
     <Section>
         <TextContainer>
-            <Text delay="0s"><span>&#8220; You can't connect the dots looking forward;</span></Text>
+            <Text delay="0s"><span>&#8220; You can't connect the dots looking forward;</span></Text>      {/* Prop을 전달해줘서 Styled-components css효과를 줌 */}
             <Text delay="0.4s"><span>&nbsp;&nbsp;&nbsp;you can only connect them looking backward.</span></Text>
             <Text delay="0.8s"><span>&nbsp;&nbsp;&nbsp;so you have to trust that the dots</span></Text>
             <Text delay="1.2s"><span> &nbsp;&nbsp;&nbsp;will somehow connect in your future. &#8221;</span></Text>
@@ -390,9 +390,9 @@ export function Model(props) {
   let camera = useThree(state => state.camera) // useThree(state)의  state는 3d 정보
 
   useLayoutEffect(() => {
-    let t1 = gsap.timeline({
+    let t1 = gsap.timeline({    // timeline의 scrollTrigger는 말그대로 이 기간동안 fromTo, to, from을 함
       scrollTrigger:{
-        trigger:"#phone-model",
+        trigger:"#phone-model", // html Id처럼 dom불러오기 가능
         start:"top+=100 top",
         end:"bottom bottom",
       }
@@ -407,4 +407,95 @@ export function Model(props) {
 
 useGLTF.preload('/apple_iphone_13_pro_max.glb')
 
+// ################ DesignSection.jsx
+import gsap from "gsap";
+import React from "react";
+import { useLayoutEffect } from "react";
+import { useRef } from "react";
+import styled from "styled-components";
 
+const Section = styled.section`
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  
+  background-color: var(--white);
+  overflow: hidden;
+`
+
+const TextContainer = styled.p`
+  width: 100%;
+  height: 50vh;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  color: var(--dark);
+  span {
+    font-size: var(--fontBig);
+    width: 90%;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+`
+
+const TextContainer2 = styled.p`
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  color: var(--dark);
+  span {
+    font-size: var(--fontxxxl);
+    width: 80%;
+    font-weight: 600;
+    text-transform: capitalize;
+    align-self: flex-end;
+    text-align: right;
+  }
+`
+
+export default function DesignSection() {
+    const container = useRef(null);
+    const textOne = useRef(null);
+    const textTwo = useRef(null);
+
+    useLayoutEffect(() => {
+        let t1 = gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top-=400 top",
+              end: "bottom top",
+              scrub: 1, // 부드럽게 스크러빙, 1초가 걸립니다.
+            },
+          })
+          .fromTo(textOne.current, { x: 0 }, { x: "10%" }, "key1")
+          .fromTo(textTwo.current, { x: 0 }, { x: "-10%" }, "key1");
+    
+        return () => {
+          if (t1) t1.kill();
+        };
+      }, []);
+
+  return (
+    <Section ref={container}>
+      <TextContainer ref={textOne}>
+        <span>Flaw-less design with strong durability.</span>
+        </TextContainer>
+        <TextContainer2 ref={textTwo}>
+        <span>Flat-edge design with toughest smartphone glass.</span>
+        </TextContainer2>
+    </Section>
+  )
+}
+
+// #########################################################################################################################################################
