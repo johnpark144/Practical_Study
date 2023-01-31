@@ -1,6 +1,15 @@
 // ######## 전체 라이브러리들 ##############################################################################
-ctrl f -> react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form / react-simple-typewriter / Email JS / Animate.css / GreenSock / loader.css 
-/ react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes / react-timeago / React-beautiful-dnd
+ctrl f -> / GSAP / three js / styled-components / react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
+/ react-simple-typewriter / Email JS / Animate.css / loader.css / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes
+/ react-timeago / React-beautiful-dnd
+
+// ######## GSAP (에니메이션) #####################################################################################################
+// npm i gsap
+// npm i gsap --legacy-peer-deps  // 위에거 안되면
+// https://greensock.com/st-demos/  // docs및 참고 자료
+
+// ######## 
+
 
 // ########  (three js) ##########################################################################################
 // npm install three @react-three/fiber
@@ -215,38 +224,6 @@ export const ContactUs = () => {
     min-width: 10px;
 }
 
-
-// ######## GreenSock (GSAP, 에니메이션) #####################################################################################################
-// npm i gsap-trial
-// https://greensock.com/st-demos/  // docs및 참고 자료
-
-import React, { useRef, useEffect } from 'react'
-import Image from 'next/image'
-import gsap from 'gsap-trial';
-import { DrawSVGPlugin } from 'gsap-trial/DrawSVGPlugin';
-
-export default function Logo() {
-    const bgRef = useRef();
-    const outlineLogoRef = useRef();
-    const solidLogoRef = useRef();
-
-    useEffect(() => {
-        gsap.registerPlugin(DrawSVGPlugin)
-
-        gsap.timeline()
-        .to(bgRef.current, {    // useRef Dom에 해당 css를 부여
-            delay: 1,
-            duration: 10,
-            opacity: 1
-        })
-    }, []);
-
-  return (
-    <div className='logo-container' ref={bgRef}>
-        <Image ref={solidLogoRef} className='solid-logo' src={LogoS} alt="S" />
-     </div>
-  )
-}
 
 // ######## loader.css (로더) ##############################################################################################################
 // npm i loaders.css
