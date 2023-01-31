@@ -2,6 +2,21 @@
 ctrl f -> react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form / react-simple-typewriter / Email JS / Animate.css / GreenSock / loader.css 
 / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes / react-timeago / React-beautiful-dnd
 
+// ########  (three js) ##########################################################################################
+// npm install three @react-three/fiber
+// npm install @react-three/drei
+// --legacy-peer-deps // 위에거 안되면 이거 붙여서
+
+// https://www.npmjs.com/package/@react-three/fiber
+// https://www.npmjs.com/package/@react-three/drei
+
+
+
+// ######## styled-components ##########################################################################################
+// npm i styled-components
+// npm install styled-components@^5.0.0 react@^16.8 react-dom@^16.8 react-is@^16.8  // 위에거 안되면 업데이트
+
+
 // ######## react-lottie-player (움직이는 이미지) ##########################################################################################
 // npm i --save react-lottie-player
 // npm i --save react-lottie-player --legacy-peer-deps  // 위에거 안되면
