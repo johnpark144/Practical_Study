@@ -1,0 +1,816 @@
+$primary-color: #ffd700;
+
+@import 'animate.css';
+@import '~loaders.css/src/animations/pacman.scss';
+@import '~loaders.css/src/animations/cube-transition.scss';
+@import '~loaders.css/src/animations/ball-grid-pulse.scss';
+@import '~loaders.css/src/animations/square-spin.scss';
+@import url("leaflet/dist/leaflet.css");
+
+// Map을 위한 기본 들어가야할 css
+.leaflet-container {    
+    width: 100%;
+    height: 100%;
+    position: relative;
+    opacity: 0;
+    animation: backInRight 1s 1.2s forwards;
+  }
+
+// ######### loader
+.loader-active {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    height: 50px;
+    animation: fadeOut 1s 1s forwards;
+}
+
+// ######### layout
+.page {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.top-tags {
+    bottom: auto;
+    top: 35px;
+}
+
+.tags {
+    color: #ffd700;
+    opacity: 0.6;
+    position: absolute;
+    bottom: 0;
+    left: 120px;
+    font-size: 18px;
+}
+
+.bottom-tag-html {
+    margin-left: -20px;
+}
+
+// ######### Sidebar
+.nav-bar {
+    background: #181818;
+    width: 60px;
+    height: 100vh;
+    position: relative;
+    top: 0;
+    z-index: 3;
+    min-height: 500px;
+
+    .logo {
+        display: block;
+        padding: 8px 0;
+
+        img {
+            display: block;
+            margin: 8px auto;
+            width: 24px;
+            height: auto;
+
+            &.sub-logo {
+                width: 50px;
+            }
+        }
+    }
+}
+
+nav {
+    display: block;
+    text-align: center;
+    position: absolute;
+    height: 210px;
+    top: 50%;
+    margin-top: -120px;
+    width: 100%;
+
+    a {
+        font-size: 22px;
+        color: #4d4d4e;
+        display: block;
+        line-height: 51px;
+        height: 51px;
+        position: relative;
+        text-decoration: none;
+
+        i {
+            transition: all 0.3s ease-out;
+        }
+
+        &:hover {
+            color: #ffd700;
+
+            svg {
+                opacity: 0;
+            }
+
+            &:after {
+                opacity: 1;
+            }
+        }
+
+        &:after {
+            content: '';
+            font-size: 9px;
+            letter-spacing: 2px;
+            position: absolute;
+            bottom: 0;
+            display: block;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+
+        &:first-child {
+            &::after {
+                content: 'HOME';
+            }
+        }
+    }
+
+    a.about-link {
+        &:after {
+            content: 'ABOUT';
+        }
+    }
+
+    a.contact-link {
+        &:after {
+            content: 'CONTACT';
+        }
+    }
+
+    a.portfolio-link {
+        &:after {
+            content: 'PORTFOLIO';
+        }
+    }
+
+    a.active {
+        svg {
+            color: #ffd700;
+        }
+    }
+}
+
+ul {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: block;
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+
+    li {
+        a {
+            padding: 7px 0;
+            display: block;
+            font-size: 15px;
+            line-height: 16px;
+
+            &:hover {
+                color: #ffd700;
+            }
+        }
+    }
+}
+
+// ########## Home (Portfolio1) ######################################################################
+.container {
+    width: 100%;
+    will-change: contents;
+    height: 90%;
+    min-height: 566px;
+    position: absolute;
+    opacity: 0;
+    top: 5%;
+    margin: 0 auto;
+    z-index: 1;
+    transform-style: preserve-3d;
+    animation: fadeIn 1s forwards;
+    animation-delay: 1s;
+}
+
+.home-page {
+    .text-zone {
+        position: absolute;
+        left: 10%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40%;
+        max-height: 90%;
+    }
+
+    h1 {
+        color: #fff;
+        font-size: 53px;
+        margin: 0;
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 400;
+
+        &::before {
+            content: '<h1>';
+            color: #ffd700;
+            font-size: 18px;
+            position: absolute;
+            margin-top: -40px;
+            left: 15px;
+            opacity: 0.6;
+        }
+
+        &::after {
+            content: '<h1/>';
+            color: #ffd700;
+            font-size: 18px;
+            position: absolute;
+            margin-top: 18px;
+            margin-left: 20px;
+            animation: fadeIn 1s 1.7s backwards;
+            opacity: 0.6;
+        }
+
+        img {
+            width: 32px;
+            height: 42px;
+            margin-left: 20px;
+            opacity: 0;
+            height: auto;
+            animation: rotateIn 1s 1.4s linear both;
+        }
+    }
+
+    h2 {
+        color: #8d8d8d;
+        margin-top: 20px;
+        font-weight: 400;
+        font-size: 11px;
+        font-family: sans-serif;
+        letter-spacing: 3px;
+        animation: fadeIn 1s 1.8s backwards;
+    }
+
+    .flat-button {
+        color: #ffd700;
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: 4px;
+        font-family: sans-serif;
+        text-decoration: none;
+        padding: 10px 18px;
+        border: 1px solid #ffd700;
+        margin-top: 25px;
+        float: left;
+        animation: fadeIn 1s 1.8s backwards;
+        white-space: nowrap;
+
+        &:hover {
+            background: #ffd700;
+            color: #333;
+        }
+    }
+}
+
+// ########## AnimatedLetters (애니메이션 글자) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.text-animate {
+    display: inline-block;
+    opacity: 0;
+    animation: bounceIn 1s 1s forwards; // Animate.css
+    min-width: 10px;
+}
+
+.text-animate-hover {
+    min-width: 10px;
+    display: inline-block;
+    animation-fill-mode: both;
+
+    &:hover {
+        animation: rubberBand 1s;
+        color: #ffd700;
+    }
+}
+
+ // Scss 안에서 for문
+@for $i from 1 through 46 {
+    .text-animate._#{$i} {
+        animation-delay: #{$i / 10}s;
+    }
+}
+
+// ########## Logo
+.logo-container {
+    z-index: 0;
+    width: 400px;
+    height: 609px;
+    position: absolute;
+    top: 0;
+    right: 15%;
+    bottom: 0;
+    left: auto;
+    margin: auto;
+    opacity: 0;
+
+    svg {
+        width: 100%;
+        height: auto;
+        bottom: 0;
+        transform: rotateZ(30deg) !important;
+    }
+
+    .solid-logo {
+        position: absolute;
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: 0;
+        margin: auto;
+        width: 100%;
+        opacity: 0;
+        transform: rotateZ(30deg) !important;
+        z-index: 1;
+        height: 642px;
+    }
+}
+
+.svg-container {
+    stroke: #ffd700;
+    stroke-width: 10;
+}
+
+// ########## About ######################################################################################
+.about-page {
+    .text-zone {
+        position: absolute;
+        left: 10%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 35%;
+        vertical-align: middle;
+    }
+
+    h1 {
+        font-size: 53px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #ffd700;
+        font-weight: 400;
+        margin-top: 0;
+        position: relative;
+        margin-bottom: 40px;
+        left: 10px;
+
+        &::before {
+            content: '<h1>';
+            color: #ffd700;
+            font-size: 18px;
+            position: absolute;
+            margin-top: -10px;
+            left: 10px;
+            opacity: 0.6;
+            line-height: 18px;
+        }
+
+        &::after {
+            content: '<h1/>';
+            color: #ffd700;
+            font-size: 18px;
+            line-height: 18px;
+            position: absolute;
+            left: -30px;
+            bottom: -20px;
+            margin-left: 20px;
+            opacity: 0.6;
+        }
+    }
+
+    p {
+        font-size: 16px;
+        color: #fff;
+        font-family: sans-serif;
+        font-weight: 300;
+        min-width: fit-content;
+        animation: pulse 1s;
+
+        &:nth-of-type(1) {
+            animation-delay: 1.1s;
+        }
+
+        &:nth-of-type(2) {
+            animation-delay: 1.2s;
+        }
+
+        &:nth-of-type(3) {
+            animation-delay: 1.3s;
+        }
+    }
+
+// ######### 큐브 애니메이션 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    .stage-cube-cont {
+        width: 50%;
+        height: 100%;
+        top: 0;
+        padding-top: 18%;
+        margin-left: 0;
+        position: absolute;
+        right: 0;
+        overflow: hidden;
+    }
+
+    .cubespinner {
+        animation-name: spincube;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        animation-duration: 12s;
+        transform-style: preserve-3d;
+        transform-origin: 150px 150px 0;
+        margin-left: calc(50% - 100px);
+
+        div {
+            // 모든면이 공통으로 가진 속성
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 1px solid #ccc;
+            background: rgba(255, 255, 255, 0.74);
+            font-size: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px 0px lightyellow;
+        }
+
+        // 첫위치
+        .face1 {
+            transform: translateZ(150px);
+            color: #52bfdf;
+        }
+
+        .face2 {
+            transform: rotateY(90deg) translateZ(150px);
+            color: #20b375;
+        }
+
+        .face3 {
+            transform: rotateY(90deg) rotateX(90deg) translateZ(150px);
+            color: #5d605f;
+        }
+
+        .face4 {
+            transform: rotateY(180deg) rotateZ(90deg) translateZ(150px);
+            color: #1634b9;
+        }
+
+        .face5 {
+            transform: rotateY(-90deg) rotateZ(90deg) translateZ(150px);
+            color: #cedd00;
+        }
+
+        .face6 {
+            transform: rotateX(-90deg) translateZ(150px);
+            color: #1e6ee6;
+        }
+    }
+
+    @keyframes spincube {
+
+        // 시간에 따른 움직임
+        from,
+        to {
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        }
+
+        16% {
+            transform: rotateY(-90deg) rotateZ(90deg);
+        }
+
+        33% {
+            transform: rotateY(-90deg);
+        }
+
+        50% {
+            transform: rotateY(-180deg) rotateZ(90deg);
+        }
+
+        66% {
+            transform: rotateY(-270deg) rotateX(90deg);
+        }
+
+        83% {
+            transform: rotateX(90deg);
+        }
+    }
+}
+
+// ########## Contact ######################################################################################
+// ######### Email form !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.contact-page {
+    .text-zone {
+        position: absolute;
+        left: 10%;
+        top: calc(50% - 200px);
+        transform: translateY(-50%);
+        width: 35%;
+        vertical-align: middle;
+
+        h1 {
+            font-size: 53px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffd700;
+            font-weight: 400;
+            margin-top: 0;
+            position: relative;
+            margin-bottom: 40px;
+            left: 10px;
+
+            &::before {
+                content: '<h1>';
+                color: #ffd700;
+                font-size: 18px;
+                position: absolute;
+                margin-top: -10px;
+                left: 10px;
+                opacity: 0.6;
+                line-height: 18px;
+            }
+
+            &::after {
+                content: '<h1/>';
+                color: #ffd700;
+                font-size: 18px;
+                line-height: 18px;
+                position: absolute;
+                left: -30px;
+                bottom: -20px;
+                margin-left: 20px;
+                opacity: 0.6;
+            }
+        }
+
+        p {
+            font-size: 16px;
+            color: #fff;
+            font-family: sans-serif;
+            font-weight: 300;
+            min-width: fit-content;
+            animation: pulse 1s;
+            animation-delay: 1.1s;
+        }
+    }
+
+    .contact-form {
+        width: 100%;
+        margin-top: 20px;
+        position: relative;
+        top: 350px;
+
+        ul {
+            padding: 0;
+            margin: 0;
+
+            li {
+                padding: 0;
+                margin: 0;
+                list-style: none;
+                margin-bottom: 10px;
+                overflow: hidden;
+                display: block;
+                position: relative;
+                opacity: 0;
+                clear: both;
+                animation: fadeInUp 2s 2s;
+                animation-fill-mode: forwards;
+            }
+
+            li.half {
+                width: 49%;
+                margin-left: 2%;
+                float: left;
+                clear: none;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+
+
+            input[type='text'],
+            input[type='email'] {
+                width: 100%;
+                border: 0;
+                background: #115173;
+                height: 50px;
+                font-size: 16px;
+                color: #fff;
+                padding: 0 20px;
+                box-sizing: border-box;
+            }
+
+            textarea {
+                width: 100%;
+                border: 0;
+                background: #115173;
+                height: 50px;
+                font-size: 16px;
+                color: #fff;
+                padding: 20px;
+                box-sizing: border-box;
+                min-height: 150px;
+            }
+
+            .flat-button {
+                color: #ffd700;
+                font-size: 11px;
+                letter-spacing: 3px;
+                text-decoration: none;
+                padding: 8px 10px;
+                border: 1px solid #ffd700;
+                float: left;
+                border-radius: 4px;
+                background: 0 0;
+                text-transform: uppercase;
+                float: right;
+                text-align: center;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+// ######### Map
+.info-map {
+    position: absolute;
+    background-color:  #000;
+    top: 50px;
+    right: 30%;
+    z-index: 99999999;
+    width: 267px;
+    padding: 20px;
+    color: #fff;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 17px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeIn 1s 1.5s;
+    animation-fill-mode: forwards;
+
+    span {
+        font-size: 16px;
+        display: block;
+        padding-top: 20px;
+        color: #ffd700;
+    }
+}
+
+.map-wrap {
+    background: rgba(8, 253, 216, 0.1);
+    float: right;
+    width: 53%;
+    height: 100%;
+}
+
+// ########## portfolio ######################################################################################
+.portfolio-page {
+    padding-left: 100px;
+    padding-right: 50px;
+    width: calc(100% - 150px);
+    position: initial;
+    height: 100%;
+    overflow: auto;
+
+    h1.page-title {
+        margin: 100px 0 40px 100px;
+        font-size: 53px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #ffd700;
+        font-weight: 400;
+        position: relative;
+        left: 10px;
+
+        &::before {
+            content: '<h1>';
+            color: #ffd700;
+            font-size: 18px;
+            position: absolute;
+            margin-top: -10px;
+            left: 10px;
+            opacity: 0.6;
+            line-height: 18px;
+        }
+
+        &::after {
+            content: '<h1/>';
+            color: #ffd700;
+            font-size: 18px;
+            line-height: 18px;
+            position: absolute;
+            left: -30px;
+            bottom: -20px;
+            margin-left: 20px;
+            opacity: 0.6;
+        }
+    }
+
+    .images-container {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        padding-bottom: 100px;
+    }
+
+    .image-box {
+        position: relative;
+        flex: 1 1 20%;
+        height: 400px;
+        overflow: hidden;
+        border-radius: 10px;
+        max-width: calc(25% - 10px);
+
+        .portfolio-image {
+            position: absolute;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content {
+            position: absolute;
+            width: 100%;
+            height: 200px;
+            z-index: 3;
+            padding: 10px 20px;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0, rgba(0,0,0,1));
+            bottom: -70px;
+        }
+
+        .title {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 24px;
+        }
+
+        .description {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #fff;
+            font-weight: 700;
+            padding: 10px;
+        }
+
+        .btn {
+            position: absolute;
+            bottom: 10px;
+            padding: 0 23px;
+            height: 40px;
+            line-height: 34px;
+            border: 2px solid #ffd700;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #fff;
+            background: transparent;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            cursor: pointer;
+
+            &:hover {
+                transform:  translateY(-3px);
+                background: #ffd700;
+            }
+        }
+
+        &:after {
+            content: '';
+            background: linear-gradient(180deg, #ffd700, #000);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            opacity: 0;
+        }
+
+        &:hover:after {
+            opacity: 0.85;
+        }
+
+        &:hover .content {
+            bottom: 0;
+            background: transparent;
+        }
+    }
+
+}
