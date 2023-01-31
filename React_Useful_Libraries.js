@@ -1,24 +1,7 @@
 // ######## 전체 라이브러리들 ##############################################################################
-ctrl f -> / GSAP / three js / react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
+ctrl f -> react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
 / react-simple-typewriter / Email JS / Animate.css / loader.css / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes
 / react-timeago / React-beautiful-dnd
-
-// ######## GSAP (에니메이션) #####################################################################################################
-// npm i gsap
-// npm i gsap --legacy-peer-deps  // 위에거 안되면
-// https://greensock.com/st-demos/  // docs및 참고 자료
-
-// ######## 
-
-
-// ########  (three js) ##########################################################################################
-// npm install three @react-three/fiber
-// npm install @react-three/drei
-// --legacy-peer-deps // 위에거 안되면 이거 붙여서
-
-// https://www.npmjs.com/package/@react-three/fiber
-// https://www.npmjs.com/package/@react-three/drei
-
 
 
 // ######## react-lottie-player (움직이는 이미지) ##########################################################################################
