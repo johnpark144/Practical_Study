@@ -2,18 +2,22 @@
 // npm i styled-components
 // npm install styled-components@^5.0.0 react@^16.8 react-dom@^16.8 react-is@^16.8  // 위에거 안되면 업데이트
 
-// ######## GSAP (에니메이션) #####################################################################################################
+// ######## GSAP (스크롤 에니메이션) #####################################################################################################
 // npm i gsap
 // npm i gsap --legacy-peer-deps  // 위에거 안되면
 // https://greensock.com/st-demos/  // docs및 참고 자료
 
-// ########  (three js) #########################################################################################################
+// ######## three js #########################################################################################################
 // npm install three @react-three/fiber
 // npm install @react-three/drei
 // --legacy-peer-deps // 위에거 안되면 이거 붙여서
 
+// https://threejs.org/ // docs
 // https://www.npmjs.com/package/@react-three/fiber
 // https://www.npmjs.com/package/@react-three/drei
+
+// https://sketchfab.com/feed // 3d파일 다운로드 (glb 파일)
+// https://github.com/pmndrs/gltfjsx    // glb 파일 입력방법
 
 // #########################################################################################################################
 // ################ styles/GlobalStyle.js
@@ -240,6 +244,80 @@ export default function HeroSection() {
   )
 }
 
+// ################ PhoneModel.jsx (three js)
+import React from 'react'
+import styled from 'styled-components';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  background-color: transparent;
+  transition: all 0.3s ease;
+`;
+
+export default function PhoneModel() {
+  return (
+    <Container id="phone-model">
+        <Canvas>
+            {/* 3D 밝기 // 적용안하면 그냥 검하게 보임 */}
+            <ambientLight intensity={0.8} /> 
+            {/* 빛이 비추는 방향 position={[우,위,앞]} (디폴트: 위) */}
+            <directionalLight position={[1,0,0]} />
+            <mesh>
+                {/* 3d 구현 할 박스생성 */}
+                <boxGeometry />
+                {/* 기하학적으로 그림그리기 위한것 */}
+                <meshStandardMaterial color="red" />
+            </mesh>
+            {/* 3d 형태 뷰 구현 */}
+            <OrbitControls />
+        </Canvas>
+    </Container>
+  )
+}
+
+
+// ################ three js 이용하기
+// https://github.com/pmndrs/gltfjsx    // glb 파일 입력방법
+// https://sketchfab.com/feed // 3d파일 다운로드 (glb 파일)
+
+// 3d glb파일 public폴더에 저장 -> cmd에서 public폴더로 -> npx gltfjsx apple_iphone_13_pro_max.glb     // npx gltfjsx (다운받은 glb or gltf  파일).glb | .gltf
+// JS파일 3d파일(glb파일) 둘다 필요
+
 // ################ PhoneModel.jsx
+import React from 'react'
+import styled from 'styled-components';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import { Model } from './../../public/Apple_iphone_13_pro_max';    // 파일 경로
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  background-color: transparent;
+  transition: all 0.3s ease;
+`;
+
+export default function PhoneModel() {
+  return (
+    <Container id="phone-model">
+        <Canvas>
+            <ambientLight intensity={0.8} /> 
+            <directionalLight position={[1,0,0]} />
+              {/* 다운받은 3D 생성 */}
+              <Model />     
+            <OrbitControls />
+        </Canvas>
+    </Container>
+  )
+}
 
 
