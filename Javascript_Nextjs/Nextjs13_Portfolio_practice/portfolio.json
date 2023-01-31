@@ -1,0 +1,34 @@
+{
+    "portfolio": [
+        {
+            "cover":"/portfolio/one.png",
+            "title": "Facebook_clone",
+            "description":"Python(Django), Html, CSS(Bootstrap), JS(Jquery), Python(Beautifulsoup)",
+            "url":"https://vyckd354.pythonanywhere.com/login/"
+        },
+        {
+            "cover":"/portfolio/two.png",
+            "title": "MYabc",
+            "description":"React, FireBase, CSS(Tailwind CSS), Dictionary API, Youglish API, Grammarly API",
+            "url":"https://resilient-hummingbird-f7421f.netlify.app/"
+        },
+        {
+            "cover":"/portfolio/three.png",
+            "title": "Stillsteal",
+            "description":"React(frontend), Django(backend, restframework), Tailwind CSS, MySql, PhotoShop",
+            "url":"https://tangerine-cactus-bf8a95.netlify.app"
+        },
+        {
+            "cover":"/portfolio/four.png",
+            "title": "MyTube",
+            "description":"Next JS (ver 13), TypeScript, Tailwind CSS, Reactquery, Redux(toolkit), React-beautiful-dnd, YouTube Data API, YouTube rapidApi, etc..",
+            "url":"https://mytube-jet.vercel.app/"
+        },
+        {
+            "cover":"/portfolio/five.png",
+            "title": "DoorToDoor",
+            "description":"Next JS (ver 13), FireBase, TypeScript, Tailwind CSS, Redux(toolkit), React-leaflet, Nominatim API, React-date-range, etc..",
+            "url":"https://doortodoor.vercel.app/"
+        }
+    ]
+}
