@@ -1,0 +1,43 @@
+{
+  "name": "portfolio_practice",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^3.10.0",
+    "@next/font": "13.1.4",
+    "animate.css": "^4.1.1",
+    "eslint": "8.32.0",
+    "eslint-config-next": "13.1.4",
+    "framer-motion": "^8.5.2",
+    "gsap-trial": "^3.11.4",
+    "leaflet": "^1.9.3",
+    "loaders.css": "^0.1.2",
+    "next": "13.1.4",
+    "react": "16.8",
+    "react-dom": "16.8",
+    "react-hook-form": "^7.43.0",
+    "react-icons": "^4.7.1",
+    "react-is": "16.8",
+    "react-leaflet": "^4.2.0",
+    "react-loaders": "^3.0.1",
+    "react-lottie-player": "^1.5.4",
+    "react-scroll-horizontal": "^1.6.6",
+    "react-simple-typewriter": "^5.0.1",
+    "sass": "^1.57.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.27",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21",
+    "tailwind-scrollbar": "^2.1.0",
+    "tailwindcss": "^3.2.4"
+  }
+}
