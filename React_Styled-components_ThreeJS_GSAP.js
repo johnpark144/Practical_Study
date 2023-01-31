@@ -1,8 +1,22 @@
-// ######## styled-components ##########################################################################################
+// ######## styled-components ###################################################################################################
 // npm i styled-components
 // npm install styled-components@^5.0.0 react@^16.8 react-dom@^16.8 react-is@^16.8  // 위에거 안되면 업데이트
 
-// ######## styles/GlobalStyle.js
+// ######## GSAP (에니메이션) #####################################################################################################
+// npm i gsap
+// npm i gsap --legacy-peer-deps  // 위에거 안되면
+// https://greensock.com/st-demos/  // docs및 참고 자료
+
+// ########  (three js) #########################################################################################################
+// npm install three @react-three/fiber
+// npm install @react-three/drei
+// --legacy-peer-deps // 위에거 안되면 이거 붙여서
+
+// https://www.npmjs.com/package/@react-three/fiber
+// https://www.npmjs.com/package/@react-three/drei
+
+// #########################################################################################################################
+// ################ styles/GlobalStyle.js
 import { createGlobalStyle } from "styled-components";
 import fontLight from "../assets/fonts/SourceSansPro-Light.ttf";
 import fontRegular from "../assets/fonts/SourceSansPro-Regular.ttf";
@@ -69,8 +83,24 @@ body{
 }
 `
 
-// ######## Quote.jsx
-import styled from 'styled-components';
+// ################ App.jsx
+import Quote from './sections/Quote';
+import { GlobalStyle } from './styles/GlobalStyle'; //  GlobalStyle 전체 적용
+
+function App() {
+  return (
+    <>
+    {/* GlobalStyle 전체 적용 */}
+      <GlobalStyle />
+      <Quote />
+    </>
+  )
+}
+
+export default App
+
+// ################ Quote.jsx
+import styled, { keyframes } from 'styled-components';
 
 // 스타일 컴포넌트 양삭
 const Section = styled.section` // styled.태그 -> 컴포넌트생성
@@ -93,6 +123,12 @@ const TextContainer = styled.div`
   color: var(--white);
 `;
 
+const moveUp = keyframes`
+100%{
+    transform: translateY(0);
+}
+`;
+
 const Text = styled.p`
   width: 50%;
   font-size: var(--fontlg);
@@ -100,10 +136,17 @@ const Text = styled.p`
   height: var(--fontmd);
   overflow: hidden;
   
-  span{
-    background-color: lightblue;
+  span {
     position: absolute;
-    transform: translateY(1rem);
+    transform: translateY(3rem);
+    animation: ${moveUp} 2.5s ease forwards;
+    animation-delay: ${({ delay }) => delay};   // 컴포넌트에 delay prop을 받아서 적용
+    font-family: var(--fontL);
+    background-image: linear-gradient(-45deg, var(--gradient)); // 45도 꺽어서 그라데이션
+    /* 텍스트 그라데이션 하는방법 */
+    background-clip: text;
+    -webkit-background-clip: text;  // 텍스트 부분만 잘라냄
+    -webkit-text-fill-color: transparent;   // 텍스트에도 배경 컬러를 입힘
   }
   `
 
@@ -112,12 +155,91 @@ export default function Quote() {
     // 컴포넌트로 감싼부분들 적용
     <Section>
         <TextContainer>
-            <Text><span>1</span></Text>
-            <Text><span>2</span></Text>
-            <Text><span>3</span></Text>
-            <Text><span>4</span></Text>
-            <Text><span>5</span></Text>
+            <Text delay="0s"><span>&#8220; You can't connect the dots looking forward;</span></Text>
+            <Text delay="0.4s"><span>&nbsp;&nbsp;&nbsp;you can only connect them looking backward.</span></Text>
+            <Text delay="0.8s"><span>&nbsp;&nbsp;&nbsp;so you have to trust that the dots</span></Text>
+            <Text delay="1.2s"><span> &nbsp;&nbsp;&nbsp;will somehow connect in your future. &#8221;</span></Text>
+            <Text delay="1.6s"><span>&#x23AF; Steve Jobs</span></Text>
         </TextContainer>
     </Section>
   )
 }
+
+// ################ HeroSection.jsx
+import React from 'react'
+import styled from "styled-components";
+import backgroundVideo from "../assets/video/Ink - 21536.mp4";  // 비디오 사용
+
+const Section = styled.section`
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: var(--dark);
+  overflow: hidden;
+`;
+
+const Title = styled.h1`
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+
+  font-size: var(--fontlg);
+  font-family: var(--fontL);
+  color: var(--greyLight);
+`
+const TextContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-image: linear-gradient(45deg, var(--gradient));
+  z-index: 1;
+  // 색 그라데이션
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  span{
+    font-size: var(--fontxxxl);
+    text-transform: uppercase;  // 대문자로
+    font-weight: 600;
+    padding: 2rem;
+  }
+`
+
+const VideoContainer = styled.div`
+  width: 100vw;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  video {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+  }
+`;
+
+export default function HeroSection() {
+  return (
+    <Section>
+        <VideoContainer>
+        <video src={backgroundVideo} type="video/mp4" autoPlay muted loop />
+      </VideoContainer>
+      <Title> IPhone 14 Pro Max </Title>
+      <TextContainer>
+        <span>So.Cold.</span>
+        <span>So.Bold.</span>
+      </TextContainer>
+    </Section>
+  )
+}
+
+// ################ PhoneModel.jsx
+
+
