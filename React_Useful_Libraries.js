@@ -1,5 +1,5 @@
 // ######## 전체 라이브러리들 ##############################################################################
-ctrl f -> / GSAP / three js / styled-components / react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
+ctrl f -> / GSAP / three js / react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
 / react-simple-typewriter / Email JS / Animate.css / loader.css / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes
 / react-timeago / React-beautiful-dnd
 
@@ -19,11 +19,6 @@ ctrl f -> / GSAP / three js / styled-components / react-lottie-player / react-sc
 // https://www.npmjs.com/package/@react-three/fiber
 // https://www.npmjs.com/package/@react-three/drei
 
-
-
-// ######## styled-components ##########################################################################################
-// npm i styled-components
-// npm install styled-components@^5.0.0 react@^16.8 react-dom@^16.8 react-is@^16.8  // 위에거 안되면 업데이트
 
 
 // ######## react-lottie-player (움직이는 이미지) ##########################################################################################
