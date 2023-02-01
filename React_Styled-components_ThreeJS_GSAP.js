@@ -20,11 +20,13 @@
 // https://github.com/pmndrs/drei   // react-three/drei docs
 
 // https://github.com/pmndrs/gltfjsx    // glb 파일 입력방법
-// https://sketchfab.com/feed // 3d파일 다운로드 (glb 파일)
+
+// https://sketchfab.com/feed //  3d파일 다운로드 (glb 파일)
 
 // 3d glb파일 public폴더에 저장 -> cmd에서 public폴더로 -> npx gltfjsx apple_iphone_13_pro_max.glb     // npx gltfjsx (다운받은 glb or gltf  파일).glb | .gltf
 // JS파일 3d파일(glb파일) 둘다 필요
 
+// https://www.creators3d.com/online-viewer // 3d파일 편집
 
 // ######## Styled-components 기본 시작 #######################################################################################################
 // ################ styles/GlobalStyle.js
@@ -376,7 +378,7 @@ export default function Quote() {
 }
 
 
-// ################ Model.jsx
+// ################ Model.jsx (다운받은 파일로 만든 JS파일)
 
 import React, { useRef, useLayoutEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
@@ -387,9 +389,13 @@ export function Model(props) {
   const { nodes, materials } = useGLTF('/apple_iphone_13_pro_max.glb')
 
   const group = useRef()
-  let camera = useThree(state => state.camera) // useThree(state)의  state는 3d 정보
+  let camera = useThree(state => state.camera)  // useThree(state)의  state는 3d 정보 (camera.position)
+  let scene = useThree(state => state.scene)    // useThree(state)의  state는 3d 정보 (scene.rotation)
 
   useLayoutEffect(() => {
+    camera.position.set(0,2,6)    // 3d 처음 위치
+    materials.Body.color.set("#9BB5CE");  // 3d materials 속성  // https://www.creators3d.com/online-viewer
+
     let t1 = gsap.timeline({    // timeline의 scrollTrigger는 말그대로 이 기간동안 fromTo, to, from을 함
       scrollTrigger:{
         trigger:"#phone-model", // html Id처럼 dom불러오기 가능
@@ -398,6 +404,14 @@ export function Model(props) {
       }
     })
     t1.fromTo(camera.position, {y:2}, {y:0})  // 스크롤이 start 포인트닿을때 camera.position을 변경시킴
+     .to(scene.rotation, {y:0.8})
+    .to(scene.rotation, {y:3})
+    .to(scene.rotation, {z:1.58}, "key1")
+    .to(camera.position, {z:4}, "key1")
+    .to(scene.rotation, {y:0, z:0}, "key2")
+    .to(camera.position, {z:6, x:-1}, "key2")
+    .to(scene.rotation, {z:0, y:6.3}, "key3")
+    .to(camera.position, {x:0.8, y:0}, "key3")
   },[])
 
   return (
@@ -505,7 +519,7 @@ import { gsap } from 'gsap';
 // ... 생략 ...
 export default function BatterySection() {
     const battery = useRef(null);
-    let elements = gsap.utils.selector(battery) // battery 돔안의 태그를 배열로 가져올 함수
+    let elements = gsap.utils.selector(battery) // battery 돔 안의 태그를 배열로 가져올 함수
 
     useLayoutEffect(()=>{
         let t1 = gsap.timeline({});
