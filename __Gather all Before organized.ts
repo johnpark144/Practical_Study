@@ -11,7 +11,7 @@ import React, { Suspense } from 'react'
 </Suspense>
 
 // ######## 박스 그림자 #######################################################################################################################
-box-shadow: 1px 1px 10px var(--white);
+box-shadow: 1px 1px 10px 10px gray;
 
 // box-shadow: none | x-position y-position blur spread color | inset | initial | inherit
 
