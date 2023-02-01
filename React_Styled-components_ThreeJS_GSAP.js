@@ -349,8 +349,8 @@ export default function Quote() {
 
     let trigger = ScrollTrigger.create({
       trigger: Elem,  // 같이 움직일 Dom
-      start: "top+=200 top",  // 시작 포인트
-      end: "bottom-=500",   // 끝 포인트
+      start: "top+=200 top",  // 시작 포인트 ("trigger태그부분 화면부분")
+      end: "bottom-=500",   // 끝 포인트    ("trigger태그부분 화면부분")
       pin: true,  // 같이 움직이도록 고정
       markers: true,  // start end 포인트 표시 (개발자용)
       pinSpacing: false,
@@ -393,8 +393,8 @@ export function Model(props) {
     let t1 = gsap.timeline({    // timeline의 scrollTrigger는 말그대로 이 기간동안 fromTo, to, from을 함
       scrollTrigger:{
         trigger:"#phone-model", // html Id처럼 dom불러오기 가능
-        start:"top+=100 top",
-        end:"bottom bottom",
+        start:"top+=100 top",   // ("trigger태그부분 화면부분" -> 요 두부분이 맞닿을때 시작)
+        end:"bottom bottom",    // ("trigger태그부분 화면부분"> 요 두부분이 맞닿을때 끝)
       }
     })
     t1.fromTo(camera.position, {y:2}, {y:0})  // 스크롤이 start 포인트닿을때 camera.position을 변경시킴
@@ -494,6 +494,46 @@ export default function DesignSection() {
         <TextContainer2 ref={textTwo}>
         <span>Flat-edge design with toughest smartphone glass.</span>
         </TextContainer2>
+    </Section>
+  )
+}
+
+// ################ BatterySection.jsx
+import React, { useLayoutEffect, useRef } from "react";
+import styled from "styled-components";
+import { gsap } from 'gsap';
+// ... 생략 ...
+export default function BatterySection() {
+    const battery = useRef(null);
+    let elements = gsap.utils.selector(battery) // battery 돔안의 태그를 배열로 가져올 함수
+
+    useLayoutEffect(()=>{
+        let t1 = gsap.timeline({});
+
+        elements("li").forEach((el) => {  // 배열안에 모든 태그들을 timeline으로 사용
+            t1.to(el,
+                {
+                    scrollTrigger: {
+                        trigger: el,
+                        start:"top center",
+                        end: "bottom center",
+                        scrub: true,
+                    }, opacity: 1,
+                }
+                )
+        })
+    },[])
+
+  return (
+    <Section id="battery">
+      <Title>Go all day with single charge...</Title>
+      <Battery ref={battery}>
+        <li />
+        <li />
+        <li />
+        <li />
+        <li />
+      </Battery>
     </Section>
   )
 }
