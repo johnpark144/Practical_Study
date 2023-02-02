@@ -38,6 +38,7 @@ export const GlobalStyle = createGlobalStyle`     // 스타일컴포넌트 글�
 *,*::before,*::after{ // 전체 지정
     margin: 0;
     padding: 0;
+    /* outline: 1px solid red !important; */  // 전체 프레임 생성 테스트용
 }
 
 h1,h2,h3,h4,h5,h6{
