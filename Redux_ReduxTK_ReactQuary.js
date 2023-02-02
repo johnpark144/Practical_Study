@@ -1,4 +1,5 @@
 //  redux-persist 사용법 공부하기 npm i redux-persist!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//  usequeries 사용법 적어두기
 
 // npm install redux  // 기본 redux
 // npm install react-redux  // react redux
