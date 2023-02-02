@@ -578,7 +578,7 @@ export default function ColorSection() {
     
     // 스크롤시 정보 변경할 함수 
     let updateColor = (color, text, rgbColor) => {
-      materials.Body.color.set(color);
+      materials.Body.color.set(color);  // 3d materials 색변경
 
       textElem.innerText = text;
       textElem.style.color = color;
