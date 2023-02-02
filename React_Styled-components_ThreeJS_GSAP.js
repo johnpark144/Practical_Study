@@ -665,4 +665,118 @@ export default function ColorSection() {
   );
 }
 
-// #########################################################################################################################################################
+// ######## useContext로 css스타일 변경 및 3d색상변경 #########################################################################################################
+// ################ context/ColorContext.jsx (context)
+import { useState } from "react";
+import { createContext } from "react";
+import { useGLTF } from '@react-three/drei';
+
+export const ColorContext = createContext({});
+
+// Provider
+export const ColorContextProvider = ({ children }) => {
+    const { materials } = useGLTF('/apple_iphone_13_pro_max.glb')
+
+    // context로 사용할 state
+    const [currentColor, setCurrentColor] = useState({
+        color:"#9BB5CE",
+        text:"Sierra Blue",
+        rgbColor:"155, 181, 206",
+    })
+
+    // context로 사용할 함수 (setCurrentColor)
+    let changeColorContext = (colorObj) => {
+        materials.Body.color.set(colorObj.color);
+        setCurrentColor(colorObj)
+      }
+
+    return(
+        <ColorContext.Provider value={{currentColor, changeColorContext}}>{/* Provider로 전달 */}
+            {children}
+        </ColorContext.Provider>
+    )
+}
+// ################ app.jsx (provider)
+import { ColorContextProvider } from "./context/ColorContext";
+<ColorContextProvider>
+    // ... 생략 ...    
+</ColorContextProvider>
+
+// ################ PricingSection.jsx
+import React, { Suspense, useContext, useEffect, useRef } from 'react'
+import { Canvas } from '@react-three/fiber';
+import { Environment, OrbitControls } from '@react-three/drei';
+import { Model3 } from './../../public/Apple_iphone_13_pro_max3';
+import styled from 'styled-components';
+import { ColorContext } from './../context/ColorContext';
+
+// ... 생략 ...    
+const Color = styled.li`
+  background-color: ${({color}) => color};  // props 전달
+`;
+// ... 생략 ...    
+
+export default function PricingSection() {
+  const sectionRef = useRef(null);
+
+  const { currentColor, changeColorContext } = useContext(ColorContext) // Context API
+
+  // useContext에서 변경된 currentColor가 있으면 실행
+  useEffect(() => {
+    sectionRef.current.style.backgroundColor = `rgba(${currentColor.rgbColor},0.4)`
+  }, [currentColor]);
+
+  // useContext에 함수로 currentColor변경
+  let updateColor = (color, text, rgbColor) => {
+    const colorObj = {
+      color,
+      text,
+      rgbColor,
+    };
+
+    changeColorContext(colorObj)
+  };
+
+  return (
+    <Container>
+      <Section ref={sectionRef}>
+      <Phone>
+      <IndicatorText>360&deg; &#x27F2; </IndicatorText>
+        {/* 핸드폰 */}
+        <Canvas camera={{ fov: 14 }}>
+          <ambientLight intensity={1} />
+          <directionalLight intensity={0.4} />
+          <Suspense fallback={null}>
+            <Model3 />
+          </Suspense>
+          <Environment preset="night" />
+          <OrbitControls enableZoom={false} />
+        </Canvas>
+        {/* 색상변경 */}
+        <Colors>
+          <Color color='#9BB5CE' onClick={()=>updateColor("#9BB5CE", "Sierra Blue", "155, 181, 206")} />
+          <Color color='#F9E5C9' onClick={()=>updateColor("#F9E5C9", "Gold", "249, 229, 201")} />
+          <Color color='#505F4E' onClick={()=>updateColor("#505F4E", "Alpine Green", "80, 95, 78")} />
+          <Color color='#574f6f' onClick={()=>updateColor("#574f6f", "Deep Purple", "87, 79, 111")} />
+          <Color color='#A50011' onClick={()=>updateColor("#A50011", "Red", "165, 0, 17")} />
+          <Color color='#215E7C' onClick={()=>updateColor("#215E7C", "Blue", "33, 94, 124")} />
+        </Colors>
+      </Phone>
+      {/* 아이폰 디테일 */}
+      <Details>
+        <SubTitle>IPhone</SubTitle>
+        <Title>14 Pro Max</Title>
+        <SubTitle>From $1099*</SubTitle>
+        <ButtonContainer>
+          <Btn>Buy</Btn>
+          <BtnLink href="#">Learn More &#x2192;</BtnLink>   
+        </ButtonContainer>
+      </Details>
+      </Section>
+    </Container>
+  );
+}
+
+
+// ########  #########################################################################################################
+
