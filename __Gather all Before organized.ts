@@ -1,3 +1,7 @@
+// ####### 이 파일에 대한 리마인더 #################################################################################################
+// 기타 : objectFit 등들 정리하기, map, filter foreach
+// 링크도 같이 저장
+
 // ###############################################################################################################################
 // ########## React  #############################################################################################################
 // ###############################################################################################################################
@@ -8,16 +12,124 @@ import React, { Suspense } from 'react'
   <Model />
 </Suspense>
 
-// ######## pathname보여주기 (NextJS) #################################################################################################
-import { usePathname } from 'next/navigation';
-
-    const pathname = usePathname(); // http://localhost:3000/portfolio1/about 에 /portfolio1/about 부분(pathname)짤라서 보여줌
-
-// ######## 서버사이드없이 import하기 //  "window is not defined"방지 #################################################################
-const Map = dynamic(() => import('./Map'), { ssr: false }) // Import witout SSR // To prevent from Error "window is not defined"
-
 // ######## pathname 혹은 쿼리 생성 #################################################################
 window.location.href = 'portfolio1/about' // http://localhost:3000/portfolio1/about 로 보내버림
+
+// ######## Esc를 눌렀거나, 돔밖을 눌렀을경우 닫기 #################################################################
+ const refOne = useRef<HTMLInputElement>(null); // 돔에접근
+const [seeCalendar, setSeeCalendar] = useState(false);  // 닫으려고하는것의 Boolean
+
+  useEffect(() => {
+    document.addEventListener("keydown", hideOnEscape, true); // 키가 눌릴때마다 hideOnEscape함수 실행
+    document.addEventListener("click", hideOnClickOutside, true); // 클릭 할때마다 hideOnClickOutside함수 실행
+  }, []);
+
+  const hideOnEscape = (e: KeyboardEvent) => {
+    if (e.key === "Escape") { // ESC가 눌린경우
+      setSeeCalendar(false);
+    }
+  };
+  const hideOnClickOutside = (e: Event) => {
+    if (refOne.current && !refOne.current.contains(e.target as Node)) { // refOne 바깥 돔을 클릭한경우
+      setSeeCalendar(false);
+    }
+  };
+
+// ######## UnSerialized 정보 상태관리 오류 해결 #################################################################
+export default configureStore({
+  reducer: {
+    userObjSlice: userObjSlice.reducer,
+    dateSlice: dateSlice.reducer,
+    allMarkedDataSlice: allMarkedDataSlice.reducer,
+    isFocusedSlice: isFocusedSlice.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }), //  UnSerialized 체크 해서 오류를 없앰
+});
+
+// ######## localStorage 저장, 불러오기 #################################################################
+localStorage.setItem("history", JSON.stringify([...dataClone]));  //  localStorage에 배열 저장
+
+let historyStorage = JSON.parse(localStorage.getItem("history") || "[]"); //  localStorage에서 불러오기
+
+
+// ######## setTimeout #################################################################
+  useEffect(() => {
+      let timer = setTimeout(() => {
+        setSavedAnimation("opacity-0 translate-y-0");
+      }, 4000);
+      let timer2 = setTimeout(() => {
+        setSavedAnimation(
+          "opacity-100 translate-y-[-160px] lg:translate-y-[-120px]"
+        );
+      }, 500);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(timer2);
+      };
+    }
+  }, []);
+
+// ######## setInterval #################################################################
+  useEffect(() => {
+    const timer = setInterval(() => {
+      arrowTimerRef.current += 1;
+      setArrowTimer(arrowTimerRef.current);
+    }, 500);
+    return () => clearTimeout(timer);	
+  }, []);
+
+// ######## window innerWidth 변경 #################################################################
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  if (typeof window !== "undefined") {
+    window.addEventListener("resize", () => {
+      setWindowWidth(window.innerWidth);
+    });
+  }
+
+console.log("windowWidth--------->",windowWidth)
+// ###############################################################################################################################
+// ########## NEXT JS (일반 리액트와 겹치는 내용은 리액트로) ########################################################################
+// ###############################################################################################################################
+// ######## 현재 pathname 보여주기 (NextJS) #######################################################################################
+import { usePathname } from 'next/navigation';
+const pathname = usePathname(); // http://localhost:3000/portfolio1/about 에 /portfolio1/about 부분(pathname)짤라서 보여줌
+
+// ######## pathname으로 보내버리기 (NextJS) #################################################################
+import { useRouter } from "next/navigation";
+const router = useRouter();
+router.push(`/video/`);
+
+router.back() // 뒤로가기
+
+// ######## 서버사이드없이 import하기 //  "window is not defined"방지 (NextJS) #################################################################
+const Map = dynamic(() => import('./Map'), { ssr: false }) // Import witout SSR // To prevent from Error "window is not defined"
+
+
+// ######## Image컴포넌트 크기를 부모 태그크기와 같게 (NextJS) #################################################################
+<div className="relative h-44 w-[445px]">{/* 배너이미지 // 부모: relative, 이미지: fill */}
+  <Image
+    src={bannerUrl}
+    alt="Channel-bannerLogo"
+    quality={100}
+    fill
+    style={{ objectFit: "cover" }}
+  />
+</div>
+
+// ######## 환경변수 사용 가능 하게 #################################################################
+module.exports = {
+  experimental:{
+    appDir: true,
+  },
+  env: {
+    YOUTUBE_XRAPID_API_KEY: process.env.YOUTUBE_XRAPID_API_KEY,
+  },  // 클라이언트 사이드에서 환경변수(.env)사용할수있도록
+}
+// ######## 
+const xRapid_api_key = process.env.YOUTUBE_XRAPID_API_KEY;
 
 // ###############################################################################################################################
 // ######## HTML / CSS ##########################################################################################################
@@ -37,6 +149,12 @@ box-shadow: 1px 1px 10px 10px gray;
 // initial : 기본값으로 설정한다.
 // inherit : 부모 요소의 값을 상속받는다.
 
+// ######## 읽기 전용 ############################################################################################################
+<input
+  value={selected}
+  readOnly
+/>
+
 // ######## 텍스트 대문자  ###########################################################################################################
 text-transform: uppercase;
 
@@ -48,9 +166,37 @@ background-image: linear-gradient(-45deg, var(--gradient)); // 45도 꺽어서 �
     -webkit-text-fill-color: transparent;   // 텍스트에도 배경 컬러를 입힘
 
 
-
 // ###############################################################################################################################
 // ########## JS #################################################################################################################
 // ###############################################################################################################################
 // ###### 문자별로 쪼개서 배열만들기 ##################################################################################################
 "portfolio".split("")   // -> ['p','o','r','t','f','o','l','i','o']
+
+// ###### Reduce 예시 1 ##################################################################################################
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const sum1 = numbers.reduce((accumulator, currentNumber) => accumulator + currentNumber);
+console.log('sum1 =', sum1);
+
+// ###### Reduce 예시 2 (함수 따로 빼기) ####################################################################################
+function sumReducer(accumulator, currentNumber) {
+  return accumulator + currentNumber;
+}
+const sum2 = numbers.reduce(sumReducer);
+console.log('sum2 =', sum2);
+
+// ###### 단위 변환기 ####################################################################################
+ const numConverter = (num: number) => {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
+    }
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  };
+
+// ###### 특정글자를 다른글자로 전체바꾸기 ####################################################################################
+title.replace(/&quot;/g, '"')
