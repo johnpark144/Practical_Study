@@ -41,6 +41,8 @@ box-shadow: 1px 1px 10px 10px gray;
 text-transform: uppercase;
 
 // ###### 텍스트 그라데이션 하는방법 ##################################################################################################
+background-image: linear-gradient(-45deg, var(--gradient)); // 45도 꺽어서 배경 그라데이션
+
     background-clip: text;
     -webkit-background-clip: text;  // 텍스트 부분만 잘라냄
     -webkit-text-fill-color: transparent;   // 텍스트에도 배경 컬러를 입힘
