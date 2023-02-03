@@ -12,8 +12,6 @@ export default function Logo() {
     const solidLogoRef = useRef();
 
     useEffect(() => {
-        gsap.registerPlugin(DrawSVGPlugin)
-        
         gsap.timeline()
           .to(bgRef.current, {
             duration: 1,
