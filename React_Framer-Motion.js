@@ -31,6 +31,7 @@ return(
 <motion.div className='home container'
   initial={{ opacity: 0 }} // 시작점
   animate={{ opacity: 1 }} // motion.태그 는 animate 안에 CSS요소를 애니메이션 효과로 빠꿔줌
+  viewport={{ once: true }} // 애니메이션 한번만 나오게
 >
   <h2>
     welcome to Pizza Joint
