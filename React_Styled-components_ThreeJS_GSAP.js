@@ -407,7 +407,7 @@ export function Model(props) {
     t1.fromTo(camera.position, {y:2}, {y:0})  // 스크롤이 start 포인트닿을때 camera.position을 변경시킴
      .to(scene.rotation, {y:0.8})
     .to(scene.rotation, {y:3})
-    .to(scene.rotation, {z:1.58}, "key1")
+    .to(scene.rotation, {z:1.58}, "key1")   // key를 주면 key끼리 같이 움직임
     .to(camera.position, {z:4}, "key1")
     .to(scene.rotation, {y:0, z:0}, "key2")
     .to(camera.position, {z:6, x:-1}, "key2")
