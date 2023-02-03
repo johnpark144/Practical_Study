@@ -10,6 +10,8 @@
 // npm create vite@latest 
 // npm i
 // npm run dev
+// npm run build
+// npm run preview // 배포판 실행
 
 // ########### 삭제할 것들 ########################################################################################
 favicon.ico
