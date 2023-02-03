@@ -2,6 +2,23 @@
 // 기타 : objectFit 등들 정리하기, map, filter foreach
 // 링크도 같이 저장
 
+import { useSearchParams, useLocation, useParams, useNavigate, Link } from 'react-router-dom';
+const [searchParams, setSearchParams] = useSearchParams();
+const currentQuery = e.target.search.query.toString();
+
+import { HashLink as Link } from 'react-router-hash-link';
+<Link to='/category#' state={{ category: "MENS" }}>
+    <li>
+        Mens
+    </li>
+</Link>
+const location = useLocation(); 
+location.state
+
+hasOwnProperty
+
+next는 Link href , 리액트는 Link to
+
 // ###############################################################################################################################
 // ########## React  #############################################################################################################
 // ###############################################################################################################################
@@ -80,16 +97,58 @@ let historyStorage = JSON.parse(localStorage.getItem("history") || "[]"); //  lo
     return () => clearTimeout(timer);	
   }, []);
 
-// ######## window innerWidth 변경 #################################################################
+// ######## useInterval (setInterval을 쉽게하기 위한 커스텀훅) #################################################################
+// ######## useInterval.js
+import { useEffect, useRef } from "react";
+
+export default function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest function.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
+// ######## 
+useInterval(() => {
+    idx === 3 ? setIdx(0) : setIdx(idx + 1);
+}, 3000); // 3초마다 실행
+
+// ######## window innerWidth 변경 (화면 크기조정할때마다 실시간으로 출력) #################################################################
   const [windowWidth, setWindowWidth] = useState(0);
 
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined") {  // nextjs 용
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
   }
 
 console.log("windowWidth--------->",windowWidth)
+
+// ######## scroll 변경 (스크롤할때마다 실시간으로 출력) #################################################################
+// ScrollY value for Cart
+    const [scrollYValue, setScrollYValue] = useState(window.scrollY)
+    
+    window.addEventListener('scroll', () => {
+        setScrollYValue(window.scrollY)
+    })
+
+console.log("scrollYValue--------->",scrollYValue)
+
+
+
 // ###############################################################################################################################
 // ########## NEXT JS (일반 리액트와 겹치는 내용은 리액트로) ########################################################################
 // ###############################################################################################################################
@@ -200,3 +259,31 @@ console.log('sum2 =', sum2);
 
 // ###### 특정글자를 다른글자로 전체바꾸기 ####################################################################################
 title.replace(/&quot;/g, '"')
+
+
+// ###### 숫자, 글자 오름차순 내림차순 ####################################################################################
+  if (sortBy === 'price') { // 숫자 오름차순
+      dataByLessThenPrice.sort((a, b) => {
+          return Number(a.price) - Number(b.price);
+      });
+  } else if (sortBy === '-price') {
+      dataByLessThenPrice.sort((a, b) => {
+          return Number(b.price) - Number(a.price);
+      });
+  } else if (sortBy === 'name') { // 글자 오름차순
+      dataByLessThenPrice.sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          if (a.name === b.name) return 0;
+      });
+  } else if (sortBy === '-name') {
+      dataByLessThenPrice.sort((a, b) => {
+          if (a.name < b.name) return 1;
+          if (a.name > b.name) return -1;
+          if (a.name === b.name) return 0;
+      });
+  }
+
+// ###### 배열에서 3개 랜덤으로 가져오기 (실험해봐야함,,)####################################################################################
+  let data = data.sort(() => Math.random() - 0.5);
+  data = data.slice(0, 3)
