@@ -66,7 +66,8 @@ export default function Base({ setToWhere, addBase, pizza }) {
             <motion.li
               key={base}
               onClick={() => addBase(base)}
-              whileHover={{ scale: 1.3, originX: 0, color: "#f83112" }}
+              // originX, originY는 0과 1사이 지정 가능 // X 0:오 1:왼 // Y 0:아래 1:위 
+              whileHover={{ scale: 1.3, originX: 0, color: "#f83112" }} 
               transition={{ type: "spring", stiffness: 300 }}
             >
               <span className={spanClass}>{base}</span>
