@@ -5,6 +5,7 @@
 import { useSearchParams, useLocation, useParams, useNavigate, Link } from 'react-router-dom';
 const [searchParams, setSearchParams] = useSearchParams();
 const currentQuery = e.target.search.query.toString();
+const { day } = useParams();  // UseParams brings values in Url in the form of object ({day:1})
 
 import { HashLink as Link } from 'react-router-hash-link';
 <Link to='/category#' state={{ category: "MENS" }}>
