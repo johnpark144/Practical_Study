@@ -3,6 +3,7 @@ ctrl f -> react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / r
 / react-simple-typewriter / Email JS / Animate.css / loader.css / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes
 / react-timeago / React-beautiful-dnd
 
+// loader.css 대신 여기없는 react spinner 찾아보기
 
 // ######## react-lottie-player (움직이는 이미지) ##########################################################################################
 // npm i --save react-lottie-player
