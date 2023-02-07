@@ -147,6 +147,10 @@ console.log("windowWidth--------->",windowWidth)
 
 console.log("scrollYValue--------->",scrollYValue)
 
+// ######## 404 Notfound page(only for react) #################################################################
+{/* 404, unmatched with any routes (always very bottom)*/}
+<Route path='*' element={<EmptyPage />} />  // 라우트 맨하단에 작성해야함
+
 // ######## Netlify 배포후 새로고침시 에러 방지#################################################################################################
 // "_redirects" 이라는 이름을 가진 폴더안에 "/* /index.html 200" 이와같이 적은후 index.html파일이있는 public폴더에 보관한다
 
