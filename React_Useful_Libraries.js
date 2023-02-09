@@ -5,6 +5,61 @@ ctrl f -> scroll-out / react-rellax / react-lottie-player / react-scroll-horizon
 
 // loader.css 대신 여기없는 react spinner 찾아보기
 
+// ######## scroll-out (스크롤인, 아웃 될때마다 나타나고 사라지는 등 어떤 효과를 줄때) ###################################################################
+// npm i scroll-out -s
+// https://scroll-out.github.io/  
+
+// ########
+import ScrollOut from "scroll-out";
+import '../styles/portfolio2.css';
+
+export default function RelaxjsScrollout() {
+    useEffect(() => {
+        ScrollOut({ 
+            cssProps: { 
+               visibleY: true  // css에 visibleY props를 사용하게끔
+            },
+            onShown: function(el) { // 스크롤로 인해 보여질떄 효과를 적용하기
+                el.animate([{ opacity: 0 }, { opacity: 1 }], 1000);
+            },
+            onHidden: function(el) {    // 스크롤로 인해 사라질떄 효과를 적용하기
+                el.style.opacity = 0;
+            },
+            once: true  // 한번만 하게끔
+         });
+      }, []);
+
+  return (
+      <div className="absolute top-[55rem] left-[5vw]" data-scroll>
+          <Image
+        className="absolute top-[5rem] left-0"
+        width={700}
+        height={150}
+        src="/cloud1.png"
+        alt="cloud1"
+      />
+      </div>
+ 
+)
+}
+
+// ######## portfolio2.css (기본)
+[data-scroll] {
+  transition: opacity 1s;
+}
+[data-scroll="in"] {
+  opacity: 1;
+}
+[data-scroll="out"] {
+  opacity: 0;
+}
+
+// ######## portfolio2.css (나타나고 사라지는효과 줄떄)
+[data-scroll] {
+    opacity: calc(var(--visible-y) * var(--visible-y));
+    transform: scale(calc(0.5 + calc(var(--visible-y) * 0.5)));
+ } 
+
 // ######## react-rellax (스크롤시 태그마다 다른 스피드) ##########################################################################################
 // npm i --save react-rellax
 // npm i react-rellax --legacy-peer-deps
