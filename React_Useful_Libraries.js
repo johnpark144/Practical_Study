@@ -5,12 +5,34 @@ ctrl f -> react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / r
 
 // loader.css 대신 여기없는 react spinner 찾아보기
 
+// ######## react-rellax (스크롤시 태그마다 다른 스피드) ##########################################################################################
+// npm i --save react-rellax
+// npm i react-rellax --legacy-peer-deps
+
+// ########
+import Parallax from 'react-rellax'
+
+export default function RelaxjsScrollout() {
+  return (
+      <Parallax speed={2}>    {/* OPTIONAL SPEED (-10 to +10) // DEFAULT : -2 */}
+        <Image
+        className="absolute top-[5rem] left-0"
+        width={700}
+        height={150}
+        src="/cloud1.png"
+        alt="cloud1"
+      />
+      </Parallax>
+)
+}
+
 // ######## react-lottie-player (움직이는 이미지) ##########################################################################################
 // npm i --save react-lottie-player
 // npm i --save react-lottie-player --legacy-peer-deps  // 위에거 안되면
 // https://www.npmjs.com/package/react-lottie-player    // 라이브러리
 // https://lottiefiles.com/     // 파일을 다운
 
+// ######## ContactMe.jsx
 // ######## ContactMe.jsx
 import Lottie from 'react-lottie-player'
 import lottieJson from '../../public/computer.json' // 파일 위치
