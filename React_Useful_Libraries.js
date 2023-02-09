@@ -17,7 +17,7 @@ export default function RelaxjsScrollout() {
     useEffect(() => {
         ScrollOut({ 
             cssProps: { 
-               visibleY: true  // css에 visibleY props를 사용하게끔
+               visibleY: true  // css에서 visibleY라는 props를 사용하게끔 // visibleY은 현 태그의 Y축이 스크롤로 인해 보이는 비율 (invisible 0 ~ 0.5 ~ 1 visible)
             },
             onShown: function(el) { // 스크롤로 인해 보여질떄 효과를 적용하기
                 el.animate([{ opacity: 0 }, { opacity: 1 }], 1000);
@@ -56,7 +56,7 @@ export default function RelaxjsScrollout() {
 
 // ######## portfolio2.css (나타나고 사라지는효과 줄떄)
 [data-scroll] {
-    opacity: calc(var(--visible-y) * var(--visible-y));
+    opacity: calc(var(--visible-y) * var(--visible-y)); // visibleY은 현 태그의 Y축이 스크롤로 인해 보이는 비율 (invisible 0 ~ 0.5 ~ 1 visible)
     transform: scale(calc(0.5 + calc(var(--visible-y) * 0.5)));
  } 
 
