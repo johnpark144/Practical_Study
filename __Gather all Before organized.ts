@@ -172,6 +172,7 @@ router.push(`/video/`);
 router.back() // 뒤로가기
 
 // ######## 서버사이드없이 import하기 //  "window is not defined"방지 (NextJS) #################################################################
+import dynamic from 'next/dynamic'
 const Map = dynamic(() => import('./Map'), { ssr: false }) // Import witout SSR // To prevent from Error "window is not defined"
 
 
