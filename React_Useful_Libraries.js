@@ -1,5 +1,5 @@
 // ######## 전체 라이브러리들 ##############################################################################
-ctrl f -> react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
+ctrl f -> scroll-out / react-rellax / react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
 / react-simple-typewriter / Email JS / Animate.css / loader.css / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes
 / react-timeago / React-beautiful-dnd
 
