@@ -19,7 +19,7 @@ export default function RelaxjsScrollout() {
             cssProps: { 
                visibleY: true  // css에서 visibleY라는 props를 사용하게끔 // visibleY은 현 태그의 Y축이 스크롤로 인해 보이는 비율 (invisible 0 ~ 0.5 ~ 1 visible)
             },
-            onShown: function(el) { // 스크롤로 인해 보여질떄 효과를 적용하기
+            onShown: function(el) { // 스크롤로 인해 보여질떄 효과를 적용하기 (Animate.css 라이브러리 적용가능)
                 el.animate([{ opacity: 0 }, { opacity: 1 }], 1000);
             },
             onHidden: function(el) {    // 스크롤로 인해 사라질떄 효과를 적용하기
