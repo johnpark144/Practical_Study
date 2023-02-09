@@ -8,6 +8,7 @@ ctrl f -> react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / r
 // ######## react-rellax (스크롤시 태그마다 다른 스피드) ##########################################################################################
 // npm i --save react-rellax
 // npm i react-rellax --legacy-peer-deps
+// https://www.npmjs.com/package/react-rellax
 
 // ########
 import Parallax from 'react-rellax'
