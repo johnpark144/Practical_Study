@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import LineWithScroll from './LineWithScroll'
+import RelaxjsScrollout from './RelaxjsScrollout'
 
 export default function page() {
-  return (
-    <div className='relative h-[3000px]'>
+  return (<>
+    <div className='relative h-[3000px] z-10'>
       <h1>Framer Motion, Regular Css</h1>
       <Link href="/pizza">Pizza</Link>
       <hr />
@@ -18,8 +19,11 @@ export default function page() {
       <Link href="/portfolio2">Portfolio2</Link>
       <hr />
       
+      {/* RelaxJS, scrollout */}
+      <RelaxjsScrollout  />
+    </div>
       {/* 스크롤에 따른 SVG그리기 연습 */}
       <LineWithScroll />
-    </div>
+    </>
   )
 }
