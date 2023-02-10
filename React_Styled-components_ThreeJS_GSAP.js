@@ -179,6 +179,25 @@ export default function Quote() {
   )
 }
 
+// ################
+import React from 'react'
+import styled from "styled-components";
+import { motion } from "framer-motion";
+
+// 스타일 컴포넌트와 framermotion 양식
+const AnimatedDiv = styled(motion.div)`
+  background-color: rebeccapurple;
+  width: 200px;
+  height: 200px;
+`;
+
+export default function BallEffect() {
+  return (
+    <AnimatedDiv animate={{ scale: 3 }} />
+  )
+}
+
+
 // ################ HeroSection.jsx
 import React from 'react'
 import styled from "styled-components";
