@@ -205,7 +205,7 @@ const xRapid_api_key = process.env.YOUTUBE_XRAPID_API_KEY;
 // ######## 박스 그림자 ############################################################################################################
 box-shadow: 1px 1px 10px 10px gray;
 
-// box-shadow: none | x-position y-position blur spread color | inset | initial | inherit
+// box-shadow: x-position y-position blur spread color | inset | initial | inherit
 
 // none : 그림자 효과를 없앤다.
 // x-position : 가로 위치이다. 양수면 오른쪽에, 음수면 왼쪽에 그림자가 만들어진다. (필수)
