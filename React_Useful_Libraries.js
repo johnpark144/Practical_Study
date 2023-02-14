@@ -89,7 +89,6 @@ export default function RelaxjsScrollout() {
 // https://lottiefiles.com/     // 파일을 다운
 
 // ######## ContactMe.jsx
-// ######## ContactMe.jsx
 import Lottie from 'react-lottie-player'
 import lottieJson from '../../public/computer.json' // 파일 위치
 
