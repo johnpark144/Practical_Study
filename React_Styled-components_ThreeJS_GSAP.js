@@ -1,3 +1,7 @@
+// styled-components 조건부스타일링!!!!!
+
+
+
 // ######## styled-components ###################################################################################################
 // npm i styled-components
 // npm install styled-components@^5.0.0 react@^16.8 react-dom@^16.8 react-is@^16.8  // 위에거 안되면 업데이트
