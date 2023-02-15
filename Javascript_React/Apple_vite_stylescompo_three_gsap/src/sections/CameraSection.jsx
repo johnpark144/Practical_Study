@@ -29,7 +29,7 @@ const V2 = styled.video`
   top: 0;
   right: 40%;
   width: 60%;
-  height: 1auto;
+  height: auto;
   z-index: 2;
 
   @media screen and (max-width: 30em) {
