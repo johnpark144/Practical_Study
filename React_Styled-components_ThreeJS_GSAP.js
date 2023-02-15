@@ -1,4 +1,5 @@
 // styled-components 조건부스타일링!!!!!
+// Three js, Gsap 더 자세히 공부할때 공부파일 분리하기
 
 
 
