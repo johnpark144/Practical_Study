@@ -1,9 +1,16 @@
 // ######## 전체 라이브러리들 ##############################################################################
-ctrl f -> scroll-out / react-rellax / react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
+ctrl f -> react-chartjs-2 / scroll-out / react-rellax / react-lottie-player / react-scroll-horizontal / tailwind-scrollbar / react-hook-form
 / react-simple-typewriter / Email JS / Animate.css / loader.css / react-leaflet / React-date-range / lodash debounce / React-icons / Next-Themes
 / react-timeago / React-beautiful-dnd
 
 // loader.css 대신 여기없는 react spinner 찾아보기
+// ######## react-chartjs-2 (차트) ###############################################################################################################
+// npm i react-chartjs-2
+// https://react-chartjs-2.js.org/
+// https://www.npmjs.com/package/react-chartjs-2
+
+// ########
+
 
 // ######## scroll-out (스크롤인, 아웃 될때마다 나타나고 사라지는 등 어떤 효과를 줄때) ###################################################################
 // npm i scroll-out -s
