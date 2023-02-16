@@ -1,6 +1,18 @@
+// ######## styled-components 리마인더 ###################################################################################################
 // styled-components 조건부스타일링!!!!!
 // Three js, Gsap 더 자세히 공부할때 공부파일 분리하기
 
+const Portfolio = styled(motion.div)`
+border: 1px black solid ;
+width: 80%;
+margin: 10px;
+display: flex;
+
+& > span:nth-child(1){
+    width: 70%;
+}
+& > span:nth-child(2){
+}
 
 
 // ######## styled-components ###################################################################################################
