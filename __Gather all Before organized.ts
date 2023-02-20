@@ -329,3 +329,19 @@ title.replace(/&quot;/g, '"')
 // ###### 배열에서 3개 랜덤으로 가져오기 (실험해봐야함,,)####################################################################################
   let data = data.sort(() => Math.random() - 0.5);
   data = data.slice(0, 3)
+
+// ###### JS로 CSS 변경 ########################################################################################################################
+// 설정(set)
+document.body.style.setProperty('color', 'lime');
+document.body.style.setProperty('font-size', '16px'); // - 를 사용한것에 주목!
+
+// 읽기(get)
+document.body.style.getPropertyValue('color'); // 'lime'
+
+// item() 이용, 인자값은 인덱스 숫자
+document.body.style.item(0) // 'color'
+document.body.style.item(1) // 'font-size'
+
+// 제거(remove), 제거 후에는 빈 문자열을 반환한다.
+document.body.style.removeProperty('color') // 'lime'
+document.body.style.item(1) // ''
