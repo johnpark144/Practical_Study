@@ -41,6 +41,8 @@ ${({ layoutId }) => Number(layoutId) % 2 === 0 ? RowReverse : "" }  // 조건부
 // https://docs.pmnd.rs/react-three-fiber/getting-started/introduction  // react-three/fiber docs
 // https://github.com/pmndrs/drei   // react-three/drei docs
 
+// https://sbcode.net/react-three-fiber/orbit-controls/  // react-three/fiber 튜토리얼 정리
+
 // https://github.com/pmndrs/gltfjsx    // glb 파일 입력방법
 
 // https://sketchfab.com/feed //  3d파일 다운로드 (glb 파일)
