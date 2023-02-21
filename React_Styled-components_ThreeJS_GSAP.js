@@ -35,17 +35,15 @@ ${({ layoutId }) => Number(layoutId) % 2 === 0 ? RowReverse : "" }  // 조건부
 // --legacy-peer-deps // 위에거 안되면 이거 붙여서
 
 // https://threejs.org/ // docs
-// https://www.npmjs.com/package/@react-three/fiber
-// https://www.npmjs.com/package/@react-three/drei
-
 // https://docs.pmnd.rs/react-three-fiber/getting-started/introduction  // react-three/fiber docs
 // https://github.com/pmndrs/drei   // react-three/drei docs
 
-// https://sbcode.net/react-three-fiber/orbit-controls/  // react-three/fiber 튜토리얼 정리
+// https://sbcode.net/react-three-fiber/orbit-controls/  // react-three/fiber 튜토리얼 정리 (옵션 참고)
 
 // https://github.com/pmndrs/gltfjsx    // glb 파일 입력방법
+// https://sketchfab.com/feed //  3d파일 다운로드 하는곳 (glb 파일)
 
-// https://sketchfab.com/feed //  3d파일 다운로드 (glb 파일)
+// ################ 방법
 
 // 3d glb파일 public폴더에 저장 -> cmd에서 public폴더로 -> npx gltfjsx apple_iphone_13_pro_max.glb     // npx gltfjsx (다운받은 glb or gltf  파일).glb | .gltf
 // JS파일 3d파일(glb파일) 둘다 필요
