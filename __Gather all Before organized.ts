@@ -140,7 +140,7 @@ useInterval(() => {
 
 console.log("windowWidth--------->",windowWidth)
 
-// ######## scroll 변경 (스크롤할때마다 실시간으로 출력) #################################################################
+// ######## scroll 할때마다 scrollY 변경 (스크롤할때마다 실시간으로 출력) #################################################################
 // ScrollY value for Cart
     const [scrollYValue, setScrollYValue] = useState(window.scrollY)
     
@@ -149,6 +149,10 @@ console.log("windowWidth--------->",windowWidth)
     })
 
 console.log("scrollYValue--------->",scrollYValue)
+
+// ######## scroll의 위치 좌표 변경 #################################################################
+    <button onClick={()=>{ window.scrollTo({ top: 0, behavior: "smooth" })}}>zzz</button>
+    // window.scrollTo(0,0); 이런식으로도 가능
 
 // ######## 404 Notfound page(only for react) #################################################################
 {/* 404, unmatched with any routes (always very bottom)*/}
