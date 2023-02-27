@@ -20,6 +20,14 @@ ${({ layoutId }) => Number(layoutId) % 2 === 0 ? RowReverse : "" }  // 조건부
 `
 
 
+@media screen and (max-width: 1024px) {
+  }
+  @media screen and (max-width: 768px) {
+  }
+  @media screen and (max-width: 625px) {
+  }
+
+
 // ######## styled-components ###################################################################################################
 // npm i styled-components
 // npm install styled-components@^5.0.0 react@^16.8 react-dom@^16.8 react-is@^16.8  // 위에거 안되면 업데이트
