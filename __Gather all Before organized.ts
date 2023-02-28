@@ -1,6 +1,6 @@
 // ####### 이 파일에 대한 리마인더 #################################################################################################
 // 기타 : objectFit 등들 정리하기, map, filter foreach
-// 링크도 같이 저장
+// 참고링크 및 유용한 사이트 북마크들도 같이 저장
 
 import { useSearchParams, useLocation, useParams, useNavigate, Link } from 'react-router-dom';
 const [searchParams, setSearchParams] = useSearchParams();
