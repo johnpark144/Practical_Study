@@ -717,6 +717,46 @@ export default function ColorSection() {
   );
 }
 
+// ######## 참고 
+<Canvas
+  camera={{
+    fov: 39,    // 카메라 각도
+    position:
+      windowWidth > 768
+        ? [0, 0.7, 5]   // X, Y, Z  // 좌표가 클수록 카메라는 원점에서 멀리 떨어져 있다는 뜻
+        : windowWidth > 625
+        ? [3, 0.7, 7]
+        : [3, 0.7, 8.5],
+  }}
+>
+  <ambientLight intensity={0.3} />
+  <directionalLight position={[0, 1, 0]} />
+  <Model />
+    <OrbitControls
+        minPolarAngle={Math.PI / 2.9}
+        maxPolarAngle={Math.PI - Math.PI / 1.92}
+        enableZoom={false}
+    />
+</Canvas>
+      
+    
+// ###### OrbitControls 
+
+enableDamping:  회전, 확대/축소 애니메이션이 끝날 때까지 에니메이션을 제공하는지 여부를 설정합니다.    
+dampingFactor: 기본값은 0.25입니다. 이 속성은 에니메이션을 제공하는 데 사용되는 속도를 제어합니다.
+rotateSpeed: 회전 속도를 조정하는 데 사용됩니다.
+zoomSpeed: 확대/축소 속도를 조정하는 데 사용됩니다.
+minDistance: 카메라가 특정 객체에 대한 최소 거리를 제어합니다.
+maxDistance: 카메라가 특정 객체에 대한 최대 거리를 제어합니다.
+minPolarAngle: 카메라가 수직 방향으로 움직일 수 있는 최소 앵글을 제어합니다.
+maxPolarAngle: 카메라가 수직 방향으로 움직일 수 있는 최대 앵글을 제어합니다.
+minAzimuthAngle: 카메라가 수평 방향으로 움직일 수 있는 최소 앵글을 제어합니다.
+maxAzimuthAngle: 카메라가 수평 방향으로 움직일 수 있는 최대 앵글을 제어합니다.
+enableZoom: 확대/축소 기능이 활성화되어 있는지 여부를 설정합니다.
+enableRotate: 회전 기능이 활성화되어 있는지 여부를 설정합니다.
+enablePan: 이동 기능이 활성화되어 있는지 여부를 설정합니다.
+
+
 // ######## useContext로 css스타일 변경 및 3d색상변경 #########################################################################################################
 // ################ context/ColorContext.jsx (context)
 import { useState } from "react";
