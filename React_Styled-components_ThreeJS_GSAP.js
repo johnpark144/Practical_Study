@@ -473,6 +473,16 @@ export function Model(props) {
 
 useGLTF.preload('/apple_iphone_13_pro_max.glb')
 
+// ################ 한 방향으로 돌게하기 
+const boxRef = useRef(null)
+  useFrame(() => {
+    boxRef.current.rotation.z += 0.003; // z 방향으로 항상 돌개끔
+  });
+return (
+    <group {...props} dispose={null}>
+      <group ref={boxRef}  rotation={[-Math.PI / 2, 0, 0]} scale={0.02}>
+//  ... 생략 ...
+          
 // ################ DesignSection.jsx
 import gsap from "gsap";
 import React from "react";
