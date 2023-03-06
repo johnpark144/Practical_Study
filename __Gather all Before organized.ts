@@ -207,7 +207,7 @@ const xRapid_api_key = process.env.YOUTUBE_XRAPID_API_KEY;
 // ######## HTML / CSS ##########################################################################################################
 // ###############################################################################################################################
 // ######## 모바일 가로스크롤, 확대 방지 ##############################################################################################
-<meta content="yes" name="apple-mobile-web-app-capable" /> // 애플폰 전
+<meta content="yes" name="apple-mobile-web-app-capable" /> // 애플폰 전용으로
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1 user-scalable=no">
 // initial-scale=1.0  // 초기 크기를 설정합니다.
 // user-scalable=no // 확대 기능을 사용하지 않습니다.
