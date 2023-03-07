@@ -193,3 +193,81 @@ catch(e){
 finally{
     console.log('finally');
 }
+
+// ###### 문자별로 쪼개서 배열만들기 ##################################################################################################
+"portfolio".split("")   // -> ['p','o','r','t','f','o','l','i','o']
+
+// ###### Reduce 예시 1 ##################################################################################################
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const sum1 = numbers.reduce((accumulator, currentNumber) => accumulator + currentNumber);
+console.log('sum1 =', sum1);
+
+// ###### Reduce 예시 2 (함수 따로 빼기) ####################################################################################
+function sumReducer(accumulator, currentNumber) {
+  return accumulator + currentNumber;
+}
+const sum2 = numbers.reduce(sumReducer);
+console.log('sum2 =', sum2);
+
+// ###### 단위 변환기 ####################################################################################
+ const numConverter = (num: number) => {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
+    }
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  };
+
+// ###### 특정글자를 다른글자로 전체바꾸기 ####################################################################################
+title.replace(/&quot;/g, '"')
+
+// ###############################################################################################################################
+// ########## 기타 JS 유용한것들 ####################################################################################################
+// ###############################################################################################################################
+// ###### 숫자, 글자 오름차순 내림차순 ####################################################################################
+  if (sortBy === 'price') { // 숫자 오름차순
+      dataByLessThenPrice.sort((a, b) => {
+          return Number(a.price) - Number(b.price);
+      });
+  } else if (sortBy === '-price') {
+      dataByLessThenPrice.sort((a, b) => {
+          return Number(b.price) - Number(a.price);
+      });
+  } else if (sortBy === 'name') { // 글자 오름차순
+      dataByLessThenPrice.sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          if (a.name === b.name) return 0;
+      });
+  } else if (sortBy === '-name') {
+      dataByLessThenPrice.sort((a, b) => {
+          if (a.name < b.name) return 1;
+          if (a.name > b.name) return -1;
+          if (a.name === b.name) return 0;
+      });
+  }
+
+// ###### 배열에서 3개 랜덤으로 가져오기 (실험해봐야함,,)####################################################################################
+  let data = data.sort(() => Math.random() - 0.5);
+  data = data.slice(0, 3)
+
+// ###### JS로 CSS 변경 ########################################################################################################################
+// 설정(set)
+document.body.style.setProperty('color', 'lime');
+document.body.style.setProperty('font-size', '16px'); // - 를 사용한것에 주목!
+
+// 읽기(get)
+document.body.style.getPropertyValue('color'); // 'lime'
+
+// item() 이용, 인자값은 인덱스 숫자
+document.body.style.item(0) // 'color'
+document.body.style.item(1) // 'font-size'
+
+// 제거(remove), 제거 후에는 빈 문자열을 반환한다.
+document.body.style.removeProperty('color') // 'lime'
+document.body.style.item(1) // ''
