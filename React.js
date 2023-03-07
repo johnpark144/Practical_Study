@@ -1024,3 +1024,141 @@ function Child({ name, age, tellme }) {
 
 export default memo(Child); // props에 변화가 없는경우 재랜더링이 되지않도록 메모제이션 되있는 기존 컴포넌트 사용
 
+// ###############################################################################################################################
+// ########## 기타 React 유용한것들 ################################################################################################
+// ###############################################################################################################################
+// ######## Async(로딩)중일때 대비 #################################################################################################
+import React, { Suspense } from 'react'
+
+<Suspense fallback={null}>
+  <Model />
+</Suspense>
+
+// ######## pathname 혹은 쿼리 생성 #################################################################
+window.location.href = 'portfolio1/about' // http://localhost:3000/portfolio1/about 로 보내버림
+
+// ######## Esc를 눌렀거나, 돔밖을 눌렀을경우 닫기 #################################################################
+ const refOne = useRef<HTMLInputElement>(null); // 돔에접근
+const [seeCalendar, setSeeCalendar] = useState(false);  // 닫으려고하는것의 Boolean
+
+  useEffect(() => {
+    document.addEventListener("keydown", hideOnEscape, true); // 키가 눌릴때마다 hideOnEscape함수 실행
+    document.addEventListener("click", hideOnClickOutside, true); // 클릭 할때마다 hideOnClickOutside함수 실행
+  }, []);
+
+  const hideOnEscape = (e: KeyboardEvent) => {
+    if (e.key === "Escape") { // ESC가 눌린경우
+      setSeeCalendar(false);
+    }
+  };
+  const hideOnClickOutside = (e: Event) => {
+    if (refOne.current && !refOne.current.contains(e.target as Node)) { // refOne 바깥 돔을 클릭한경우
+      setSeeCalendar(false);
+    }
+  };
+
+// ######## UnSerialized 정보 상태관리 오류 해결 #################################################################
+export default configureStore({
+  reducer: {
+    userObjSlice: userObjSlice.reducer,
+    dateSlice: dateSlice.reducer,
+    allMarkedDataSlice: allMarkedDataSlice.reducer,
+    isFocusedSlice: isFocusedSlice.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }), //  UnSerialized 체크 해서 오류를 없앰
+});
+
+// ######## localStorage 저장, 불러오기 #################################################################
+localStorage.setItem("history", JSON.stringify([...dataClone]));  //  localStorage에 배열 저장
+
+let historyStorage = JSON.parse(localStorage.getItem("history") || "[]"); //  localStorage에서 불러오기
+
+
+// ######## setTimeout #################################################################
+  useEffect(() => {
+      let timer = setTimeout(() => {
+        setSavedAnimation("opacity-0 translate-y-0");
+      }, 4000);
+      let timer2 = setTimeout(() => {
+        setSavedAnimation(
+          "opacity-100 translate-y-[-160px] lg:translate-y-[-120px]"
+        );
+      }, 500);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(timer2);
+      };
+    }
+  }, []);
+
+// ######## setInterval #################################################################
+  useEffect(() => {
+    const timer = setInterval(() => {
+      arrowTimerRef.current += 1;
+      setArrowTimer(arrowTimerRef.current);
+    }, 500);
+    return () => clearTimeout(timer);	
+  }, []);
+
+// ######## useInterval (setInterval을 쉽게하기 위한 커스텀훅) #################################################################
+// ######## useInterval.js
+import { useEffect, useRef } from "react";
+
+export default function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest function.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
+// ######## 
+useInterval(() => {
+    idx === 3 ? setIdx(0) : setIdx(idx + 1);
+}, 3000); // 3초마다 실행
+
+// ######## window innerWidth 변경 (화면 크기조정할때마다 실시간으로 출력) #################################################################
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  if (typeof window !== "undefined") {  // nextjs 용
+    window.addEventListener("resize", () => {
+      setWindowWidth(window.innerWidth);
+    });
+  }
+
+console.log("windowWidth--------->",windowWidth)
+
+// ######## scroll 할때마다 scrollY 변경 (스크롤할때마다 실시간으로 출력) #################################################################
+// ScrollY value for Cart
+    const [scrollYValue, setScrollYValue] = useState(window.scrollY)
+    
+    window.addEventListener('scroll', () => {
+        setScrollYValue(window.scrollY)
+    })
+
+console.log("scrollYValue--------->",scrollYValue)
+
+// ######## scroll의 위치 좌표 변경 #################################################################
+    <button onClick={()=>{ window.scrollTo({ top: 0, behavior: "smooth" })}}>zzz</button>
+    // window.scrollTo(0,0); 이런식으로도 가능
+
+// ######## 404 Notfound page(only for react) #################################################################
+{/* 404, unmatched with any routes (always very bottom)*/}
+<Route path='*' element={<EmptyPage />} />  // 라우트 맨하단에 작성해야함
+
+// ######## Netlify 배포후 새로고침시 에러 방지#################################################################################################
+// "_redirects" 이라는 이름을 가진 폴더안에 "/* /index.html 200" 이와같이 적은후 index.html파일이있는 public폴더에 보관한다
