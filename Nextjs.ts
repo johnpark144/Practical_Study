@@ -1352,3 +1352,47 @@ function MessageComponent({ msg }: Prop) {
 export { default } from "next-auth/middleware";
 export const config = { matcher: ["/"] };  // 로그인 안된상태에서 '/'페이지로 갔을때 [...nextauth]에 지정해둔 페이지로감
 
+
+// ###############################################################################################################################
+// ########## 기타 NEXT JS 유용한것들 ##############################################################################################
+// ###############################################################################################################################
+
+// ######## 현재 pathname 보여주기 (NextJS) #######################################################################################
+import { usePathname } from 'next/navigation';
+const pathname = usePathname(); // http://localhost:3000/portfolio1/about 에 /portfolio1/about 부분(pathname)짤라서 보여줌
+
+// ######## pathname으로 보내버리기 (NextJS) #################################################################
+import { useRouter } from "next/navigation";
+const router = useRouter();
+router.push(`/video/`);
+
+router.back() // 뒤로가기
+
+// ######## 서버사이드없이 import하기 //  "window is not defined"방지 (NextJS) #################################################################
+import dynamic from 'next/dynamic'
+const Map = dynamic(() => import('./Map'), { ssr: false }) // Import witout SSR // To prevent from Error "window is not defined"
+
+
+// ######## Image컴포넌트 크기를 부모 태그크기와 같게 (NextJS) #################################################################
+<div className="relative h-44 w-[445px]">{/* 배너이미지 // 부모: relative, 이미지: fill */}
+  <Image
+    src={bannerUrl}
+    alt="Channel-bannerLogo"
+    quality={100}
+    fill
+    style={{ objectFit: "cover" }}
+  />
+</div>
+
+// ######## 환경변수 사용 가능 하게 #################################################################
+module.exports = {
+  experimental:{
+    appDir: true,
+  },
+  env: {
+    YOUTUBE_XRAPID_API_KEY: process.env.YOUTUBE_XRAPID_API_KEY,
+  },  // 클라이언트 사이드에서 환경변수(.env)사용할수있도록
+}
+// ######## 
+const xRapid_api_key = process.env.YOUTUBE_XRAPID_API_KEY;
+
