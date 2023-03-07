@@ -271,3 +271,4 @@ document.body.style.item(1) // 'font-size'
 // 제거(remove), 제거 후에는 빈 문자열을 반환한다.
 document.body.style.removeProperty('color') // 'lime'
 document.body.style.item(1) // ''
+
