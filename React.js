@@ -1162,3 +1162,31 @@ console.log("scrollYValue--------->",scrollYValue)
 
 // ######## Netlify 배포후 새로고침시 에러 방지#################################################################################################
 // "_redirects" 이라는 이름을 가진 폴더안에 "/* /index.html 200" 이와같이 적은후 index.html파일이있는 public폴더에 보관한다
+
+// ######## 주소창에 쿼리 (useSearchParams) #################################################################################################
+// ######## 쿼리 만들어 주소창에 보내기
+import { useSearchParams } from 'react-router-dom';
+const [searchParams, setSearchParams] = useSearchParams();
+const doSearch = (e) => {
+        const currentQuery = e.target.search.query.toString();  // search에 들어가 있는 내용
+        setSearchParams({
+            filter: currentQuery,
+        });
+    };
+return(
+        <form onSubmit={doSearch}>
+                <div>
+                    <span>
+                        <input type="search" name="search" placeholder="Search" /> // name(search)이 쿼리 네임
+                    </span>
+                    <button type='submit' className={`${styles.searchIcon} material-icons-outlined`}>
+                        search
+                    </button>
+                </div>
+        </form>
+)
+
+// ######## 주소창에 쿼리 가져오기
+searchParams.get('search'))     // 키워드 저장 '?search='
+
+// #######################################################################################################
