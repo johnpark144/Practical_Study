@@ -1189,4 +1189,47 @@ return(
 // ######## 주소창에 쿼리 가져오기
 searchParams.get('search'))     // 키워드 저장 '?search='
 
-// #######################################################################################################
+// ####### 주소창에 params 가져오기############################################################################################
+// ####### 라우터
+// <Route path='/memorize/:day' element={<Day userObj={userObj} btnClass={btnClass} />} />
+
+// ####### 
+import { useParams } from 'react-router-dom';
+
+const { day } = useParams();  // UseParams 는 url에 params값을 가져 // nextJS는 매개변수로 가져
+<Route path='/memorize/:day' element={<Day userObj={userObj} btnClass={btnClass} />} /> // 
+
+// ####### Link의 특정 앵커로 보내기 (HashLink) ##################################################################################################
+import { HashLink as Link } from 'react-router-hash-link';
+
+<Link smooth to='/category#1' state={{ category: "MENS" }}>     // smooth 는 스크롤을 스무스하게
+    <li>
+        Mens
+    </li>
+</Link>
+
+// ####### category.jsx
+<div id={product.id}>   
+    Here
+</div>
+
+
+// ####### 링크시 특정 스타일 주기 (NavHashLink)
+import { NavHashLink } from 'react-router-hash-link';
+<NavHashLink to="/some/path#1" activeClassName="selected" activeStyle={{ color: 'red' }} >링크</NavHashLink>
+
+// ####### Link 이동할때 특정 state같이 보내기 (useLocation) ##################################################################################################
+// ####### Link
+import { Link } from 'react-router-dom';
+<Link to='/category' state={{ category: "man" }}>
+    <li>
+        For man
+    </li>
+</Link>
+
+// ####### Link를 통해 보낸 state 출력
+import { useLocation } from 'react-router-dom';
+
+const location = useLocation(); 
+console.log(location?.state?.category)
+
