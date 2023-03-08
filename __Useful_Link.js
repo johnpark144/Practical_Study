@@ -37,46 +37,16 @@ Loaders, Spinners 모음 https://cssloaders.github.io/
 Css 매니메이션 18가지 예제 https://ldrerin.tistory.com/397
 
 
-
-PvthonAnwwhere
-Netlify
-Vercel
-클라위뜨타입
-Pyth onanywhere 세팅 관련 모음 - qaussian37
-단계별 가이드: Netlify의 cactus
-[React] Nextjs SSR(getserversideProps_ )사용한 경
-Firebase I serverless DB
-개발 참고
-al
-al
-1이l
-ra
-ni
-ni
-OV
-ss
-Ss
-ol
-ir
-nd-
-/
-S
-EX
-DE
-Y15 Upstash1 Serverless DB
-re
-Pusher1 실시간 기능
-ot
-RapidAPl I 각종 AP 무음
-ke
-공공AP 각종 공공 API 모음2
-re
-공공데이터프털 각종 한국 공공 API 모음
-et
-re
-REDiAPI NoLtbe V3 API DOcs
-ub
-VouTue Google Developers 규글 유튜브 API Docs
-1튼
-pa RPI APIs & servces 구글 A이 대 시보드
-Nominetim 주스정보 AP
+######## 백엔드, API, 배포관련
+PvthonAnwwhere https://www.pythonanywhere.com/
+Netlify https://www.netlify.com/
+Vercel https://vercel.com/dashboard
+클라우드타입 https://cloudtype.io/
+PvthonAnwwhere 세팅 관련 모음 https://gaussian37.github.io/python-etc-pythonanywhere-setting/
+단계별 가이드: Netlify의 cactus https://www.netlify.com/blog/2016/04/08/a-step-by-step-guide-cactus-on-netlify/
+Firebase | serverless DB https://firebase.google.com/docs/reference/js/firestore_?authuser=0
+Upstash | Serverless DB https://upstash.com/
+Pusher1 | 실시간 기능 https://pusher.com/
+RapidAPI | 각종 API 모음 https://rapidapi.com/ytdlfree/api/youtube-v31/
+공공API | 각종 공공 API 모음2 https://github.com/public-apis/public-apis
+공공데이터프털 | 각종 한국 공공 API 모음 https://www.data.go.kr/
