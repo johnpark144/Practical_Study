@@ -68,3 +68,47 @@
 // RapidAPI | 각종 API 모음                 https://rapidapi.com/ytdlfree/api/youtube-v31/
 // 공공API | 각종 공공 API 모음2             https://github.com/public-apis/public-apis
 // 공공데이터프털 | 각종 한국 공공 API 모음   https://www.data.go.kr/
+
+######## 기타링크  ################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+######## Vs코드 Extensiona ################################################################################################################################
+######## 자바스크립트 및 웹 개발시 유용
+Auto Import - ES6, TS, JSX, TSX
+Auto Rename Tag
+ChatGPT
+Code Runner
+CodeGeeX  (GitHub Copilot 대신)
+ES7 React/Redux/GraphQL/React-Native snippets
+JavaScript (ES6) code snippets
+Material Icon Theme
+Multiple cursor case preserve
+open in browser
+Path Intellisense
+Prettier - Code formatter
+React Hooks Snippets
+Tailwind CSS IntelliSense
+vscode-styled-components
+ESLint
+
+######## 파이썬 및 기타
+isort
+Korean Language Pack for Visual Studio Code
+Pylance
+Python
+SQLite
+
+
+
+
+
