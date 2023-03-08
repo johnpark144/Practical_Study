@@ -35,3 +35,48 @@ cubic-bezier | transition 속력 확인 https://cubic-bezier.com/#.17,.67,.83,.6
 버튼 디자인 스타일 모음 https://inpa.tistory.com/entry/CSS-%F0%9F%92%8D-%EB%B2%84%ED%8A%BC-%EB%94%94%EC%9E%90%EC%9D%B8-%EB%AA%A8%EC%9D%8C
 Loaders, Spinners 모음 https://cssloaders.github.io/
 Css 매니메이션 18가지 예제 https://ldrerin.tistory.com/397
+
+
+
+PvthonAnwwhere
+Netlify
+Vercel
+클라위뜨타입
+Pyth onanywhere 세팅 관련 모음 - qaussian37
+단계별 가이드: Netlify의 cactus
+[React] Nextjs SSR(getserversideProps_ )사용한 경
+Firebase I serverless DB
+개발 참고
+al
+al
+1이l
+ra
+ni
+ni
+OV
+ss
+Ss
+ol
+ir
+nd-
+/
+S
+EX
+DE
+Y15 Upstash1 Serverless DB
+re
+Pusher1 실시간 기능
+ot
+RapidAPl I 각종 AP 무음
+ke
+공공AP 각종 공공 API 모음2
+re
+공공데이터프털 각종 한국 공공 API 모음
+et
+re
+REDiAPI NoLtbe V3 API DOcs
+ub
+VouTue Google Developers 규글 유튜브 API Docs
+1튼
+pa RPI APIs & servces 구글 A이 대 시보드
+Nominetim 주스정보 AP
