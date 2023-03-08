@@ -140,7 +140,7 @@ git pull	// 다운로드
 
 // #################################################################################################### 로컬에서 push시에 원격에 변동이 있었던 경우 ###########
 // push시 원격에 변동이 있었던 경우 pull을 해줘야 하는데 두 가지 방법이 있음
-git pull --no-rebase // merge 방식
+git pull --no-rebase // merge 방식 (디폴트)
 git pull --rebase // rebase 방식  // pull상의 rebase는 협업시 사용해도 됨
 
 git push --force  // 원격 변동내용 무시하고 push (협업시 사용 X)
