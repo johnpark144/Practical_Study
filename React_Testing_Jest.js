@@ -4,8 +4,10 @@
 
 // ####### RTL 세팅 및 간단한 이론  ########################################################################################################################
 // TDD는 항상 기능을 추가하기전 먼저 테스트코드를 작성하여야한다
+
 // getByRole의 Role부분 정리 :  https://www.w3.org/TR/wai-aria/#textbox
 // 매쳐(Matcher) 정리: https://github.com/testing-library/jest-dom#tohavetextcontent
+// 테스팅 라이브러리 Docs : https://testing-library.com/docs/
 
 // ####### App.test.js (create-react-app 기준)
 import { render, screen } from '@testing-library/react';
@@ -39,6 +41,7 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 // #################################################################################################################################################
 // ####### Color Button App ########################################################################################################################
 // #################################################################################################################################################
+// ###### 빨간, 파랑 토글 버튼과 체크박스 테스트 ####################################################################################################################
 // ####### App.test.js (create-react-app 기준)
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
@@ -53,6 +56,15 @@ test('Button has correct initial color, and updates when clicked', () => {
   expect(colorBtn).toHaveTextContent('Change to red')
 });
 
+test('Initial conditions',() => {
+  render(<App />);
+  const colorBtn = screen.getByRole("button", { name: "Change to blue" });
+  expect(colorBtn).toBeEnabled(); // 활성화가 잘 되어있는지
+
+  const checkbox = screen.getByRole("checkbox");
+  expect(checkbox).not.toBeChecked(); // checkbox가 체크가 안된 상태인
+})
+
 // ####### App.js (create-react-app 기준)
 import { useState } from 'react';
 import './App.css';
@@ -65,6 +77,7 @@ function App() {
       <button onClick={()=>setBtnColor(newBtnColor)} style={{ backgroundColor : btnColor }}>
         Change to {newBtnColor}
       </button>
+      <input type="checkbox" />
     </div>
   );
 }
