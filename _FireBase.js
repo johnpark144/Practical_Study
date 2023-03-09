@@ -1,9 +1,12 @@
-// ###########################################################################################################################
-// npm i firebase
-
+// ###### 리마인더 ##############################################################################################################
+// 밑에 정리된 코드들 사용중 오류 발생시 수정 해야함
+// 더 나은 예시있는경우 수정
+// 다른 기타 기능들 사용하여 알아낼 떄마다 업데이트
 
 
 // ######## 기본 세팅 ###################################################################################################################
+// npm i firebase
+
 // ######## .env (밑에 환경변수들은 가짜 예시임)
 REACT_APP_API_KEY="AIzaSyAd5ulEiTXPtzwSwSf9-DIU33ukRc7e234"   // create-react는 REACT_APP으로, Vite는 VITE로 변수 이름이 시작되야함 // Nextjs는 nextjs 파일 참고
 REACT_APP_AUTH_DOMAIN="myabc-97f23.firebaseapp.com"
@@ -188,12 +191,77 @@ export default function Auth() {
 
 
 // ######## Create ###################################################################################################################
+// To add docs : Database -> Rule -> allow read, write: if true; (input at firestore)
+import { addDoc, collection } from "firebase/firestore"; 
+import { dbService } from "../fBase";
+
+// ... 생략 ...
+ const onSubmit = async (e) => {
+    e.preventDefault();
+      if (!isLoading) {
+        setIsLoading(true); 
+        // 데이터 객체
+        const wordObj = {
+          creatorId: userObj.uid, // Save logged-in-user's uid
+          id: wordsMaxId + 1,
+          day: Number(dayRef.current.value),
+          eng: engRef.current.value,
+          kor: korRef.current.value,
+          isDone: false,
+        };
+        // 데이터 더하기
+        await addDoc(collection(dbService, "words"), wordObj); // words라는 이름의 컬렉션에 wordObj객체를 담음 
+        setIsLoading(false); // Not loading
+      }
+  };
+// ... 생략 ...
 
 // ######## Read (query, SQL과 비슷) ####################################################################################################
+import { useEffect, useState } from "react";
+import { dbService } from "../fBase";
+import { collection, GeoPoint, query, doc, where, getDocs, updateDoc, deleteDoc, onSnapshot, orderBy } from "firebase/firestore";
 
-// ######## Update ###################################################################################################################
+export default function Data()
+  const [dataArr, setDataArr] = useState("");
+  useEffect(() => {
+    const callDataDetail = async () => {
+    const q = query(
+      collection(dbService, "words"),
+      orderBy("id",  "asc"), // 없어도 
+      where("marked", "==", new GeoPoint(markedData[0], markedData[1]))
+    );
+    onSnapshot(q, (snapshot) => {
+      setDataArr(
+        snapshot.docs.map((doc) => ({
+          ...doc.data(),
+        }))
+      );
+    });
+      
+//     const docsSnap = await getDocs(q);
+  };
+    
+  callDataDetail();
+  }, []);
 
-// ######## Delete ###################################################################################################################
+  return dataArr;
+}
 
 
+// ######## Update, Delete ###################################################################################################################
+import { useEffect, useState } from "react";
+import { dbService } from "../fBase";
+import { collection, GeoPoint, query, doc, where, getDocs, updateDoc, deleteDoc, onSnapshot, orderBy } from "firebase/firestore";
+
+const geoRef = doc(dbService, "markedDatas", docsSnap.docs[0].id);
+    if (editedMarkedArr?.length) {
+      await updateDoc(geoRef, { // 해당 Doc다음과 같이 수정
+        marked: [...editedMarkedArr],
+      });
+    } else {
+      await deleteDoc(geoRef);  // 해당 Doc삭제
+    }
+
+
+// ##################################################################################################################################
 
