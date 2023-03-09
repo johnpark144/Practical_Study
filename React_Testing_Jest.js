@@ -4,6 +4,8 @@
 
 // ####### RTL 세팅 및 간단한 이론  ########################################################################################################################
 // TDD는 항상 기능을 추가하기전 먼저 테스트코드를 작성하여야한다
+// getByRole의 Role부분 정리 :  https://www.w3.org/TR/wai-aria/#textbox
+// 매쳐(Matcher) 정리: https://github.com/testing-library/jest-dom#tohavetextcontent
 
 // ####### App.test.js (create-react-app 기준)
 import { render, screen } from '@testing-library/react';
@@ -12,7 +14,7 @@ import App from './App';
 test('renders learn react link', () => {  // global test 메서드는 두 인자(argument)를 받음 (string, function)
   render(<App />);  // render 는 인자로 받은 컴포넌트를 가상 Dom에 생성
   const linkElement = screen.getByText(/learn react/i); // screen.getByText는 텍스트를 기반으로 요소를 찾음 (Regular expression 혹은 문자열로)
-  expect(linkElement).toBeInTheDocument(); // 성공과 실패를 확인하는 단언(Assertion)부분. // .toBeInTheDocument 매쳐(Matcher)는 단언(Assertion)부분의 타입(요소가 문서에 있는지)
+  expect(linkElement).toBeInTheDocument(); // 성공과 실패를 확인하는 단언(Assertion)부분. // 매쳐(Matcher)는 단언(Assertion)부분의 타입
 });
 
 // ####### package.json (create-react-app 기준)
@@ -34,32 +36,35 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 //  기능 테스트 (Functional test)
 //  인수 테스트 (Acceptance test / End-t-End Test / E2E Test)
 
-// ####### getByRole 
-// Role 정리 :  https://www.w3.org/TR/wai-aria/#textbox
-  const linkElement = screen.getByRole('link', { name: /learn react/i } );   //   screen.getByRole('(역할이름)', { name: ""} )
-
-
-
-
 // #################################################################################################################################################
 // ####### Color Button App ########################################################################################################################
 // #################################################################################################################################################
 // ####### App.test.js (create-react-app 기준)
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
-test('Button has correct initial color', () => {
+test('Button has correct initial color, and updates when clicked', () => {
   render(<App />);
   const colorBtn = screen.getByRole("button", { name: "Change to blue" }); // "Change to blue" 라는 버튼이 있는지
-  expect(colorBtn).toHaveStyle(` background-color: red `)
+  expect(colorBtn).toHaveStyle(`background-color: red`)
+
+  fireEvent.click(colorBtn); // 버튼 클릭 발생시
+  expect(colorBtn).toHaveStyle(`background-color: blue`) // 파랑색으로 변경
+  expect(colorBtn).toHaveTextContent('Change to red')
 });
 
 // ####### App.js (create-react-app 기준)
+import { useState } from 'react';
 import './App.css';
+
 function App() {
+  const [btnColor, setBtnColor] = useState("red");
+  const newBtnColor = btnColor === 'red' ? 'blue' : 'red';
   return (
     <div>
-      <button style={{backgroundColor : 'red'}}>Change to blue</button>
+      <button onClick={()=>setBtnColor(newBtnColor)} style={{ backgroundColor : btnColor }}>
+        Change to {newBtnColor}
+      </button>
     </div>
   );
 }
@@ -81,7 +86,7 @@ test('Button has correct initial color', () => {
 });
 
 
-
+// ######  ####################################################################################################################################
 
 
 
