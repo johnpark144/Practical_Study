@@ -3,6 +3,8 @@
 
 
 // ####### RTL 세팅 및 간단한 이론  ########################################################################################################################
+// TDD는 항상 기능을 추가하기전 먼저 테스트코드를 작성하여야한다
+
 // ####### App.test.js (create-react-app 기준)
 import { render, screen } from '@testing-library/react';
 import App from './App';
@@ -33,11 +35,56 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 //  인수 테스트 (Acceptance test / End-t-End Test / E2E Test)
 
 // ####### getByRole 
-// Roll 정리 :  https://www.w3.org/TR/wai-aria/#textbox
+// Role 정리 :  https://www.w3.org/TR/wai-aria/#textbox
   const linkElement = screen.getByRole('link', { name: /learn react/i } );   //   screen.getByRole('(역할이름)', { name: ""} )
 
 
-// #######  ########################################################################################################################
+
+
+// #################################################################################################################################################
+// ####### Color Button App ########################################################################################################################
+// #################################################################################################################################################
+// ####### App.test.js (create-react-app 기준)
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('Button has correct initial color', () => {
+  render(<App />);
+  const colorBtn = screen.getByRole("button", { name: "Change to blue" }); // "Change to blue" 라는 버튼이 있는지
+  expect(colorBtn).toHaveStyle(` background-color: red `)
+});
+
+// ####### App.js (create-react-app 기준)
+import './App.css';
+function App() {
+  return (
+    <div>
+      <button style={{backgroundColor : 'red'}}>Change to blue</button>
+    </div>
+  );
+}
+export default App;
+
+// ###### LogRoles ####################################################################################################################################
+// 페이지가 길어서 역할이있는 항목들이 햇갈릴때 사용됨 (역할과 이름이 콘솔로그 처럼 출력됨) // 코드가 지저분해질 가능성이 있어서 안쓰는 경우도 많음
+// ####### App.test.js (create-react-app 기준)
+import { render, screen } from '@testing-library/react';
+import { logRoles } from '@testing-library/dom'
+import App from './App';
+
+test('Button has correct initial color', () => {
+  const { container } = render(<App />);
+  logRoles( container );  // 이 컴포넌트안에 역할과 이름 출력
+
+  const colorBtn = screen.getByRole("button", { name: "Change to blue" }); 
+  expect(colorBtn).toHaveStyle(` background-color: red `)
+});
+
+
+
+
+
+
 
 
 
