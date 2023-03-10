@@ -9,6 +9,16 @@
 // 매쳐(Matcher) 정리: https://github.com/testing-library/jest-dom#tohavetextcontent
 // 테스팅 라이브러리 Docs : https://testing-library.com/docs/
 
+// ####### RTL과 Jest의 역할
+// RTL -> 가상 Dom을 만들거나 상호작용하는 등 테스트를 간접적으로 돕는 역할 (render, screen, fireEvent 등)
+// Jest -> 단언(Assertion)인 expect, test 등 과 같이 테스트를 직접 하게함    // Jest Watch Mode는 코밋할때 변화가 있으면 실행 (변화없으면 실행X)
+  
+// ####### 테스트의 종류
+//  단위 테스트 (Unit test)  : 로직이 너무 복잡한경우, 코드 품질을 개선하기 위해(안정성, 완성도), 버그발생 최소화, 문서화, 오류 조기발견, 코드변경 용이
+//  통합 테스트 (Integration test)
+//  기능 테스트 (Functional test)
+//  인수 테스트 (Acceptance test / End-t-End Test / E2E Test)
+
 // ####### App.test.js (create-react-app 기준)
 import { render, screen } from '@testing-library/react';
 import App from './App';
@@ -28,15 +38,6 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
   expect(element.textContent).toBe('hello');  // expect안에 있는게 'hello'여야함
   expect(elementsArr).toHaveLength(7);  // 배열의 길이가 7이어야함
   
-// ####### RTL과 Jest의 역할
-// RTL -> 가상 Dom을 만들거나 상호작용하는 등 테스트를 간접적으로 돕는 역할
-// Jest -> 단언(Assertion)인 expect, test 등 과 같이 테스트를 직접 하게함    // Jest Watch Mode는 코밋할때 변화가 있으면 실행 (변화없으면 실행X)
-  
-// ####### 테스트의 종류
-//  단위 테스트 (Unit test)  : 로직이 너무 복잡한경우, 코드 품질을 개선하기 위해(안정성, 완성도), 버그발생 최소화, 문서화, 오류 조기발견, 코드변경 용이
-//  통합 테스트 (Integration test)
-//  기능 테스트 (Functional test)
-//  인수 테스트 (Acceptance test / End-t-End Test / E2E Test)
 
 // #################################################################################################################################################
 // ####### Color Button App ########################################################################################################################
@@ -51,7 +52,7 @@ test('Button has correct initial color, and updates when clicked', () => {
   const colorBtn = screen.getByRole("button", { name: "Change to blue" }); // "Change to blue" 라는 버튼이 있는지
   expect(colorBtn).toHaveStyle(`background-color: red`)
 
-  fireEvent.click(colorBtn); // 버튼 클릭 발생시에
+  fireEvent.click(colorBtn); // 이벤트메서드를 가짐 (버튼 클릭시에)
   expect(colorBtn).toHaveStyle(`background-color: blue`) // 파랑색으로 변경되있는지
   expect(colorBtn).toHaveTextContent('Change to red') // 해당 문자가 있는지
 });
@@ -98,7 +99,7 @@ test('Button has correct initial color', () => {
   expect(colorBtn).toHaveStyle(` background-color: red `)
 });
 
-// ###### 유닛 테스팅 함수 ####################################################################################################################################
+// ###### 그룹 테스트, 유닛 테스팅 함수 ###########################################################################################################################
 //  describe는 테스트를 그룹으로 묶어줌
 // ####### App.test.js (create-react-app 기준)
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -124,4 +125,55 @@ export const replaceCamelWithSpaces = (colorName) => {
   return colorName.replace(/\B([A-Z])\B/g, ' $1');  // 정규표현식 (글자사이에 대문자가 있으면 앞에 한칸씩 띄어주는역할)
 }
 
-// ######  ####################################################################################################################################
+// ###### ESLint, Prettier ###########################################################################################################################
+// ESLint : 린터(Linter)로 사용되는 툴 중 하나, 소프트웨어 코드를 분석하여 버그를 찾고, 코드 스타일이나 실수를 검사하는데 사용. 문법 오류, 디버깅 및 성능 최적화 실수, 가독성 및 일관성 오류 등을 찾아냄
+// Prettier : 포매터(Formatter)로써, 소프트웨어 코드의 모양을 바꾸는 툴로, 들여쓰기나 공백, 줄바꿈 등의 공통적인 코딩 스타일을 적용하기 위해 사용
+
+// ###### 테스팅라이브러리와 jest-dom를 위한 ESLint #############################################################################################
+// npm i eslint-plugin-testing-library eslint-plugin-jest-dom
+
+// 규칙 참고 링크
+// https://github.com/testing-library/eslint-plugin-jest-dom
+// https://github.com/testing-library/eslint-plugin-testing-library
+// https://github.com/bonnie/bonniedotdev/blob/main/client/.eslintrc.json
+
+// ###### package.json 파일에서 해당내용 지우기
+"eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+
+// ###### .eslintrc.json (규칙을 정할 수 있음)
+{
+  "plugins": ["testing-library", "jest-dom"],
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
+  ]
+}
+// ###### .vscode/settings.json (prettier, eslint 같이)
+{
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}
+
+// ###### .vscode/settings.json (prettier-eslint 하나의 익스텐션)
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+    "editor.formatOnPaste": false, // required 
+    "editor.formatOnType": false, // required
+    "editor.formatOnSave": true, // optional 
+    "editor.formatOnSaveMode": "file", // required to format on save
+    "files.autoSave": "onFocusChange",
+    "[javascript]": {
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    } // optional but recommended
+}
