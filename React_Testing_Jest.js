@@ -1,13 +1,14 @@
 // ####### 리미인드 ###########################################################################################################################################
 // 다하고 이론부분 지을거 지우기
-
+// 매쳐(Matcher) 효과 정리하기
 
 // ####### RTL 세팅 및 간단한 이론  ########################################################################################################################
 // TDD는 항상 기능을 추가하기전 먼저 테스트코드를 작성하여야한다
+// 테스팅 라이브러리 Docs : https://testing-library.com/docs/
 
+// getBy, queryBy, findBy 정리 : https://testing-library.com/docs/react-testing-library/cheatsheet/
 // getByRole의 Role부분 정리 :  https://www.w3.org/TR/wai-aria/#textbox
 // 매쳐(Matcher) 정리: https://github.com/testing-library/jest-dom#tohavetextcontent
-// 테스팅 라이브러리 Docs : https://testing-library.com/docs/
 
 // ####### RTL과 Jest의 역할
 // RTL -> 가상 Dom을 만들거나 상호작용하는 등 테스트를 간접적으로 돕는 역할 (render, screen, fireEvent 등)
@@ -19,6 +20,11 @@
 //  기능 테스트 (Functional test)
 //  인수 테스트 (Acceptance test / End-t-End Test / E2E Test)
 
+// ####### package.json (create-react-app 기준)
+"scripts": {
+    "test": "react-scripts test",
+  },
+    
 // ####### App.test.js (create-react-app 기준)
 import { render, screen } from '@testing-library/react';
 import App from './App';
@@ -29,14 +35,24 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
   expect(linkElement).toBeInTheDocument(); // 성공과 실패를 확인하는 단언(Assertion)부분. // 매쳐(Matcher)는 단언(Assertion)부분의 타입
 });
 
-// ####### package.json (create-react-app 기준)
-"scripts": {
-    "test": "react-scripts test",
-  },
-    
+
 // ####### 단언(Assertion)인 expect과 매쳐(Matcher)인 . 
   expect(element.textContent).toBe('hello');  // expect안에 있는게 'hello'여야함
   expect(elementsArr).toHaveLength(7);  // 배열의 길이가 7이어야함
+
+// ######## screen 메소드 ##############################################################################################################################
+// getBy, queryBy, findBy는 컴포넌트의 요소들을 확인하는 데 사용
+// getBy, queryBy, findBy 정리 : https://testing-library.com/docs/react-testing-library/cheatsheet/
+
+// Type of Query 	0 Matches	            1 Match	          >1 Matches	    Retry(Async/Await)
+
+// getBy...	      Throw error	      Return element	      Throw error	          No
+// queryBy...  	  Return null     	Return element	      Throw error	          No
+// findBy...	      Throw error     	Return element	      Throw error	          Yes
+
+// getAllBy... 	  Throw error	        Return array	      Return array	        No
+// queryAllBy...	  Return []	          Return array	      Return array     	    No
+// findAllBy...	  Throw error       	Return array	      Return array	        Yes
 
 // ###### ESLint, Prettier ###########################################################################################################################
 // ESLint : 린터(Linter)로 사용되는 툴 중 하나, 소프트웨어 코드를 분석하여 버그를 찾고, 코드 스타일이나 실수를 검사하는데 사용. 문법 오류, 디버깅 및 성능 최적화 실수, 가독성 및 일관성 오류 등을 찾아냄
@@ -75,10 +91,12 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
   "editor.formatOnSave": true
 }
 
+
+
 // #################################################################################################################################################
 // ####### Color Button App ########################################################################################################################
 // #################################################################################################################################################
-// ###### 빨간, 파랑 토글 버튼과 체크박스 테스트 #######################################################################################################
+// ###### 빨간, 파랑 토글 버튼과 체크박스 테스트 (fireEvent, getByRole) ################################################################################
 // ####### App.test.js (create-react-app 기준)
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
@@ -122,6 +140,7 @@ export default App;
 
 // ###### LogRoles ####################################################################################################################################
 // 페이지가 길어서 역할이있는 항목들이 햇갈릴때 사용됨 (역할과 이름이 콘솔로그 처럼 출력됨) // 코드가 지저분해질 가능성이 있어서 안쓰는 경우도 많음
+
 // ####### App.test.js (create-react-app 기준)
 import { render, screen } from '@testing-library/react';
 import { logRoles } from '@testing-library/dom'
@@ -162,19 +181,72 @@ export const replaceCamelWithSpaces = (colorName) => {
 }
 
 
-
 // #################################################################################################################################################
 // ####### 아이스크림 주문 앱 ########################################################################################################################
 // #################################################################################################################################################
 // ######## fireEvent와 userEvent ##################################################################################################################
 // fireEvent : userEvent보다 정교하지는 않지만, 작성하기 쉽고 이용할 옵션이 많음
-// userEvent : 광범위하고 복잡한 이벤트 범주를 다룰 수 있고, 실제로 만들어 놓은 시뮬레이션 이벤트를 발생시킬 수 있기 때문에 fireEvent보다 더 정교함, 그러나 fireEvent보다 개수가적음
+
+// userEvent :
+// 광범위하고 복잡한 이벤트 범주를 다룰 수 있고, 실제 시뮬레이션으로 이벤트를 발생시키므로 fireEvent보다 더 정교함, 그래서 항상 프로미스를 반환하기 때문에 async, await해야함
+// fireEvent보다 개수가적음.
+
 // 결론 : userEvent에 있는것은 userEvent에서쓰고 없으면 fireEvent에서 사용할 것을 권장.
 
+// ######## userEvent ##############################################################################################################################
+// ######## SummaryForm.test.js
+import { render, screen } from "@testing-library/react";
+import SummaryForm from "../SummaryForm";
+import userEvent from "@testing-library/user-event";
+
+test("Checkbox enables button on first click and disables on second click", async () => { // userEvent는 시뮬레이션이 진행되기 때문에 async 필수
+  const user = userEvent.setup(); // user가 직접 사용하듯 시뮬레이션 setup함
+
+  render(<SummaryForm />);
+  const checkbox = screen.getByRole("checkbox");
+  const confirmButton = screen.getByRole("button", { name: "Confirm order" });
+
+  await user.click(checkbox); // click 이벤트를 발생시 (fireEvent로 대체가능 // await 필수
+  expect(confirmButton).toBeEnabled();
+
+  await user.click(checkbox);
+  expect(confirmButton).toBeDisabled();
+});
+
+
+// ######## SummaryForm.js
+import React, { useState } from "react";
+
+function SummaryForm() {
+  const [disabled, setDisabled] = useState(true);
+  return (
+    <>
+      <input onChange={() => setDisabled(!disabled)} type="checkbox" />
+      <button disabled={disabled}>Confirm order</button>
+    </>
+  );
+}
+export default SummaryForm;
+
+
+// ########  ##############################################################################################################################
 
 
 
 
 
-// ######## ##################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
