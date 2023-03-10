@@ -37,7 +37,43 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 // ####### 단언(Assertion)인 expect과 매쳐(Matcher)인 . 
   expect(element.textContent).toBe('hello');  // expect안에 있는게 'hello'여야함
   expect(elementsArr).toHaveLength(7);  // 배열의 길이가 7이어야함
-  
+
+// ###### ESLint, Prettier ###########################################################################################################################
+// ESLint : 린터(Linter)로 사용되는 툴 중 하나, 소프트웨어 코드를 분석하여 버그를 찾고, 코드 스타일이나 실수를 검사하는데 사용. 문법 오류, 디버깅 및 성능 최적화 실수, 가독성 및 일관성 오류 등을 찾아냄
+// Prettier : 포매터(Formatter)로써, 소프트웨어 코드의 모양을 바꾸는 툴로, 들여쓰기나 공백, 줄바꿈 등의 공통적인 코딩 스타일을 적용하기 위해 사용
+
+// ###### 테스팅라이브러리와 jest-dom를 위한 ESLint #############################################################################################
+// npm i eslint-plugin-testing-library eslint-plugin-jest-dom
+
+// 규칙 참고 링크
+// https://github.com/testing-library/eslint-plugin-jest-dom
+// https://github.com/testing-library/eslint-plugin-testing-library
+// https://github.com/bonnie/bonniedotdev/blob/main/client/.eslintrc.json
+
+// ###### package.json 파일에서 해당내용 지우기
+"eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+
+// ###### .eslintrc.json (규칙을 정할 수 있음, 위에 규칙링크 참고)
+{
+  "plugins": ["testing-library", "jest-dom"],
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
+  ]
+}
+// ###### .vscode/settings.json (prettier, eslint 같이)
+{
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}
 
 // #################################################################################################################################################
 // ####### Color Button App ########################################################################################################################
@@ -125,41 +161,20 @@ export const replaceCamelWithSpaces = (colorName) => {
   return colorName.replace(/\B([A-Z])\B/g, ' $1');  // 정규표현식 (글자사이에 대문자가 있으면 앞에 한칸씩 띄어주는역할)
 }
 
-// ###### ESLint, Prettier ###########################################################################################################################
-// ESLint : 린터(Linter)로 사용되는 툴 중 하나, 소프트웨어 코드를 분석하여 버그를 찾고, 코드 스타일이나 실수를 검사하는데 사용. 문법 오류, 디버깅 및 성능 최적화 실수, 가독성 및 일관성 오류 등을 찾아냄
-// Prettier : 포매터(Formatter)로써, 소프트웨어 코드의 모양을 바꾸는 툴로, 들여쓰기나 공백, 줄바꿈 등의 공통적인 코딩 스타일을 적용하기 위해 사용
 
-// ###### 테스팅라이브러리와 jest-dom를 위한 ESLint #############################################################################################
-// npm i eslint-plugin-testing-library eslint-plugin-jest-dom
 
-// 규칙 참고 링크
-// https://github.com/testing-library/eslint-plugin-jest-dom
-// https://github.com/testing-library/eslint-plugin-testing-library
-// https://github.com/bonnie/bonniedotdev/blob/main/client/.eslintrc.json
+// #################################################################################################################################################
+// ####### 아이스크림 주문 앱 ########################################################################################################################
+// #################################################################################################################################################
+// ######## fireEvent와 userEvent ##################################################################################################################
+// fireEvent : userEvent보다 정교하지는 않지만, 작성하기 쉽고 이용할 옵션이 많음
+// userEvent : 광범위하고 복잡한 이벤트 범주를 다룰 수 있고, 실제로 만들어 놓은 시뮬레이션 이벤트를 발생시킬 수 있기 때문에 fireEvent보다 더 정교함, 그러나 fireEvent보다 개수가적음
+// 결론 : userEvent에 있는것은 userEvent에서쓰고 없으면 fireEvent에서 사용할 것을 권장.
 
-// ###### package.json 파일에서 해당내용 지우기
-"eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
 
-// ###### .eslintrc.json (규칙을 정할 수 있음, 위에 규칙링크 참고)
-{
-  "plugins": ["testing-library", "jest-dom"],
-  "extends": [
-    "react-app",
-    "react-app/jest",
-    "plugin:testing-library/react",
-    "plugin:jest-dom/recommended"
-  ]
-}
-// ###### .vscode/settings.json (prettier, eslint 같이)
-{
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
-}
 
-// ######  #############################################################################################
+
+
+
+// ######## ##################################################################################################################
+
