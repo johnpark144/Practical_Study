@@ -145,7 +145,7 @@ export const replaceCamelWithSpaces = (colorName) => {
     ]
   },
 
-// ###### .eslintrc.json (규칙을 정할 수 있음)
+// ###### .eslintrc.json (규칙을 정할 수 있음, 위에 규칙링크 참고)
 {
   "plugins": ["testing-library", "jest-dom"],
   "extends": [
@@ -162,18 +162,4 @@ export const replaceCamelWithSpaces = (colorName) => {
   "editor.formatOnSave": true
 }
 
-// ###### .vscode/settings.json (prettier-eslint 하나의 익스텐션)
-{
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
-    "editor.formatOnPaste": false, // required 
-    "editor.formatOnType": false, // required
-    "editor.formatOnSave": true, // optional 
-    "editor.formatOnSaveMode": "file", // required to format on save
-    "files.autoSave": "onFocusChange",
-    "[javascript]": {
-        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-    } // optional but recommended
-}
+// ######  #############################################################################################
