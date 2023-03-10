@@ -43,7 +43,9 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 // ######## screen 메소드 ##############################################################################################################################
 // getBy, queryBy, findBy는 컴포넌트의 요소들을 확인하는 데 사용
 // getBy, queryBy, findBy 정리 : https://testing-library.com/docs/react-testing-library/cheatsheet/
+// getBy > queryBy > findBy (사용 추천 순)
 
+// ------------------------------------
 // Type of Query 	0 Matches	            1 Match	          >1 Matches	    Retry(Async/Await)
 
 // getBy...	      Throw error	      Return element	      Throw error	          No
@@ -53,7 +55,7 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 // getAllBy... 	  Throw error	        Return array	      Return array	        No
 // queryAllBy...	  Return []	          Return array	      Return array     	    No
 // findAllBy...	  Throw error       	Return array	      Return array	        Yes
-
+// -------------------------------------
 // ###### ESLint, Prettier ###########################################################################################################################
 // ESLint : 린터(Linter)로 사용되는 툴 중 하나, 소프트웨어 코드를 분석하여 버그를 찾고, 코드 스타일이나 실수를 검사하는데 사용. 문법 오류, 디버깅 및 성능 최적화 실수, 가독성 및 일관성 오류 등을 찾아냄
 // Prettier : 포매터(Formatter)로써, 소프트웨어 코드의 모양을 바꾸는 툴로, 들여쓰기나 공백, 줄바꿈 등의 공통적인 코딩 스타일을 적용하기 위해 사용
@@ -193,7 +195,7 @@ export const replaceCamelWithSpaces = (colorName) => {
 
 // 결론 : userEvent에 있는것은 userEvent에서쓰고 없으면 fireEvent에서 사용할 것을 권장.
 
-// ######## userEvent ##############################################################################################################################
+// ######## userEvent (실제 시뮬레이션) #######################################################################################################################
 // ######## SummaryForm.test.js
 import { render, screen } from "@testing-library/react";
 import SummaryForm from "../SummaryForm";
@@ -229,11 +231,59 @@ function SummaryForm() {
 export default SummaryForm;
 
 
-// ########  ##############################################################################################################################
+// ######## queryBy (매치되는 태그가 없으면 null을 반환) 와 hover ###################################################################################################
+// ######## SummaryForm.test.js
+import { render, screen } from "@testing-library/react";
+import SummaryForm from "../SummaryForm";
+import userEvent from "@testing-library/user-event";
+
+//  ... 생략 ...
+test("Popover responds to hover", async () => {
+  const user = userEvent.setup();
+  render(<SummaryForm />);
+
+  const nullPopover = screen.queryByText(
+    // 아직 이런 태그가 없어야 하는게 정상인데, getBy로하면 에러를 발생시킴 그래서 queryBy사용
+    "no ice cream will actually be delivered"
+  );
+  expect(nullPopover).not.toBeInTheDocument(); // 해당 태그가 없는지 확인
+
+  const termsAndConditions = screen.getByText("Confirm order");
+
+  await user.hover(termsAndConditions); // 해당 태그에 하버 될때
+  const popover = screen.getByText("No ice cream will actually be delivered");
+  expect(popover).toBeInTheDocument();
+
+  await user.unhover(termsAndConditions); // 해당 태그에서 마우스 빠져나올때
+  expect(popover).not.toBeInTheDocument();
+});
 
 
+// ######## SummaryForm.jsx
+import React, { useState } from "react";
+
+function SummaryForm() {
+  const [disabled, setDisabled] = useState(true);
+  const [showPopover, setShowPopover] = useState(false);
+  return (
+    <>
+      {showPopover ? <div>No ice cream will actually be delivered</div> : ""}
+      <input onChange={() => setDisabled(!disabled)} type="checkbox" />
+      <button
+        onMouseOver={() => setShowPopover(true)}
+        onMouseLeave={() => setShowPopover(false)}
+        disabled={disabled}
+      >
+        Confirm order
+      </button>
+    </>
+  );
+}
+
+export default SummaryForm;
 
 
+// ######## ############################################################################################################
 
 
 
