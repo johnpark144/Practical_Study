@@ -43,7 +43,7 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 // ######## screen 메소드 ##############################################################################################################################
 // getBy, queryBy, findBy는 컴포넌트의 요소들을 확인하는 데 사용
 // getBy, queryBy, findBy 정리 : https://testing-library.com/docs/react-testing-library/cheatsheet/
-// getBy > queryBy > findBy (사용 추천 순)
+// getBy > queryBy > findBy (사용 추천 순) // getBy 중에서도 getByRole이 가장 선호됨
 
 // ------------------------------------
 // Type of Query 	0 Matches	            1 Match	          >1 Matches	    Retry(Async/Await)
@@ -56,6 +56,7 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 // queryAllBy...	  Return []	          Return array	      Return array     	    No
 // findAllBy...	  Throw error       	Return array	      Return array	        Yes
 // -------------------------------------
+
 // ###### ESLint, Prettier ###########################################################################################################################
 // ESLint : 린터(Linter)로 사용되는 툴 중 하나, 소프트웨어 코드를 분석하여 버그를 찾고, 코드 스타일이나 실수를 검사하는데 사용. 문법 오류, 디버깅 및 성능 최적화 실수, 가독성 및 일관성 오류 등을 찾아냄
 // Prettier : 포매터(Formatter)로써, 소프트웨어 코드의 모양을 바꾸는 툴로, 들여쓰기나 공백, 줄바꿈 등의 공통적인 코딩 스타일을 적용하기 위해 사용
@@ -202,7 +203,7 @@ import SummaryForm from "../SummaryForm";
 import userEvent from "@testing-library/user-event";
 
 test("Checkbox enables button on first click and disables on second click", async () => { // userEvent는 시뮬레이션이 진행되기 때문에 async 필수
-  const user = userEvent.setup(); // user가 직접 사용하듯 시뮬레이션 setup함
+  const user = userEvent.setup(); // user가 직접 사용하듯 시뮬레이션 setup
 
   render(<SummaryForm />);
   const checkbox = screen.getByRole("checkbox");
@@ -283,14 +284,48 @@ function SummaryForm() {
 export default SummaryForm;
 
 
-// ######## ############################################################################################################
+// ######## Mock Service Worker (MSW) ############################################################################################################
+// npm install msw
+// https://mswjs.io/docs/
+
+// ######## mocks/server.js
+import { setupServer } from "msw/node";
+import { handlers } from "./handlers";
+// This configures a request mocking server with the given request handlers.
+export const server = setupServer(...handlers);
+
+// ######## mocks/handlers.js
+import { rest } from "msw";
+
+export const handlers = [
+  rest.get("http://localhost:3000/scoops", (req, res, ctx) => {
+    return res(
+      ctx.json([
+        { name: "Chocolate", imagePath: "/images/chocolate.png" },
+        { name: "Vanilla", imagePath: "/images/vanilla.png" },
+      ])
+    );
+  }),
+];
+
+// ######## setupTests.js (App.js와 같은폴더)
+import "@testing-library/jest-dom";
+import { server } from "./mocks/server.js";
+
+// Establish API mocking before all tests.
+beforeAll(() => server.listen());
+
+// Reset any request handlers that we may add during the tests,
+// so they don't affect other tests.
+afterEach(() => server.resetHandlers());
+
+// Clean up after the tests are finished.
+afterAll(() => server.close());
 
 
 
 
-
-
-
+// ########  ############################################################################################################
 
 
 
