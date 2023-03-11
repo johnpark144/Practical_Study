@@ -48,11 +48,11 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 // ------------------------------------
 // Type of Query 	0 Matches	            1 Match	          >1 Matches	    Retry(Async/Await)
 
-// getBy...	      Throw error	      Return element	      Throw error	          No
+// getBy...	    Throw error	      Return element	      Throw error	          No
 // queryBy...  	  Return null     	Return element	      Throw error	          No
 // findBy...	    Throw error     	Return element	      Throw error	          Yes
 
-// getAllBy... 	  Throw error	        Return array	      Return array	        No
+// getAllBy... 	      Throw error	        Return array	      Return array	        No
 // queryAllBy...  Return []	          Return array	      Return array     	    No
 // findAllBy...	  Throw error       	Return array	      Return array	        Yes
 // -------------------------------------
