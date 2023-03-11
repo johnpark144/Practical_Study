@@ -52,8 +52,8 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 // queryBy...  	  Return null     	Return element	      Throw error	          No
 // findBy...	    Throw error     	Return element	      Throw error	          Yes
 
-// getAllBy... 	      Throw error	        Return array	      Return array	        No
-// queryAllBy...  Return []	          Return array	      Return array     	    No
+// getAllBy... 	  Throw error	        Return array	      Return array	        No
+// queryAllBy...  Return []	           Return array	        Return array     	    No
 // findAllBy...	  Throw error       	Return array	      Return array	        Yes
 // -------------------------------------
 
