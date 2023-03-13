@@ -2,6 +2,10 @@
 // 다하고 이론부분 지을거 지우기
 // 매쳐(Matcher) 효과 정리하기
 
+
+
+
+
 // ################ RTL 세팅 및 간단한 이론  ##################################################################################################################
 // TDD는 항상 기능을 추가하기전 먼저 테스트코드를 작성하여야한다
 // 테스팅 라이브러리 Docs : https://testing-library.com/docs/
@@ -35,8 +39,7 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
   expect(linkElement).toBeInTheDocument(); // 성공과 실패를 확인하는 단언(Assertion)부분. // 매쳐(Matcher)는 단언(Assertion)부분의 타입
 });
 
-
-// ################ 단언(Assertion)인 expect과 매쳐(Matcher)인 . 
+// ################ 단언(Assertion) = expect // 매쳐(Matcher) = .~
   expect(element.textContent).toBe('hello');  // expect안에 있는게 'hello'여야함
   expect(elementsArr).toHaveLength(7);  // 배열의 길이가 7이어야함
 
@@ -96,6 +99,24 @@ test('renders learn react link', () => {  // global test 메서드는 두 인자
 }
 
 
+// ########## .only, .skip (테스트 할것만) #####################################################################################################
+Watch Usage
+ › Press a 모든 테스트
+ › Press f 실패한 것만 테스트
+ › Press q watch mode 나가기
+ › Press p 특정 파일이름만 테스트
+ › Press t 특정 테스트이름만 테스트
+ › Press Enter 테스트 실행
+ 
+// ########## 특정 파일 안에있는 모든 테스트 중에 특정 테스트만
+ // .only 가 있으면 .only있는 부분만 테스트
+ // .skip 이 있으면 .skip있는 부분은 제외
+ 
+test.only("handles error for scoops", () => {
+});
+test.skip("handles error for scoops", () => {
+});
+ 
 
 // #################################################################################################################################################
 // ####### Color Button App ########################################################################################################################
@@ -233,7 +254,7 @@ function SummaryForm() {
 export default SummaryForm;
 
 
-// ################ queryBy (매치되는 태그가 없으면 null을 반환) 와 hover #########################################################################################
+// ################ queryBy (매치되는 태그가 없으면 null을 반환, 없는 태그를 확인할때 사용) 와 hover ####################################################################
 // ################ SummaryForm.test.js
 import { render, screen } from "@testing-library/react";
 import SummaryForm from "../SummaryForm";
@@ -322,8 +343,15 @@ export const handlers = [
 ];
 
 
-// ################################################################################################## await findBy // with Axios ########################
+// ################ await findBy(불러오기 실패하면 다시시도, 비동기 적 일때 주로 사용 ) // with Axios #####################################################################################################
 // npm install axios
+
+// ################ package.json
+  "jest": {
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
+  }
 
 // ################ entry/test/options.test.js
 import { render, screen } from "@testing-library/react";
@@ -394,12 +422,33 @@ export default function ToppingOption({ name, imagePath }) {
 }
 
 
-// ##########  #########################################################################################################################
+// ########## waitFor () #################################################################################################################################
+// ########## OrderEntry.test
+import { render, screen, waitFor } from "@testing-library/react";
+import OrderEntry from "../OrderEntry";
+import { rest } from "msw";
+import { server } from "../../../mocks/server";
+
+test.only("handles error for scoops and toppings routes", async () => {
+  server.resetHandlers(
+    rest.get("http://localhost:3030/scoops", (req, res, ctx) =>
+      res(ctx.status(500))
+    ),
+    rest.get("http://localhost:3030/toppings", (req, res, ctx) =>
+      res(ctx.status(500))
+    )
+  );
+
+  render(<OrderEntry />);
+  await waitFor(async () => {
+    // 밑에 alerts가 비동기적으로 처리된 뒤 나오기 때문에 waitFor을 사용하여 테스트를 함
+    const alerts = await screen.findAllByText(  // 두군데에서 불러오
+      "An unexpected error occurred. Please try again later."
+    );
+    expect(alerts).toHaveLength(2); // 컴퓨터 속도에따라 waitFor이없으면 1이나올 수있고 2가 나올 수있음
+  });
+});
 
 
-
-
-
-
-
+// ##########  #################################################################################################################################
 
