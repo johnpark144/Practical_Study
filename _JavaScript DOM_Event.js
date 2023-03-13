@@ -91,6 +91,7 @@ setInterval(callback, 5000); // 2 // 5초마다 callbackg함수 실행
 clearTimeout(1) // 1번 setTimeout함수를 중지시킴
 clearInterval(2) // 2번 setInterval함수를 중지시킴
 
+
 // ##### EventHandler ############################################################################################# html 속성 #################
 {/* <h1 onclick="console.log('clicked');">event handler</h1> */}
 {/* <input type="text" onchange="console.log('changed')"; onkeydown="console.log('typed');"></input> */}
