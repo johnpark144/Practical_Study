@@ -1,7 +1,24 @@
 // ################ 리미인드 ###################################################################################################################################
 // 다하고 이론부분 지을거 지우기
-// 매쳐(Matcher) 효과 정리하기
+// 매쳐(Matcher) 효과 정리하기, 자주쓰는 fireEvent, userEvent, Role 정리
 
+// ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
+// 간단한 이론 
+// screen 메소드
+// ESLint -- 규칙 참고
+// 테스트 할것만 -- .only, .skip, Watch Usage
+// fireEvent, getByRole -- @testing-library/react, toHaveStyle, toHaveTextContent, toBeChecked, toBeEnabled, aria-label, role="spinbutton"
+// 디버깅 -- screen.debug(), LogRoles 
+// 그룹 테스트, 유닛 테스팅 함수 -- describe, toBe, 함수 인자와 리턴값
+// userEvent
+// queryBy -- 현재 없는 태그를 확인할때, queryByText, toBeInTheDocument, unhover, 
+// Mock Service Worker -- MSW, 요청 가로채기
+// await findBy -- 비동기 적 일때, toEqual, 
+// waitFor -- toHaveLength
+// wrapper -- Provider를 적용, exact: false, aria-label, 입력창에 있는것 clear, 입력창에 1 입력, 한꺼번에 Provider를 적용
+// 목 함수 -- Mocks functions, jest.fn()
+
+// ######### RTL, Jest 관한 정보 링크 ####################################################################################################################
 
 
 
@@ -328,7 +345,7 @@ import { handlers } from "./handlers";
 // This configures a request mocking server with the given request handlers.
 export const server = setupServer(...handlers);
 
-// ################ setupTests.js (App.js와 같은폴더)
+// ################ setupTests.js (App.js와 같은폴더에)
 import "@testing-library/jest-dom";
 import { server } from "./mocks/server.js";
 
@@ -518,8 +535,8 @@ import { render, screen } from "../../../test-utils/testing-library-utils";   //
 
 // jest.fn()
 
-// ########## 예
-render(<OrderEntry setOrderPhase={jest.fn()} />);       // ㅎ
+// ########## 예시
+render(<OrderEntry setOrderPhase={jest.fn()} />); 
 
 
 
