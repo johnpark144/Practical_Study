@@ -31,7 +31,7 @@
 //  단위 테스트 (Unit test)  : [jest] 로직이 너무 복잡한경우, 코드 품질을 개선하기 위해(안정성, 완성도), 버그발생 최소화, 문서화, 오류 조기발견, 코드변경 용이
 //  통합 테스트 (Integration test)
 //  기능 테스트 (Functional test)
-//  인수 테스트 (Acceptance test / End-t-End Test / E2E Test) :  [cypress] 브라우저에서 실행하여 사용자 관점에서 테스트, 테스트 시간이 오래걸릴 수 있음 (로그인 과정, 공유 링크 등에서 사용)
+//  인수 테스트 (Acceptance test / End-t-End Test / E2E Test) :  [cypress] 브라우저에서 실행하여 사용자 관점에서 테스트, 오래걸릴 수 있음 (로그인, 공유 링크 등에서 사용)
 
 // ################ package.json (create-react-app 기준)
 "scripts": {
