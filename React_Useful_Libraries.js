@@ -8,12 +8,56 @@ react-chartjs-2 / scroll-out / react-rellax / react-lottie-player / react-scroll
 / react-timeago / React-beautiful-dnd
 
 // ######## react-chartjs-2 (차트) ###############################################################################################################
-// npm i react-chartjs-2
-// https://react-chartjs-2.js.org/
-// https://www.npmjs.com/package/react-chartjs-2
+// npm i react-chartjs-2 chart.js
+
+// https://www.chartjs.org/docs/latest/  // chartjs Docs
+// https://react-chartjs-2.js.org/  // chartjs-2  Docs
+// https://www.npmjs.com/package/react-chartjs-2  // npm
 
 // ########
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import styled from "styled-components";
 
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+// 디폴트 함수
+export default function PortfoliosChart() {
+  const data = {
+    labels: ["Idea", "Clone"],
+    datasets: [
+      {
+        label: "# of Votes",
+        data: [ratio[0], ratio[1]],
+        backgroundColor: [
+          "rgba(253, 132, 159, 0.7)",
+          "rgba(113, 186, 235, 0.7)",
+        ],
+        borderColor: ["#ff0b40", "#293df8"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 9,
+          },
+          color: "#eeeeee",
+        },
+      },
+    },
+  };
+
+  return (
+      <div>
+        <Doughnut data={data} options={options} />
+      </div>
+  );
+}
 
 // ######## scroll-out (스크롤인, 아웃 될때마다 나타나고 사라지는 등 어떤 효과를 줄때) ###################################################################
 // npm i scroll-out -s
