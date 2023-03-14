@@ -8,6 +8,15 @@
 
 // ################ RTL 세팅 및 간단한 이론  ##################################################################################################################
 // TDD는 항상 기능을 추가하기전 먼저 테스트코드를 작성하여야한다
+// 테스트시 아래와같이 주석으로 할일을 미리 적어두면 편함
+        test('something',()=>{
+          // 렌더 컴포넌트
+          // 'Button'이라는 버튼이있는지 확인
+          // 배경화면색이 하얀색인지 확인
+          //  버튼 클릭
+          //  배경 색 변경
+        })
+
 // 테스팅 라이브러리 Docs : https://testing-library.com/docs/
 
 // getBy, queryBy, findBy 정리 : https://testing-library.com/docs/react-testing-library/cheatsheet/
@@ -19,10 +28,10 @@
 // Jest -> 단언(Assertion)인 expect, test 등 과 같이 테스트를 직접 하게함    // Jest Watch Mode는 코밋할때 변화가 있으면 실행 (변화없으면 실행X)
   
 // ################ 테스트의 종류
-//  단위 테스트 (Unit test)  : 로직이 너무 복잡한경우, 코드 품질을 개선하기 위해(안정성, 완성도), 버그발생 최소화, 문서화, 오류 조기발견, 코드변경 용이
+//  단위 테스트 (Unit test)  : [jest] 로직이 너무 복잡한경우, 코드 품질을 개선하기 위해(안정성, 완성도), 버그발생 최소화, 문서화, 오류 조기발견, 코드변경 용이
 //  통합 테스트 (Integration test)
 //  기능 테스트 (Functional test)
-//  인수 테스트 (Acceptance test / End-t-End Test / E2E Test)
+//  인수 테스트 (Acceptance test / End-t-End Test / E2E Test) :  [cypress] 브라우저에서 실행하여 사용자 관점에서 테스트, 테스트 시간이 오래걸릴 수 있음 (로그인 과정, 공유 링크 등에서 사용)
 
 // ################ package.json (create-react-app 기준)
 "scripts": {
