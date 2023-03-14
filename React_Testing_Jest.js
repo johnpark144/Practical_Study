@@ -141,7 +141,7 @@ test('Initial conditions',() => {
   const colorBtn = screen.getByRole("button", { name: "Change to blue" });
   expect(colorBtn).toBeEnabled(); // 활성화가 잘 되어있는지
 
-  const checkbox = screen.getByRole("checkbox");
+  const checkbox = screen.getByRole("checkbox"); // aria-label로 checkbox의 name을 줄수도있음
   expect(checkbox).not.toBeChecked(); // checkbox가 체크가 안된 상태인
 })
 
@@ -228,7 +228,7 @@ test("Checkbox enables button on first click and disables on second click", asyn
   const user = userEvent.setup(); // user가 직접 사용하듯 시뮬레이션 setup
 
   render(<SummaryForm />);
-  const checkbox = screen.getByRole("checkbox");
+  const checkbox = screen.getByRole("checkbox");  
   const confirmButton = screen.getByRole("button", { name: "Confirm order" });
 
   await user.click(checkbox); // click 이벤트를 발생시 (fireEvent로 대체가능 // await 필수
@@ -422,8 +422,8 @@ export default function ToppingOption({ name, imagePath }) {
 }
 
 
-// ########## waitFor () #################################################################################################################################
-// ########## OrderEntry.test
+// ########## waitFor() 비동기적 실행 해야 하는 부분을 위해 #########################################################################################################
+// ########## OrderEntry.test.js
 import { render, screen, waitFor } from "@testing-library/react";
 import OrderEntry from "../OrderEntry";
 import { rest } from "msw";
@@ -450,5 +450,69 @@ test.only("handles error for scoops and toppings routes", async () => {
 });
 
 
-// ##########  #################################################################################################################################
+// ########## wrapper (상태관리 등과 같은 Provider를 적용) ##############################################################################################################
+// ########## totalUpdates.test.js
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Options from "../Options";
+import { OrderDetailsProvider } from "../../../contexts/OrderDetail";
+
+test("update scoop subtotal when scoops change", async () => {
+  const user = userEvent.setup();
+  render(<Options optionType="scoops" />, { wrapper: OrderDetailsProvider});  // wrapper의 Provider로 렌더할 태그를 감싸줌
+
+  const scoopsSubtotal = screen.getByText("Scoops total: $", { exact: false }); // exact: false 는 부분 일치하면 true
+  expect(scoopsSubtotal).toHaveTextContent("0.00");
+
+  const vanillaInput = await screen.findByRole("spinbutton", {
+    name: "Vanilla",
+  });
+  await user.clear(vanillaInput);   // 입력창에 있는것 clear
+  await user.type(vanillaInput, "1");  // 입력창에 1 입력
+  expect(scoopsSubtotal).toHaveTextContent("2.00");
+
+  const chocolateInput = await screen.findByRole("spinbutton", {
+    name: "chocolate",
+  });
+  await user.clear(chocolateInput);
+  await user.type(chocolateInput, "2");
+  expect(scoopsSubtotal).toHaveTextContent("6.00");
+});
+
+// ##################################################################################################### 전체 테스팅 앱에 한꺼번에 Provider를 적용 하는법 ##########
+// ########## testing-library-utils.jsx // 이미 OrderDetailsProvider의 wrapper로 감싼 render를 export 시켜서 
+import { render } from "@testing-library/react";
+import { OrderDetailsProvider } from "../contexts/OrderDetails";
+
+const renderWithContext = (ui, options) =>
+  render(ui, { wrapper: OrderDetailsProvider, ...options });
+
+// @testing-library/react를 전체생성하여 다시 export
+export * from "@testing-library/react";
+
+// 다시 renderWithContext가 일반 testing-library의 render를 오버라이드 시켜서 render로 사용
+export { renderWithContext as render };
+
+
+// ########## totalUpdates.test.js
+import { render, screen } from "../../../test-utils/testing-library-utils";   // from @testing-library/react에서 변경
+
+// ... 생략 ...
+
+// ################  ############################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
