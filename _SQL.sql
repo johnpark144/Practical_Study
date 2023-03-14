@@ -1,3 +1,30 @@
+-- ###### 리마인더 ######################################################################################################################################
+
+
+
+-- ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ############
+// SQL의 기본 -- SELECT, FROM, WHERE
+// 오름차순, 내림차순 -- ORDER BY, DESC, ASC
+// 원하는만큼만 데이터 -- LIMIT
+// 각종 연산자들 -- BETWEEN, IN, 문자가 있는패턴, LIKE 
+// 숫자열 함수 -- ROUND, CEIL, FLOOR, ABS, GREATEST, LEAST, MAX, MIN, COUNT, SUM, AVG, TRUNCATE, 소수 둘째자리에서 짤라
+// 문자열 함수 1 -- UCASE(UPPER), LCASE(LOWER), 붙여서 행을만듬, CONCAT, SUBSTR, SUBSTRING, LEFT, RIGHT
+// 문자열 함수 2 -- 바이트수, LENGTH, 실제길이, CHAR_LENGTH, TRIM, LTRIM, RTRIM, 0으로 채워라, LPAD, RPAD, REPLACE, 몇번째에 있나, INSTR, CAST
+// 시간/날짜 관련 함수 -- 날짜이동, 두 날짜간격, 마지막날, ADDDATE, DATEDIFF, LAST_DAY, 시간 포맷, DATE_FORMAT
+// 기타 함수들 -- IF, CASE, IFNULL
+// 조건에 따라 그룹으로 묶기
+// 서브쿼리 -- 비상관 서브쿼리, 상관 서브쿼리, EXISTS, NOT EXISTS
+// 상관서브쿼리를 쉽게 -- JOIN
+// 집합 -- UNION 
+// 테이블 만들고 데이터 입력 -- 테이블생성, 테이블명 변경, 테이블 삭제, 컬럼 자료형 변경, 컬럼명 변경, 컬럼 삭제, 컬럼 추가, 데이터 삽입, 행 삭제, 행 수정
+// 데이터 제약
+// 자료
+
+-- ######### SQL 관한 정보 링크 #########################################################################################################################
+
+
+
+
 -- ############# SQL의 기본 (되도록 뒤에 ; 붙이기) ##########################################################################################
 SELECT * FROM Customers -- Customers에서 전체행을 가져와라
 WHERE ProductID < 3 -- 열을가져옴 (True인 열만 불러오는 조건문)
@@ -56,7 +83,7 @@ SELECT
   'HELLO' LIKE 'HEL_', -- 0
   'HELLO' LIKE 'H_O' -- 0 // 문자개수만큼 밑줄이 있어야함
 
--- ##### 숫자와 문자열을 함수들 ###################### 숫자열 함수(ROUND, CEIL, FLOOR, ABS, GREATEST, LEAST, MAX, MIN, COUNT, SUM, AVG, TRUNCATE)
+-- ##### 숫자와 문자열 함수들 ###################### 숫자열 함수(ROUND, CEIL, FLOOR, ABS, GREATEST, LEAST, MAX, MIN, COUNT, SUM, AVG, TRUNCATE)
 SELECT ROUND(0.5) -- 1
  
 SELECT 
