@@ -141,7 +141,7 @@ test('Initial conditions',() => {
   const colorBtn = screen.getByRole("button", { name: "Change to blue" });
   expect(colorBtn).toBeEnabled(); // 활성화가 잘 되어있는지
 
-  const checkbox = screen.getByRole("checkbox"); // aria-label로 checkbox의 name을 줄수도있음
+  const checkbox = screen.getByRole("checkbox"); // jsx에서 aria-label={name}으로 checkbox의 name을 줄수도있고, role="spinbutton"으로 role도 지정가능
   expect(checkbox).not.toBeChecked(); // checkbox가 체크가 안된 상태인
 })
 
@@ -464,7 +464,7 @@ test("update scoop subtotal when scoops change", async () => {
   const scoopsSubtotal = screen.getByText("Scoops total: $", { exact: false }); // exact: false 는 부분 일치하면 true
   expect(scoopsSubtotal).toHaveTextContent("0.00");
 
-  const vanillaInput = await screen.findByRole("spinbutton", {
+  const vanillaInput = await screen.findByRole("spinbutton", { // jsx에서 role="spinbutton"으로 role을 지정가능하고, aria-label에 name을 줄수도있다
     name: "Vanilla",
   });
   await user.clear(vanillaInput);   // 입력창에 있는것 clear
@@ -479,7 +479,7 @@ test("update scoop subtotal when scoops change", async () => {
   expect(scoopsSubtotal).toHaveTextContent("6.00");
 });
 
-// ##################################################################################################### 전체 테스팅 앱에 한꺼번에 Provider를 적용 하는법 ##########
+// ################################################################################################## 전체 테스팅 앱에 한꺼번에 Provider를 적용 하는법 ##########
 // ########## testing-library-utils.jsx // 이미 OrderDetailsProvider의 wrapper로 감싼 render를 export 시켜서 
 import { render } from "@testing-library/react";
 import { OrderDetailsProvider } from "../contexts/OrderDetails";
