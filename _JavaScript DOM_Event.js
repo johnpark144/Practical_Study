@@ -273,3 +273,29 @@ document.body.style.item(1) // 'font-size'
 document.body.style.removeProperty('color') // 'lime'
 document.body.style.item(1) // ''
 
+
+// ###### 비동기작업 취소 ########################################################################################################################
+const fetchControl = new AbortController(); // 비동기작업 취소 할수있게함
+
+fetch('http://192.168.0.1:8000/api', {
+    signal:fetchControl.signal,  // AbortController와 연결
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(jsonObj),
+}).then(res => {
+    if (res.ok) {
+        return res.json()
+    }
+    if (!res.ok) {
+        return;
+    }
+}).then(res2 => {
+    const isConfirm = confirm("취소할래?");
+    .then((result) => {
+        if (result) {
+            fetchControl.abort();  // 비동기작업 취소
+           }
+         return;
+        }
+    })
+    }
