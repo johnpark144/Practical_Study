@@ -1,7 +1,36 @@
 // ###### 리마인더 #########################################################################################################
 // window 스크롤, 사이즈 정리
-// Intl 에대해 정리 (DateTimeFormat, NumberFormat 등)
+// Intl 에대해 정리 (DateTimeFormat, NumberFormat 등), 밑에 단위변환기랑 같이둠
 // Object.entries
+
+// ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
+// script를 JS로 빼기
+// rompt, alert, confirm
+// DOM -- document.children[0], 부모태그, parentNode, 자식 태그, firstElementChild, lastChild, 형제 태그, nextElementSibling, previousElementSibling
+// JS로 CSS 변경 -- .style.setProperty, getPropertyValue, removeProperty, item
+// 단일 Element -- getElementById, getAttribute, setAttribute, innerHTML, innerText, .style.color
+// 다중 Element -- getElementsByClassName, getElementsByTagName, getElementsByName, 
+// CSS Selector -- querySelector, querySelectorAll
+// Element 추가/삭제  -- createElement, appendChild, insertBefore, cloneNode(), removeChild
+// setTimeout, setInterval, clearTimeout, clearInterval
+// EventHandler -- onclick, onmouseover, onmouseout, onchange, onkeydown
+// classList -- add, toggle
+// AJAX 
+// JSON -- 데이터를 문자열로 변환, JSON.stringify, JSON.parse
+// try, catch, finally
+
+// 문자별로 쪼개서 배열 
+// Reduce
+// 단위변환기
+// 특정글자를 다른글자로 전체바꾸기
+// 오름차순
+// 배열에서 3개 랜덤으로
+// 비동기작업 취소 -- AbortController
+
+// ######### JavaScript 관한 정보 링크 #########################################################################################################
+
+
+
 
 // ###### script를 JS로 빼기 #########################################################################################################
 <script src="JS.js"></script> // html에 추가하여 script를 JS.js라는 파일에 작성하여 입력
@@ -29,6 +58,23 @@ document.children[0].children[1]
 
 // parentNode : 부모태그, firstElementChild : 첫번째 자식 태그 (children[0]), lastChild : 마지막 자식 태그
 // nextElementSibling : 다음 형제 태그, previousElementSibling : 이전 형제 태그
+
+// ###### JS로 CSS 변경 ########################################################################################################################
+// 설정(set)
+document.body.style.setProperty('color', 'lime');
+document.body.style.setProperty('font-size', '16px'); // - 를 사용한것에 주목!
+
+// 읽기(get)
+document.body.style.getPropertyValue('color'); // 'lime'
+
+// item() 이용, 인자값은 인덱스 숫자
+document.body.style.item(0) // 'color'
+document.body.style.item(1) // 'font-size'
+
+// 제거(remove), 제거 후에는 빈 문자열을 반환한다.
+document.body.style.removeProperty('color') // 'lime'
+document.body.style.item(1) // ''
+
 
 // ##### 단일 Element ########################################################################################################################
  
@@ -203,7 +249,7 @@ finally{
 
 // ###### Reduce 예시 1 ##################################################################################################
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const sum1 = numbers.reduce((accumulator, currentNumber) => accumulator + currentNumber);
+const sum1 = numbers.reduce((accumulator, currentNumber) => {accumulator + currentNumber}, 0);
 console.log('sum1 =', sum1);
 
 // ###### Reduce 예시 2 (함수 따로 빼기) ####################################################################################
@@ -256,22 +302,6 @@ title.replace(/&quot;/g, '"')
 // ###### 배열에서 3개 랜덤으로 가져오기 (실험해봐야함,,)####################################################################################
   let data = data.sort(() => Math.random() - 0.5);
   data = data.slice(0, 3)
-
-// ###### JS로 CSS 변경 ########################################################################################################################
-// 설정(set)
-document.body.style.setProperty('color', 'lime');
-document.body.style.setProperty('font-size', '16px'); // - 를 사용한것에 주목!
-
-// 읽기(get)
-document.body.style.getPropertyValue('color'); // 'lime'
-
-// item() 이용, 인자값은 인덱스 숫자
-document.body.style.item(0) // 'color'
-document.body.style.item(1) // 'font-size'
-
-// 제거(remove), 제거 후에는 빈 문자열을 반환한다.
-document.body.style.removeProperty('color') // 'lime'
-document.body.style.item(1) // ''
 
 
 // ###### 비동기작업 취소 ########################################################################################################################
