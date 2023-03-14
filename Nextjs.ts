@@ -1,3 +1,34 @@
+// ######### 리마인더 #######################################################################################################################################
+
+
+
+
+// ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
+// 터보팩 -- tailwind를 위한,  
+// 기본 세팅 -- 프레임워크 파일 예약어, 타입스크립트 에러무시
+// 다이나믹 라우팅 -- params, NotFound, 서버사이드렌더링, SSR, SSG, ISR
+// 클라이언트 사이드 렌더링 -- CSR
+// Params에 단어 구글검색하는 API
+// Suspense fallback -- 로딩
+// 폰트 
+// 미들웨어 
+// usePathname  -- 현재 path 가져오기
+// Redirect and Rewrite -- Redirect, Rewrite, API_KEY숨기기, API_KEY를 보이지 않고 정보 가져오기
+// Detail 의 query -- pathname 마킹 및 query정보 가져오기, 기존 pathname과 query를 가진 pathname을 as로, [...params], ...params 는 배열형태로, Seo title
+// 이미지 컴포넌트
+// Head, title
+// Upstash -- 파이어베이스랑 비슷, typings.d.ts, 유저의 시간을 서버의 시간으로
+// Pusher  -- 실시간 기능, swr, 서버사이드 렌더링, SSR
+// 로딩 컴포넌트 -- flowbite
+// NextAuth 
+// 미들웨어 -- 로그인 안되있으면 로그인페이지로 이동시키기
+// 현재 pathname 보여주기 -- usePathname
+// pathname으로 보내버리기 -- useRouter, router.push, router.back
+// 서버사이드없이 import -- "window is not defined"방지, dynamic
+// 환경변수 사용
+
+
+// ######### 기본 #######################################################################################################################################
 // npx create-next-app@latest   // 자바스크립트용
 // npx create-next-app@latest --typescript    // 타입스크립트용
 
@@ -23,7 +54,7 @@
 // npm install -D tailwindcss postcss autoprefixer // tailwind
 // npx tailwindcss init -p
 
-// ######### package.json
+// ######### package.json (tailwind를 위한)
 // "dev": "concurrently \"next dev --turbo\" \"tailwindcss --input styles/globals.css --output styles/dist.css --watch\"",
 // "build": "tailwindcss -i styles/globals.css --output styles/dist.css && next build",
 
@@ -548,7 +579,7 @@ export default Detail;
 
 // ######## 이미지 컴포넌트 ##################################################################################################################################
 // div 크기에 따라 크기 정하기
-//<div className="relatice..">
+//<div className="relative.."> {/* 배너이미지 // 부모: relative, 이미지: fill */}
 //  <Image
 //    src=""
 //    layout="fill"
@@ -1338,15 +1369,6 @@ function MessageComponent({ msg }: Prop) {
     };
 // ... 생략 ...
 
-// ######## react-timeago (몇초전, 몇분전) ###################################################################################################################
-// npm install react-timeago
-// npm i --save-dev @types/react-timeago (타입스크립트)
-
-// ######## MessageComponent.tsx  ({new Date(msg.created_at).toLocaleString()} 이부분을 대체함)
-// ... 생략 ...
-  <TimeAgo date={new Date(msg.created_at)} />
-// ... 생략 ...
-
 // ######## 미들웨어 (로그인 안되있으면 로그인페이지로 이동시키기)#################################################################################################
 // ######## middleware.ts
 export { default } from "next-auth/middleware";
@@ -1372,17 +1394,6 @@ router.back() // 뒤로가기
 import dynamic from 'next/dynamic'
 const Map = dynamic(() => import('./Map'), { ssr: false }) // Import witout SSR // To prevent from Error "window is not defined"
 
-
-// ######## Image컴포넌트 크기를 부모 태그크기와 같게 (NextJS) #################################################################
-<div className="relative h-44 w-[445px]">{/* 배너이미지 // 부모: relative, 이미지: fill */}
-  <Image
-    src={bannerUrl}
-    alt="Channel-bannerLogo"
-    quality={100}
-    fill
-    style={{ objectFit: "cover" }}
-  />
-</div>
 
 // ######## 환경변수 사용 가능 하게 #################################################################
 module.exports = {
