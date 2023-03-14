@@ -5,6 +5,7 @@
 const RowReverse = css`
     flex-direction: row-reverse;
 `
+
 const Portfolio = styled(motion.div)`
 border: 1px black solid ;
 width: 80%;
@@ -28,6 +29,20 @@ ${({ layoutId }) => Number(layoutId) % 2 === 0 ? RowReverse : "" }  // 조건부
   }
   @media screen and (max-width: 625px) {
   }
+
+
+// ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
+// three js -- glb 파일 입력방법, 3d파일 다운로드 하는곳, 3d파일 편집
+// Styled-components -- 글로벌css, 전체 프레임 생성 테스트, 자주쓸것 변수에, 스타일 컴포넌트 양식, prop을 받아서 적용, 스타일 컴포넌트와 framermotion 양식, 비디오 사용
+// three js -- 3D 밝기, 빛이 비추는 방향, 3d 구현 할 박스, 기하학적으로, 3d 형태 뷰, 3d 다운받아, 3d파일 불러오기, 주변환경, 처음 Zoom크기, 3d 처음 위치, 한 방향으로 돌게하기
+// 카메라 각도, OrbitControls, 방향으로 움직일 수 있는 최소 앵글, 활성화되어 있는지 여부, 속도를 조정
+// GSAP -- 플러그인, 같이 움직이도록 고정, gsap.utils.selector, 돔 안의 태그를 배열로, onStart, 시작시 작동할 함수, matchMedia, 반응형으로 적용, 
+// useContext로 css스타일 변경 및 3d색상변경
+
+// ######### styled-components, GSAP, three 관한 정보 링크 ############################################################################################
+
+
+
 
 
 // ######## styled-components ###################################################################################################
@@ -148,7 +163,7 @@ export default App
 // ################ Quote.jsx
 import styled, { keyframes } from 'styled-components';
 
-// 스타일 컴포넌트 양삭
+// 스타일 컴포넌트 양
 const Section = styled.section` // styled.태그 -> 컴포넌트생성
   width: 100vw;
   height: 100vh;
