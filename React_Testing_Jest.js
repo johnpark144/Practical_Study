@@ -15,7 +15,7 @@
 // Mock Service Worker -- MSW, 요청 가로채기
 // await findBy -- 비동기 적 일때, toEqual, 
 // waitFor -- toHaveLength
-// wrapper -- Provider를 적용, exact: false, aria-label, 입력창에 있는것 clear, 입력창에 1 입력, 한꺼번에 Provider를 적용
+// wrapper -- Provider를 적용, exact: false, aria-label, user.type, user.clear, 입력창에 1 입력, 한꺼번에 Provider를 적용
 // 목 함수 -- Mocks functions, jest.fn()
 
 // ######### RTL, Jest 관한 정보 링크 ####################################################################################################################
