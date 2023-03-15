@@ -13,7 +13,7 @@
 // userEvent
 // queryBy -- 현재 없는 태그를 확인할때, queryByText, toBeInTheDocument, unhover, 
 // Mock Service Worker -- MSW, 요청 가로채기
-// await findBy -- 비동기 적 일때, toEqual, 
+// await findBy -- 비동기 적 일때, toEqual, alt로 name
 // waitFor -- toHaveLength
 // wrapper -- Provider를 적용, exact: false, aria-label, user.type, user.clear, 입력창에 1 입력, 한꺼번에 Provider를 적용
 // 목 함수 -- Mocks functions, jest.fn()
@@ -389,7 +389,7 @@ import Options from "../Options";
 test("displays image for each scoop option from server", async () => {
   render(<Options optionType="scoops" />);
 
-  const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i }); // findBy는 주로 비동기 데이터를 불러올때 사용
+  const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i }); // findBy는 주로 비동기 데이터를 불러올때 // 사용 alt로 name 줄수있음
   expect(scoopImages).toHaveLength(2);
 
   const altText = scoopImages.map((element) => element.alt);
@@ -431,7 +431,7 @@ export default function ScoopOption({ name, imagePath }) {
       <img
         style={{ width: "75%" }}
         src={`http://localhost:3030/${imagePath}`}
-        alt={`${name} scoop`}
+        alt={`${name} scoop`}           // 사용 alt로 name 줄수있음
       />
     </div>
   );
@@ -444,7 +444,7 @@ export default function ToppingOption({ name, imagePath }) {
       <img
         style={{ width: "75%" }}
         src={`http://localhost:3030/${imagePath}`}
-        alt={`${name} topping`}
+        alt={`${name} topping`}         // 사용 alt로 name 줄수있음
       />
     </div>
   );
