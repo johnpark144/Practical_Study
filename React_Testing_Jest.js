@@ -2,6 +2,8 @@
 // 다하고 이론부분 지을거 지우기
 // 매쳐(Matcher) 효과 정리하기, 자주쓰는 fireEvent, userEvent, Role 정리
 
+// 목함수부터 인덱스 다시, 기타 유용한 매쳐들 
+
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
 // 간단한 이론 
 // screen 메소드
@@ -17,6 +19,8 @@
 // waitFor -- toHaveLength
 // wrapper -- Provider를 적용, exact: false, aria-label, user.type, user.clear, 입력창에 1 입력, 한꺼번에 Provider를 적용
 // 목 함수 -- Mocks functions, jest.fn()
+// 기타 유용한 매쳐들
+
 
 // ######### RTL, Jest 관한 정보 링크 ####################################################################################################################
 
@@ -529,14 +533,171 @@ import { render, screen } from "../../../test-utils/testing-library-utils";   //
 // ... 생략 ...
 
 
-<!-- ##### 목 함수(Mocks functions) // jest.fn() ######################################################################################################### -->
+// ##### 목 함수(Mocks functions) // jest.fn() #########################################################################################################
 // 목 함수(Mocks functions)는 테스트를 위한 다른 함수를 대체할 수 있는 도구로 임의 데이터를 반환하여 테스트 속도가 빨라지고, 
 // 데이터베이스의 상태나 연결에 의한 문제를 회피할 수 있는 등 장점이있음
 
-// jest.fn()
+// ########## 예시 1
+test("test1", () => {
+  const mockFn = jest.fn((num) => num + 1);
+  mockFn(10);
+  mockFn(20);
+  mockFn(30);
 
-// ########## 예시
-render(<OrderEntry setOrderPhase={jest.fn()} />); 
+  console.log(mockFn.mock.calls);       // [ [ 10 ], [ 20 ], [ 30 ] ]  // 무엇이 인수인지, length통해 몇번 호출됬는지 확인 가능
+  console.log(mockFn.mock.calls.length);       // 3  // 무엇이 인수인지, length통해 몇번 호출됬는지 확인 가능
+  console.log(mockFn.mock.results);     // [ { type: 'return', value: 11 }, { type: 'return', value: 21 }, { type: 'return', value: 31 } ]   // 결과값을 같이
+  
+  expect(mockFn.mock.calls.length).toBe(3);
+});
+
+// ########## 예시 2
+test("test2", () => {
+  const mockFn = jest.fn();
+  mockFn(10, 20);
+  mockFn();
+  mockFn(30, 40);
+
+  expect(mockFn).toBeCalled();   // 불린 적이 있는지
+  expect(mockFn).toBeCalledTimes(3);    // 총 3번 불렸는지
+  expect(mockFn).toBeCalledWith(10, 20);    // 인수 10, 20이 같이 불린적있는지
+  expect(mockFn).lastCalledWith(30, 40);    // 인수 30, 40이 마지막에 같이 불렸는지
+});
+
+// ########## 예시 3 (mockReturnValue, mockReturnValueOnce) // 임시로 벨류를 리턴
+test("홀수는 123", () => {
+  const mockFn = jest.fn();
+
+  mockFn
+    .mockReturnValueOnce(true)  // mockReturnValueOnce는 앞에하나더 있을때
+    .mockReturnValueOnce(false)
+    .mockReturnValueOnce(true)
+    .mockReturnValueOnce(false)
+    .mockReturnValue(true);
+
+  const result = [1, 2, 3, 4, 5].filter((num) => mockFn(num)); // 위에 순서대로 작동 (1,3,5만 리턴)
+
+  expect(result).toStrictEqual([1, 3, 5]);      // Pass      // 홀수만 가져오는 기능 구현없이 임의로 테스트가능
+});
+
+// ########## 예시 4 (mockResolvedValue, mockResolvedValueOnce) // 임시로 벨류를 비동기식으로(프로미스) 리턴
+test("Mike", () => {
+  const mockFn = jest.fn();
+
+  mockFn.mockResolvedValue({ name: "Mike" });   // promise를 반환
+
+  // eslint-disable-next-line jest/valid-expect-in-promise
+  mockFn().then((res) => {
+    expect(res.name).toBe("Mike");
+  });
+});
+
+
+// ########## 기타 유용한 매쳐들 ######################################################################################################### 
+// ########## toBe(), toEqual(), toStrictEqual()        // Assertion부분과 매쳐의 부분이 동일한지, 대부분의 의도는 toStrictEqual에 부합하기에 사용권장
+  expect(1+2).toBe(3);   // pass
+  expect({ age: 30 }).toBe({ age: 30 });   // fail      -- 객체는 그 둘의 주소가 다르기 때문에 실패
+  
+  expect(1+2).toEqual(3);  // pass
+  expect({ age: 30 }).toEqual({ age: 30 });  // pass    -- 객체도 같은지 인식
+  expect({ age: 30, gender: undefined }).toEqual({ age: 30 });  // pass    -- undefined는 없는 것으로 인식하여 같다고 봄
+  
+  expect({ age: 30, gender: undefined }).toStrictEqual({ age: 30 });  // fail   -- 객체도 아에 동일하게 생겼는지 확인
+
+// ########## toBeCloseTo       // 거이 비슷한지 (소수점 계산 위해)
+  expect(0.2 + 0.3).toBeCloseTo(0.5);   // 자바스크립트는 소수점 계산을 틀리게 나올수있어서
+
+
+// ########## toBeGreaterThan(), toBeGreaterThanOrEqual(), toBeLessThan(), toBeLessThanOrEqual()
+  expect(5).toBeGreaterThan(2)  // 2 초과
+  expect(5).toBeGreaterThanOrEqual(5) // 5 이상
+  expect(2).toBeLessThan(5)     // 5 미만
+  expect(2).toBeLessThanOrEqual(2)      // 2 이하
+  
+  
+// ########## tobeNull(), toBeTruthy(), toBeFalsy()
+  expect(null).toBeNull();      // null이 나와야
+  expect(true).toBeTruthy();    // true가 나와야
+  expect(false).toBeFalsy();    // false가 나와야
+
+
+
+// ########## toMatch() // 문자열이 포함 또는 매치되는지
+  expect("hello").toMatch(/h/i);        // 정규식을 써서 비슷한지 확인가능
+
+// ########## toContain() // 배열에 포함 되어 있는지
+  expect(["hello","hi"]).toContain("hello");
+  
+  
+// ########## toThrow() // 에러가 발생하는지
+  const err = () => {
+  throw new Error("xx");
+};
+
+test("testing1", () => {
+  expect(err).toThrow();        // pass (그냥 단순히 에러가 있는지)
+  expect(err).toThrow("oo");    // fail (에러내용 적으면 에러내용도 확인)
+  expect(err).toThrow("xx");    // pass 
+});
+
+// ########## done // done에 닿을 때까지 테스트를 종료하지 않음 #################################################################################
+test('비동기 코드 테스트 - fetch', (done) => {  // done은 test의 파라미터 
+  const callback = (data) => {
+    try {
+      expect(data).toBe('hello');
+      done();   // done이 작동될때 까지 기다림 (프로미스를 리턴받은경우 리턴과 .then으로 대체가능)
+    } catch (error) {
+      done(error);
+    }
+  }
+
+  fetchData(callback); // fetchData는 비동기적 처리하는 함수라 가정
+});
+
+// ########## 전후 작업 (beforeEach, afterEach) ######################################################################################################### 
+// ########## beforeEach 
+describe("describe1", () => {
+  let num;
+  beforeEach(() => {    // 각 테스트 전 필수 작동 (afterEach는 테스트 후 작동)
+    num = 0;
+  });
+
+  test("test1", () => {
+    expect(num).toBe(0);        // pass
+    num = 30;     // 30으로 바껴도 테스트 전에 0으로 다시 덮어 씌움
+  });
+
+  test("test2", () => {
+    expect(num + 1).toBe(1);    // pass
+  });
+});
+
+// ########## beforeAll 
+describe("describe1", () => {
+  let num;
+  beforeAll(() => {     // 전체 테스트 전에 만 작동 (afterAll은 전체 테스트 후 작동)
+    num = 0;
+  });
+
+  test("test1", () => {
+    expect(num).toBe(0);        // pass
+    num = 30;                   // 변화
+  });
+
+  test("test2", () => {
+    expect(num + 1).toBe(1);    // fail
+  });
+});
+
+
+
+
+// ########## 기타 유용한 toget...() ######################################################################################################### 
+
+
+
+
+
 
 
 
