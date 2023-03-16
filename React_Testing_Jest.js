@@ -7,6 +7,7 @@
 // screen 메소드
 // ESLint -- 규칙 참고
 // 테스트 할것만 -- .only, .skip, Watch Usage
+// 자주쓰는 정규 표현식
 // fireEvent, getByRole -- @testing-library/react, toHaveStyle, toHaveTextContent, toBeChecked, toBeEnabled, aria-label, role="spinbutton"
 // 디버깅 -- screen.debug(), LogRoles 
 // 그룹 테스트, 유닛 테스팅 함수 -- describe, toBe, 함수 인자와 리턴값
@@ -153,7 +154,10 @@ test.only("handles error for scoops", () => {
 });
 test.skip("handles error for scoops", () => {
 });
- 
+
+// ####### 자주쓰는 정규 표현식 #####################################################################################################
+/.*Account.*/i  // 대소문자 구분없이 Account가 포함 되있는지
+
 
 // #################################################################################################################################################
 // ####### Color Button App ########################################################################################################################
