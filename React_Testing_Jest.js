@@ -348,30 +348,12 @@ export default SummaryForm;
 // npm install msw
 // https://mswjs.io/docs/
 
-// ################ mocks/server.js
-import { setupServer } from "msw/node";
-import { handlers } from "./handlers";
-// This configures a request mocking server with the given request handlers.
-export const server = setupServer(...handlers);
-
-// ################ setupTests.js (App.js와 같은폴더에)
-import "@testing-library/jest-dom";
-import { server } from "./mocks/server.js";
-
-// Establish API mocking before all tests.
-beforeAll(() => server.listen());
-// Reset any request handlers that we may add during the tests,
-// so they don't affect other tests.
-afterEach(() => server.resetHandlers());
-// Clean up after the tests are finished.
-afterAll(() => server.close());
-
-// ################ mocks/handlers.js
+// ################ mocks/handlers.js --- Docs복붙하여 json만 원하는 상태로 바꿔줘 야
 import { rest } from "msw";
 
 export const handlers = [
   rest.get("http://localhost:3030/scoops", (req, res, ctx) => { // http://localhost:3030/scoops 로 get할시 서버없이 요청을 가로채서 밑에 json파일을 제공
-    return res(
+    return res(ctx.status(200),         // 500으로 두면 서버에러 처리 // 테스트 하나만 500으로 두고싶으면 바로 아래와 코드같이 테스트안에 server.use를 사용
       ctx.json([
         { name: "Chocolate", imagePath: "/images/chocolate.png" },
         { name: "Vanilla", imagePath: "/images/vanilla.png" },
@@ -380,6 +362,29 @@ export const handlers = [
   }),
 ];
 
+
+// 테스트 하나만 500 예시
+// 
+// test("에러 테스트", async () => {
+//   server.use(
+//     rest.get("http://localhost:3030/scoops", (req, res, ctx) => {
+//       return res(ctx.status(500));
+//     })
+//   );
+// });
+
+// ################ mocks/server.js  --- Docs복붙
+import { setupServer } from "msw/node";
+import { handlers } from "./handlers";
+export const server = setupServer(...handlers);         // handlers에서 가져와 서버를 구성
+
+// ################ setupTests.js (App.js와 같은폴더에)   --- Docs복붙
+import "@testing-library/jest-dom";
+import { server } from "./mocks/server.js";
+
+beforeAll(() => server.listen());       // 테스트 시작전 server실행
+afterEach(() => server.resetHandlers());        // 각 테스트가 끝날때마다 handlers리셋
+afterAll(() => server.close());         // 테스트 시작전 server종료 
 
 // ################ await findBy(불러오기 실패하면 다시시도, 비동기 적 일때 주로 사용 ) // with Axios #####################################################################################################
 // npm install axios
