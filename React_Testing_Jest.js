@@ -5,7 +5,7 @@
 // 목함수부터 인덱스 다시, 기타 유용한 매쳐들 
 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
-// 간단한 이론 
+// 간단한 이론 -- 참고링크
 // screen 메소드
 // ESLint -- 규칙 참고
 // 테스트 할것만 -- .only, .skip, Watch Usage
@@ -15,7 +15,7 @@
 // userEvent
 // queryBy -- 현재 없는 태그를 확인할때, queryByText, toBeInTheDocument, unhover, 
 // Mock Service Worker -- MSW, 요청 가로채기
-// await findBy -- 비동기 적 일때, toEqual, alt로 name
+// await findBy -- 비동기 적 일때, toEqual, alt로 name, findBy를 위한 타임아웃 시간
 // waitFor -- toHaveLength
 // wrapper -- Provider를 적용, exact: false, aria-label, user.type, user.clear, 입력창에 1 입력, 한꺼번에 Provider를 적용
 // 목 함수 -- Mocks functions, jest.fn()
@@ -38,11 +38,14 @@
           //  배경 색 변경
         })
 
+// ################ 참고링크
 // 테스팅 라이브러리 Docs : https://testing-library.com/docs/
 
 // getBy, queryBy, findBy 정리 : https://testing-library.com/docs/react-testing-library/cheatsheet/
 // getByRole의 Role부분 정리 :  https://www.w3.org/TR/wai-aria/#textbox
-// 매쳐(Matcher) 정리: https://github.com/testing-library/jest-dom#tohavetextcontent
+// RTL 매쳐(Matcher) 정리: https://github.com/testing-library/jest-dom#tohavetextcontent
+// Jest 매쳐(Matcher) 정리: https://jestjs.io/docs/expect
+// userEvent 정리 : https://testing-library.com/docs/ecosystem-user-event#api
 
 // ################ RTL과 Jest의 역할
 // RTL -> 가상 Dom을 만들거나 상호작용하는 등 테스트를 간접적으로 돕는 역할 (render, screen, fireEvent 등)
@@ -194,7 +197,9 @@ function App() {
 export default App;
 
 // ################ 디버깅 ################################################################################################### Screen.debug() #################
-screen.debug()  //  테스트 중에 렌더링 된 DOM이 어떻게 되어 있는지 확인하는 데 사용되는 도구, 이 메소드를 사용하면 콘솔에 HTML 문자열을 출력
+//  테스트 중에 렌더링 된 DOM이 어떻게 되어 있는지 확인하는 데 사용되는 도구,  콘솔에 HTML 문자열을 출력, 밑에 빨간줄 떠도 걍 무시해도됨 
+// 주로 확인하고 싶은 부분 앞뒤로 작성
+screen.debug()  
 
 // ############################################################################################################################# LogRoles #################
 // 페이지가 길어서 역할이있는 항목들이 햇갈릴때 사용됨 (역할과 이름이 콘솔로그 처럼 출력됨) // 코드가 지저분해질 가능성이 있어서 안쓰는 경우도 많음
@@ -242,7 +247,7 @@ export const replaceCamelWithSpaces = (colorName) => {
 // #################################################################################################################################################
 // ####### 아이스크림 주문 앱 ########################################################################################################################
 // #################################################################################################################################################
-// ################ fireEvent와 userEvent ######################################################################################################
+// ################ fireEvent와 userEvent (13버전 지원X) ###########################################################################################
 // fireEvent : userEvent보다 정교하지는 않지만, 작성하기 쉽고 이용할 옵션이 많음
 
 // userEvent :
@@ -393,7 +398,11 @@ import Options from "../Options";
 test("displays image for each scoop option from server", async () => {
   render(<Options optionType="scoops" />);
 
-  const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i }); // findBy는 주로 비동기 데이터를 불러올때 // 사용 alt로 name 줄수있음
+  const scoopImages = await screen.findAllByRole("img", {  // findBy는 주로 비동기 데이터를 불러올때 // 사용 alt로 name 줄수있음
+          name: /scoop$/i
+        },{
+          timeout: 2000         // findBy를 위한 타임아웃 시간을 정할 수 있음
+  });
   expect(scoopImages).toHaveLength(2);
 
   const altText = scoopImages.map((element) => element.alt);
@@ -640,6 +649,8 @@ test("testing1", () => {
   expect(err).toThrow("xx");    // pass 
 });
 
+
+
 // ########## done // done에 닿을 때까지 테스트를 종료하지 않음 #################################################################################
 test('비동기 코드 테스트 - fetch', (done) => {  // done은 test의 파라미터 
   const callback = (data) => {
@@ -696,13 +707,44 @@ test("test1", () => {
 });
 
 
-// ########## 기타 유용한 toget...() ######################################################################################################### 
+// ########## 기타 유용한 getBy...(queryBy, findBy도 해당) #################################################################################################
+// ########## getByRole의 heading
+screen.getByRole("heading". { level: 1 });      // h1 을의미 (h1 ~ h6)
+
+// ########## getByRole의 textbox와 getByLabelText (input type:text, textarea를 찾음)
+<div>
+        <label htmlFor="profile">자기소개</label>
+        <textarea id="profile" />
+</div>
 
 
+screen.getByRole("textbox". { name: "자기소개" });    // name은 label의 htmlFor을 찾아서 id가 같은 textbox를 불러옴
+screen.getByLabelText("자기소개");
+screen.getByLabelText("자기소개", { selector: "textarea" });        // input type:text는 제외
+
+// ########## getByDisplayValue, getByPlaceholderText, getByTitle, getByAltText
+<input type="text" id="username" value="Tom" readOnly />
 
 
+screen.getByDisplayValue("Tom") // value가 같은것을 찾음 (getByPlaceholderText는 플레이스 홀더, getByTitle는 타이틀, getByAltText는 이미지 alt)
+
+// ########## getByTestId (getBy찾기 최후의 수단)
+<div data-testid="my-div" />
+
+screen.getByTestId("my-div");   // 테스트용으로 data-testid 입력한것 찾음
 
 
+// ########## 기타 유용한 userEvent ##############################################################################################################
+// userEvent를 활용하기 위한 링크 : https://testing-library.com/docs/ecosystem-user-event#api
+
+// ##########
+import { userEvent } from '@testing-library/user-event';
+const user = userEvent.setup();
+test("test1", async () => {
+  await user.tab();
+  await user.keyboard(" ");
+  await user.keyboard("{Enter}");
+});
 
 
 
