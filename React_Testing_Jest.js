@@ -2,8 +2,6 @@
 // 다하고 이론부분 지을거 지우기
 // 매쳐(Matcher) 효과 정리하기, 자주쓰는 fireEvent, userEvent, Role 정리
 
-// 목함수부터 인덱스 다시, 기타 유용한 매쳐들 
-
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
 // 간단한 이론 -- 참고링크
 // screen 메소드
@@ -18,9 +16,15 @@
 // await findBy -- 비동기 적 일때, toEqual, alt로 name, findBy를 위한 타임아웃 시간
 // waitFor -- toHaveLength
 // wrapper -- Provider를 적용, exact: false, aria-label, user.type, user.clear, 입력창에 1 입력, 한꺼번에 Provider를 적용
-// 목 함수 -- Mocks functions, jest.fn()
-// 기타 유용한 매쳐들
-
+// 목 함수 -- Mocks functions, jest.fn(), 지정값, 고정값, 몇번 호출, mock.calls, mock.results,  불린 적이 있는지, 
+// -->, toBeCalled, toBeCalledTimes, toBeCalledWith, lastCalledWith, 임시로 벨류를 리턴,  mockReturnValue, mockResolvedValue, 임의로 테스트, 임시로 벨류를 비동기식으로
+// 기타 유용한 매쳐들 -- 동일한지, toBe, toEqual, toStrictEqual, 비슷한지, 소수점 계산, toBeCloseTo, 초과, 이상, 미만, 이하 toBeGreaterThan, toBeLessThan
+// -->, 문자열이 포함 또는 매치,  toMatch, 배열에 포함, toContain, 에러가 발생하는지, 에러내용, toThrow, 
+// 전후 작업 -- beforeEach, afterEach
+// toMatchSnapshot -- 스냅샷을 비교, 전테스트 값과 비교
+// 기타 유용한 getBy -- getByRole, heading, level, textbox, getByLabelText, htmlFor을 찾아서 id가 같은 textbox, selector: "textarea"
+// -->, getByDisplayValue, getByPlaceholderText, getByTitle, getByAltText, getBy찾기 최후의 수단, getByTestId, data-testid
+// 기타 유용한 userEvent
 
 // ######### RTL, Jest 관한 정보 링크 ####################################################################################################################
 
@@ -549,7 +553,7 @@ import { render, screen } from "../../../test-utils/testing-library-utils";   //
 
 // ##### 목 함수(Mocks functions) // jest.fn() #########################################################################################################
 // 목 함수(Mocks functions)는 테스트를 위한 다른 함수를 대체할 수 있는 도구로 임의 데이터를 반환하여 테스트 속도가 빨라지고, 에러를 회피할 수 있는 등 장점
-// Date.now = jest.fn(() => 123456789)  // ex) Date.now는 계속 바뀌는데 지정값으로 오버라이드 할수있음 (계속 변하는 값을 고정값으로 변경가)
+// Date.now = jest.fn(() => 123456789)  // ex) Date.now는 계속 바뀌는데 지정값으로 오버라이드 할수있음 (계속 변하는 값을 고정값으로 변경가능)
 
 // ########## 예시 1
 test("test1", () => {
@@ -750,7 +754,6 @@ test("test1", async () => {
   await user.keyboard(" ");
   await user.keyboard("{Enter}");
 });
-
 
 
 
