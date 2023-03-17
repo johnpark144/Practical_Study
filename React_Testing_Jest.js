@@ -746,7 +746,6 @@ screen.getByDisplayValue("Tom") // value가 같은것을 찾음 (getByPlaceholde
 
 screen.getByTestId("my-div");   // 테스트용으로 data-testid 입력한것 찾음
 
-
 // ########## 기타 유용한 userEvent ##############################################################################################################
 // userEvent를 활용하기 위한 링크 : https://testing-library.com/docs/ecosystem-user-event#api
 
