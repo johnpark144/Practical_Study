@@ -760,15 +760,168 @@ test("test1", async () => {
 });
 
 
-// ########## About Cypress ##############################################################################################################
-
-
-
-
 
 
 // ########################################################################################################################################################
-// ######## 그외 기타 테스팅 라이브러리, Jest 유용한것 #######################################################################################################
+// ########  Cypress ######################################################################################################################################
+// ########################################################################################################################################################
+// ########## 기본 세팅 ##################################################################################################################################
+// npm install --save-dev cypress @testing-library/cypress eslint-plugin-cypress
+
+// ########## .package.json
+"scripts": {
+// ... 생략 ...
+    "cypress": "cypress open",  // 입력해줘야함
+  },
+"devDependencies": {
+    "@testing-library/cypress": "^9.0.0",
+    "cypress": "^12.8.1",
+    "eslint-plugin-cypress": "^2.12.1",
+  }
+
+// ########## .gitignore
+/cypress/videos
+/cypress/screenshots
+
+// ########## jsonconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "include": [
+    "src","node_modules/cypress", "./cypress/**/*.js"
+  ]
+}
+
+// ########## cypress.config.js (package.json 과 더같은폴더)
+const { defineConfig } = require("cypress");
+
+module.exports = defineConfig({
+  e2e: {
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
+    },
+  },
+
+  component: {
+    devServer: {
+      framework: "create-react-app",
+      bundler: "webpack",
+    },
+  },
+});
+
+
+// ########## cypress/.eslintrc.json    // .를 앞에 꼭붙여야함
+{
+  "extends": [
+    "plugin:cypress/recommended"
+  ]
+}
+
+// ########## cypress/support.command.js
+import "@testing-library/cypress/add-commands";
+
+
+// ########## cypress/e2e/.spec.cy.js
+/* eslint-disable cypress/no-unnecessary-waiting */
+describe("My E2E Test", () => {
+  it("Create and Delete both a Day and word from Memorize and video", () => {
+    // Login
+    cy.viewport(1500, 880);
+    cy.visit("http://localhost:3000/");
+    cy.findByPlaceholderText(/.*Email.*/i).type("test123@gmail.com");
+    cy.findByPlaceholderText(/.*Password.*/i).type("test123");
+    cy.findByText(/.*Sign in.*/i).click();
+    cy.wait(1000);
+
+    // Create a Day
+    cy.visit("http://localhost:3000/memorize");
+    cy.findByRole("button", {
+      name: /.*add day.*/i,
+    }).click();
+    cy.findByRole("button", {
+      name: /.*confirm.*/i,
+    }).click();
+    cy.findByText(/day 1/i).should("exist");
+
+    // Enter the Day 1 and Create a word
+    cy.findByRole("link", {
+      name: /.*day 1.*/i,
+    }).click();
+    cy.findByRole("button", {
+      name: /.*create word.*/i,
+    }).click();
+
+    cy.findByRole("combobox").select("1");
+    cy.findByPlaceholderText(/.*사과.*/i).type("사과");
+    cy.findByPlaceholderText(/.*Apple.*/i).type("Apple");
+    cy.findByRole("button", {
+      name: /.*create.*/i,
+    }).click();
+
+    // Check if the word that I just created exist
+    cy.findByText(/.*사과.*/i).should("exist");
+    cy.findByText(/.*Apple.*/i).should("exist");
+
+    // Delete the word that I created
+    cy.findByRole("button", {
+      name: /x/i,
+    }).click();
+    cy.wait(2000);
+    cy.findByRole("button", {
+      name: /.*delete*/i,
+    }).click();
+
+    // Create a word from Video
+    cy.visit("http://localhost:3000/video");
+    cy.findByRole("button", {
+      name: /.*See create.*/i,
+    }).click();
+
+    cy.findByRole("combobox").select("1");
+    cy.findByPlaceholderText(/.*사과.*/i).type("비디오");
+    cy.findByPlaceholderText(/.*Apple.*/i).type("Video");
+    cy.findByTestId("createBtn").click();
+    cy.wait(3000);
+
+    // Check if the word that I just created exist
+    cy.visit("http://localhost:3000/memorize/1");
+    cy.wait(3000);
+    cy.findByText(/.*비디오.*/i).should("exist");
+
+    // Delete the word that I created
+    cy.findByRole("button", {
+      name: /x/i,
+    }).click();
+    cy.wait(2000);
+    cy.findByRole("button", {
+      name: /.*delete*/i,
+    }).click();
+
+    // Delete the day
+    cy.findByText(/.*arrow_back_ios.*/i).click();
+    cy.findByRole("button", {
+      name: /.*delete day.*/i,
+    }).click();
+    cy.wait(4000);
+    cy.findByTestId("deleteBtn").click();
+
+    // Logout
+    cy.findByText(/log out/i).click();
+  });
+});
+
+
+// ########## cypress 예시 (정리필요)
+
+
+
+    
+
+
+// ########################################################################################################################################################
+// ######## 그외 기타 테스팅 라이브러리, 유용한것 ############################################################################################################
 // ########################################################################################################################################################
 
 
