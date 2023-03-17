@@ -766,7 +766,7 @@ test("test1", async () => {
 // ########  Cypress ######################################################################################################################################
 // ########################################################################################################################################################
 // ########## 기본 세팅 ##################################################################################################################################
-// npm install --save-dev cypress @testing-library/cypress eslint-plugin-cypress
+// npm install --save-dev cypress @testing-library/cypress eslint-plugin-cypress        // devDependencies에 설치
 
 // ########## .package.json
 "scripts": {
@@ -792,6 +792,8 @@ test("test1", async () => {
     "src","node_modules/cypress", "./cypress/**/*.js"
   ]
 }
+// ########## 
+cypress 실행 해줘야 cypress 폴더와 파일이 생김
 
 // ########## cypress.config.js (package.json 과 더같은폴더)
 const { defineConfig } = require("cypress");
@@ -802,7 +804,6 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
-
   component: {
     devServer: {
       framework: "create-react-app",
@@ -812,18 +813,18 @@ module.exports = defineConfig({
 });
 
 
-// ########## cypress/.eslintrc.json    // .를 앞에 꼭붙여야함
+// ########## cypress/.eslintrc.json    // 문법 체크용 .eslintrc.json(점을 앞에 붙여야함)
 {
   "extends": [
     "plugin:cypress/recommended"
   ]
 }
 
-// ########## cypress/support.command.js
+// ########## cypress/support.command.js  (필수)
 import "@testing-library/cypress/add-commands";
 
 
-// ########## cypress/e2e/.spec.cy.js
+// ########## cypress/e2e/spec.cy.js
 /* eslint-disable cypress/no-unnecessary-waiting */
 describe("My E2E Test", () => {
   it("Create and Delete both a Day and word from Memorize and video", () => {
