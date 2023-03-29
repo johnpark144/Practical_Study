@@ -6,7 +6,7 @@ Emmet (태그 빨리 )
 
 <!--######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################-->
 // 하위태그 속성 -- & >, nth-child
-// Flexbox -- 다음칸으로, wrap, justify-content, align-items, baseline, align-self, flex-grow, align-self
+// Flexbox -- 다음칸으로, wrap, justify-content, align-items, baseline, align-self, order, flex-grow, flex-basis, align-self
 // Grid -- 가로새로 배치 및 마진, grid-template-column, grid-auto-rows, grid-gap, 자리 차지, 이름 지정하여 자리배치, grid-template-areas, 전체 화면 그리드로 맞추기
 // Position
 // media쿼리 -- Break-points
@@ -65,8 +65,8 @@ align-items: baseline;<!-- item들의 크기가 달라져도 중심으로하여 
 align-self: center; <!-- align-items는 태그내부 정렬, align-self는 해당 태그 그 자체를 정렬 -->
 
 <!--################################################################################################################################ Item 속성값 ##################-->
-
-flex-grow : 1 <!-- 디스플레이 크기가 커질때 화면에서 더 많이 커짐 (숫자는 비율) -->
+order : 1(첫번쨰순서) <!-- flex안 Item의 순서도 바꿔줄 수 있음 -->
+flex-grow : 1  <!-- 디스플레이 크기가 커질때 화면에서 더 많이 커짐 (숫자는 비율) -->
 flex-shrink : 1  <!-- 디스플레이 크기가 작아질때 화면에서 더 많이 줄어듬 (숫자는 비율) -->
 flex-basis: 10% <!-- 화면전체의 비율 -->
 
