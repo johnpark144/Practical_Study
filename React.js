@@ -1296,7 +1296,7 @@ function App() {
 // 비동기적인 작업이 수행되어 여러가지 작업이 동시 처리되어 버벅거릴 때 잠시 화면상의 변화가 일어나지 않도록 설정할 수 있습니다. 이를 통해 사용자 경험을 개선할 수 있습니다
 
 // ####### useTransition 예시
-import { useTransition, useDeferredValue, useState } from "react";
+import { useTransition, useState } from "react";
 const [name, setName] = useState('')
 const [startTransition, isPending] = useTransition({ timeoutMs });  // timeoutMs는 사용하지 않아도 됨
 
@@ -1312,5 +1312,5 @@ return(<>
 </>)
 
 // ####### useDeferredValue 예시
-
-
+import { useDeferredValue } from "react";
+const deferredValue = useDeferredValue(value, { timeoutMs });  // value가 변할때 같은 값을 좀 늦게처리하여 deferredValue에 전달 // timeoutMs는 사용하지 않아도 됨
