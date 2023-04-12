@@ -33,6 +33,7 @@
 // 주소창에 params 가져오기
 // Link 특정 앵커로 보내기 -- HashLink, NavHashLink
 // Link 이동할때 특정 state같이 보내기 -- useLocation
+// React.lazy()와 Suspense  -- 컴포넌트의 로딩 시점을 지연, 대체정보를 출력
 
 // ######### 리액트 관한 정보 링크 #######################################################################################################################
 // 폴더 구조 : https://velog.io/@raverana96/react-%EB%A6%AC%EC%95%A1%ED%8A%B8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%9D%98-%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0
@@ -1272,3 +1273,20 @@ import { useLocation } from 'react-router-dom';
 const location = useLocation(); 
 console.log(location?.state?.category)
 
+// ####### React.lazy()와 Suspense  ##############################################################################################################################
+// React.lazy는 로딩이 오래걸릴 것 같은 컴포넌트의 로딩 시점을 지연시켜, 초기 로딩 속도를 줄일 수 있습니다.
+// 즉 그 이후의 것을 먼저 화면에 렌더링 해주고 불러온다, 이떄 Suspense와 같이 이용해 줘야 컴포넌트를 불러오기 전 "로딩중"과 같은 대체정보를 출력하게 해준다.
+
+// #######
+const MyComponent = React.lazy(() => import('./MyComponent')); // 동적으로 컴포넌트를 불러옴
+import React, { Suspense } from 'react';
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <MyComponent />
+      </Suspense>
+    </div>
+  );
+}
