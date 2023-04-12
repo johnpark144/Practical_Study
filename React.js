@@ -34,6 +34,7 @@
 // Link 특정 앵커로 보내기 -- HashLink, NavHashLink
 // Link 이동할때 특정 state같이 보내기 -- useLocation
 // React.lazy()와 Suspense  -- 컴포넌트의 로딩 시점을 지연, 대체정보를 출력
+// useTransition, useDeferredValue -- 
 
 // ######### 리액트 관한 정보 링크 #######################################################################################################################
 // 폴더 구조 : https://velog.io/@raverana96/react-%EB%A6%AC%EC%95%A1%ED%8A%B8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%9D%98-%ED%8F%B4%EB%8D%94%EA%B5%AC%EC%A1%B0
@@ -1290,3 +1291,26 @@ function App() {
     </div>
   );
 }
+
+// ####### useTransition, useDeferredValue #######################################################################################################################
+// 비동기적인 작업이 수행되어 여러가지 작업이 동시 처리되어 버벅거릴 때 잠시 화면상의 변화가 일어나지 않도록 설정할 수 있습니다. 이를 통해 사용자 경험을 개선할 수 있습니다
+
+// ####### useTransition 예시
+import { useTransition, useDeferredValue, useState } from "react";
+const [name, setName] = useState('')
+const [startTransition, isPending] = useTransition({ timeoutMs });  // timeoutMs는 사용하지 않아도 됨
+
+return(<>
+    <input onChange={(e)=>{
+        startTransition(()=>{       // startTransition으로 성능저하를 일으키는 부분을 감싸기 (startTransition안에 있는 부분을 동시처리하는게 아니라 좀 늦게처리함)
+            setName(e.target.value)
+      })
+    }} />
+    {
+        isPending ? "로딩중" : <div>{name}</div>   // startTransition부분이 여전히 처리되고 있을때 isPending이 참이됨
+     }
+</>)
+
+// ####### useDeferredValue 예시
+
+
