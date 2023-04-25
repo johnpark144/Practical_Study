@@ -44,6 +44,7 @@ git commit -am "FIRST COMMIT" // Add와 Commit을 동시에 (새로 추가된(un
 // ######## Vim 모드 log 확인, 자세한 상태확인, Vim 모드 코밋
 git log  // 코밋 log 확인
 git diff  // Vim 모드로 더 자세히 상태확인 
+git difftool  // 비쥬얼 적으로 바뀐내용 차이확인
 git commit  // Vim 모드로 코밋 
 
 	i // 입력 시작 //	명령어 입력 모드에서 텍스트 입력 모드로 전환
