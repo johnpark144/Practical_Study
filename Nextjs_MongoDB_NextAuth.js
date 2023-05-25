@@ -11,6 +11,11 @@ password 부분은 Database access부분에 비밀번호를 대체해서 넣기.
 
 Network Access에서 내 ip주소 접근 가능하게 혹은 "0.0.0.0/0" 를 적어줌으로써 모든 ip에서 접근 가능하게
 
+// NextAuth :
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL_INTERNAL=http://localhost:3000
+NEXTAUTH_SECRET=8CTtlSFkAplFhZwChGdWGAAt8VIcA1ai4IZiFheI9nk=
 
+NEXTAUTH_SECRET는 터미널에서 "openssl rand -base64 32" 를입력하여 만듬
 
 // ####################################################################################################################################################
