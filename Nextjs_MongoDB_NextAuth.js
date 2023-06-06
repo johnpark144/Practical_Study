@@ -281,4 +281,153 @@ function Nav() {
 
 export default Nav;
 
-// ############  ##################################################################################################################################
+// ############ 몽고DB(MongoDB) Create (POST요청) ##################################################################################################################################
+// ################## create-prompt/page.jsx 
+"use client";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Form from "@components/Form";
+import Link from "next/link";
+
+function CreatePrompt() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  const [submitting, setSubmitting] = useState(false);
+  const [post, setPost] = useState({ prompt: "", tag: "" });
+
+  // Post를 만들어 post형식으로 데이터를 백엔드에 저장시킴
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true); // submit 진행중
+
+    try {
+      const response = await fetch("/api/prompt/new", { // restAPI 서버에 데이터 생성을 위한 POST 방식으로 요청
+        method: "POST",
+        body: JSON.stringify({
+          prompt: post.prompt,
+          userId: session?.user.id,
+          tag: post.tag,
+        }),
+      });
+
+      if (response.ok) {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubmitting(false); // submit중 단계에서 해제
+    }
+  };
+  
+  
+  return (
+    <section className="w-full max-w-full flex-start flex-col">
+      {/* ~Post, 설명부분 */}
+      <h1 className="head_text text-left">
+        <span className="blue_gradient">{type} Post</span>
+      </h1>
+      <p className="desc text-left max-w-md">
+        {type} and share amazing prompts with the world, and let your
+        imagination run wild with any AI-powered platform
+      </p>
+      <form
+        onSubmit={handleSubmit}
+        className="mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"
+      >
+        {/* Post 부분 */}
+        <label>
+          <span className="font-satoshi font-semibold text-base text-gray-700">
+            your AI Prompt
+          </span>
+
+          <textarea
+            value={post.prompt}
+            onChange={(e) => setPost({ ...post, prompt: e.target.value })}
+            placeholder="Write your post here"
+            required
+            className="form_textarea "
+          />
+        </label>
+        {/* Tag 부분 */}
+        <label>
+          <span className="font-satoshi font-semibold text-base text-gray-700">
+            Field of Prompt{" "}
+            <span className="font-normal">
+              (#product, #webdevelopment, #idea, etc.)
+            </span>
+          </span>
+          <input
+            value={post.tag}
+            onChange={(e) => setPost({ ...post, tag: e.target.value })}
+            type="text"
+            placeholder="#Tag"
+            required
+            className="form_input"
+          />
+        </label>
+        {/* 취소, Submit */}
+        <div className="flex-end mx-3 mb-5 gap-4">
+          <Link href="/" className="text-gray-500 text-sm">
+            Cancel
+          </Link>
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
+          >
+            {submitting ? `${type}ing...` : type}
+          </button>
+        </div>
+      </form>
+    </section>
+  );
+}
+export default CreatePrompt;
+
+
+// ################## models/prompt.js       // mongoose를 이용한 데이터베이스 스키마인 Model 부분
+import { Schema, model, models } from "mongoose";
+
+// 데이터 형식(Model)
+const PromptSchema = new Schema({
+  creator: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  prompt: {
+    type: String,
+    required: [true, "Prompt is required."],
+  },
+  tag: {
+    type: String,
+    required: [true, "Tag is required."],
+  },
+});
+
+const Prompt = models.Prompt || model("Prompt", PromptSchema); // 기존에 있는 데이터를 사용하거나, 스키마에 맞춰서 생성함
+
+export default Prompt;
+
+
+// ################## app/api/prompt/new/route.js
+import { connectToDB } from "@utils/database";
+import Prompt from "@models/prompt";
+
+export const POST = async (req) => {
+  const { userId, prompt, tag } = await req.json(); // POST요청으로 받은 데이터
+
+  try {
+    // DB연결
+    await connectToDB();
+    // prompt 모델에 스키마에 맞춰서, POST요청으로 받은 req의 데이터를 각각 객체로 만들어 DB에 저장
+    const newPrompt = new Prompt({ creator: userId, prompt, tag });
+    await newPrompt.save(); // 저장
+    return new Response(JSON.stringify(newPrompt), { status: 201 });
+  } catch (error) {
+    return new Response("Failed to create a new prompt", { status: 500 });
+  }
+};
