@@ -105,7 +105,7 @@ export const connectToDB = async () => {
 };
 
 
-// ################## models/user.js       // 데이터베이스 스키마인 Model 부분
+// ################## models/user.js       // mongoose를 이용한 데이터베이스 스키마인 Model 부분
 import { Schema, model, models } from "mongoose";
 
 // 데이터 형식(Model)
@@ -134,7 +134,7 @@ const User = models.User || model("User", UserSchema);
 export default User;
 
 
-// ################## app/api/auth/[...nextauth]/route.js     // Rest API로 만들기
+// ################## app/api/auth/[...nextauth]/route.js     // Rest API로 OAuth 가입 혹은 로그인처리하기 및 세션 처리
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import User from "@models/user";  // 스키마(모델)
@@ -163,7 +163,7 @@ const handler = NextAuth({
         const userExists = await User.findOne({
           email: profile.email,
         });
-        // 존재하지 않으면 모델에 있는 스키마에 맞게 유저 생성
+        // 존재하지 않으면 모델에 있는 스키마에 맞게 MongoDB DB 유저 생성
         if (!userExists) {
           await User.create({
             email: profile.email,
@@ -205,7 +205,7 @@ const nextConfig = {
 module.exports = nextConfig;
 
 
-// ################## Nav.jsx   // next-auth 사용
+// ################## Nav.jsx   // next-auth 사용하도록
 "use client";
 
 import Link from "next/link";
@@ -215,13 +215,11 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 function Nav() {
   const { data: session } = useSession();
-
   const [providers, setProviders] = useState(null);
-  const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
     const setUpProviders = async () => {
-      const response = await getProviders(); // 담고있는 OAuth들의 Provider들을 전달해줌
+      const response = await getProviders(); // OAuth들의 Provider들을 담아 배열로 전달
       setProviders(response);
     };
 
@@ -271,7 +269,7 @@ function Nav() {
                   onClick={() => signIn(provider.id)}   // 구글로 signIn 하게함
                   className="black_btn"
                 >
-                  Sign In
+                  Sign In With {provider.name}
                 </button>
               ))}
           </>
@@ -283,3 +281,4 @@ function Nav() {
 
 export default Nav;
 
+// ############  ##################################################################################################################################
