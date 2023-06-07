@@ -431,3 +431,164 @@ export const POST = async (req) => {
     return new Response("Failed to create a new prompt", { status: 500 });
   }
 };
+
+
+// ############ 몽고DB(MongoDB) Read (GET요청) ##################################################################################################################################
+// ################## Feed.js
+// ... 생략 ...
+useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await fetch("/api/prompt");
+      const data = await response.json();
+
+      setPosts(data);
+    };
+    fetchPosts();
+  }, []);
+// ... 생략 ...
+
+// ################## api/prompt/route.js    // connectToDB, Prompt는 위에 참고
+import Prompt from "@models/prompt";
+import { connectToDB } from "@utils/database";
+
+// GET (배열 전체 불러오기)
+export const GET = async (request) => {
+  try {
+    // DB연결
+    await connectToDB();
+
+    const prompts = await Prompt.find({}).populate("creator"); // find에 {}를 주면 전체 데이터를 가져옴 // populate("creator")는 "creator"와 관계된 데이터를 함께 가져오게 함
+    return new Response(JSON.stringify(prompts), { status: 200 });
+  } catch (error) {
+    return new Response("Failed to fetch all prompts", { status: 500 });
+  }
+};
+
+
+// ############ 몽고DB(MongoDB) Update, Delete (PATCH, DELETE요청) ##################################################################################################################################
+// ################## api/prompt/[id]/route.js
+import Prompt from "@models/prompt";
+import { connectToDB } from "@utils/database";
+
+// GET (디테일 부분 불러오기)
+export const GET = async (request, { params }) => {
+ // ... 생략 ...
+};
+
+// PATCH (디테일 부분 수정)
+export const PATCH = async (request, { params }) => {
+  const { prompt, tag } = await request.json();
+
+  try {
+    // DB연결
+    await connectToDB();
+    // 데이터 가져오기, 데이터 없는경우 not-found
+    const existingPrompt = await Prompt.findById(params.id); // findById에 id값을 주면 그 id 데이터만 가져옴
+    if (!existingPrompt)
+      return new Response("Prompt not found", { status: 404 });
+    // 데이터 수정 후 저장
+    existingPrompt.prompt = prompt;
+    existingPrompt.tag = tag;
+    await existingPrompt.save();
+
+    return new Response(JSON.stringify(existingPrompt), { status: 200 });
+  } catch (error) {
+    return new Response("Failed to update prompt", { status: 500 });
+  }
+};
+
+// DELETE (디테일 부분 삭제)
+export const DELETE = async (request, { params }) => {
+  try {
+    await connectToDB();
+
+    // Id값을 가져와서 삭제시킴
+    await Prompt.findByIdAndRemove(params.id);
+
+    return new Response("Prompt deleted successfully", { status: 200 });
+  } catch (error) {
+    return new Response("Error deleting prompt", { status: 500 });
+  }
+};
+
+// ################## app/update-prompt/page.jsx      // 수정 요청
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Form from "@components/Form";
+
+function UpdatePrompt() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const promptId = searchParams.get("id"); // searchParams(?뒤 검색한부분)
+
+  const [submitting, setSubmitting] = useState(false); // submit중인지 아닌지
+  const [post, setPost] = useState({ prompt: "", tag: "" });
+
+  useEffect(() => {
+    const getPromptDetails = async () => {
+      const response = await fetch(`/api/prompt/${promptId}`);
+      const data = await response.json();
+
+      // GET 요청 으로 읽어들인 것 세팅
+      setPost({
+        prompt: data.prompt,
+        tag: data.tag,
+      });
+    };
+
+    if (promptId) getPromptDetails(); // promptId가 존재하는 경우만 그 데이터를 GET으로 가져오기
+  }, [promptId]);
+
+  // 수정 시키기
+  const EditPrompt = async (e) => {
+    e.preventDefault();
+    setSubmitting(true); // submit 진행중
+    if (!promptId) return alert("Prompt ID not found");
+    try {
+      const response = await fetch(`/api/prompt/${promptId}`, { // prompt 디테일 ID를 줘서 PATCH 요청으로 수정함
+        method: "PATCH",
+        body: JSON.stringify({
+          prompt: post.prompt,
+          tag: post.tag,
+        }),
+      });
+
+      if (response.ok) {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubmitting(false); // submit중 단계에서 해제
+    }
+  };
+// ... 생략 ...
+
+// ################## profile/page.js       // 삭제 요청
+// ... 생략 ...
+ // Post 삭제 하려할때
+  const handleDelete = async (post) => {
+    const hasConfirmed = confirm(
+      "Are you sure you want to delete this prompt?"
+    );
+
+    if (hasConfirmed) {
+      try {
+        // 삭제 요청
+        await fetch(`/api/prompt/${post._id.toString()}`, {
+          method: "DELETE",
+        });
+        // 삭제 되려하는 데이터만 제외화고 배열을 만들어서 Post에 재배치
+        const filteredPosts = posts.filter((item) => item._id !== post._id);
+        setPosts(filteredPosts);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+// ... 생략 ...
+
+
+// ############  ##################################################################################################################################
+
