@@ -25,7 +25,7 @@ function Feed() {
     setSearchText(e.target.value);
   };
 
-  // 검색창 타이핑시 글, 태그, 유저이름과 포함되있는 것만 데이터 불러오기
+  // 검색창 타이핑시 글, 태그, 유저이름이 포함되있는 데이터만 불러오기
   useEffect(() => {
     const searchPosts = async () => {
       const response = await fetch("/api/prompt");
