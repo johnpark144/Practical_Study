@@ -38,8 +38,7 @@ function MyProfile() {
         await fetch(`/api/prompt/${post._id.toString()}`, {
           method: "DELETE",
         });
-        // 삭제 되려하는 데이터만 제외화고 배열을 만들어서 Post에 재배치
-        const filteredPosts = posts.filter((item) => item._id !== post._id);
+        const filteredPosts = posts.filter((item) => item._id !== post._id);  // 삭제 되려하는 데이터만 제외화고 배열을 만들어서 Post에 재배치
         setPosts(filteredPosts);
       } catch (error) {
         console.log(error);
