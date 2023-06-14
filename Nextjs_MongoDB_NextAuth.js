@@ -49,7 +49,7 @@ function Provider({ children, session }) {
 export default Provider;
 
 
-// ################## page.jsx      // provider 감싸기
+// ################## layout.jsx      // provider 감싸기
 import "@styles/globals.css";
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
