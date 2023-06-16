@@ -6,6 +6,7 @@
 // npm i bcrypt mongodb mongoose next-auth    // bcrypt는 비밀번호 해시화
 
 // 구글 API : console.cloud.google.com/
+// 페이스북 API : https://developers.facebook.com/?no_redirect=1
 // MongoDB : https://www.mongodb.com/atlas
 // nextauth : https://next-auth.js.org/
 
@@ -15,6 +16,11 @@ New project --> 프로젝트 만들기 --> 메뉴 --> APIs & Services --> OAuth 
 Authorized domain (로컬호스트 아니면 배포시 주소)
 http://localhost:3000
 http://localhost:3000/api/auth/callback/google     // 구글 OAuth 가능케함
+
+// ############ 페북 API로부터 clientId와 clientSecret 받기 :
+Create New App --> Settings --> Basic --> App ID가 FACEBOOK_CLIENT_ID, App secret가 FACEBOOK_CLIENT_SECRE
+Use cases --> Authentication and account creation --> Edit --> email부분 Add
+
 
 // ############ 몽고디비(MongoDB) :
 Create (cluster 만들기) --> Shared --> Create Cluster
@@ -124,7 +130,7 @@ const UserSchema = new Schema({
     required: [true, "Username is required!"],
     match: [
       /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
-      "Username invalid, it should contain 4-20 alphanumeric letters and be unique!",
+      "Username invalid, it should contain 4-20 alphanumeric letters and be unique!",   // 영어 username이 아닌경우 수정해야함 (ex 페북 아이디)
     ],
   },
   image: {
