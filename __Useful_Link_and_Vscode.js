@@ -79,7 +79,7 @@
 // 공공데이터프털 | 각종 한국 공공 API 모음   https://www.data.go.kr/
 
 ######## 기타링크 
-
+// wrtn | AI (GPT)
 
 
 
