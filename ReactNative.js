@@ -92,6 +92,7 @@ const App = () => {
   );
 };
 
+// 스타일
 const styles = StyleSheet.create({
   wrapper: {
     paddingTop: 30,
@@ -117,10 +118,128 @@ export default App;
 
 // ######## 아이콘 ############################################################################################################################
 // https://icons.expo.fyi     // 아이콘 검색하여 사용하게 함
+
 import { Feather } from "@expo/vector-icons";
 <Feather name="sun" size={100} color="black" />
 
+// ######## FlatList (리액트에서 Map으로 리스트 구현하는 것과 비슷) ###############################################################################
+import React from 'react';
+import {
+  Text,
+  View,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  StatusBar,
+} from 'react-native';
+import { Feather } from '@expo/vector-icons';
+
+// 배열식으로 된 데이터 (데이터를 펼치기 위해)
+const DATA = [
+  {
+    dt_txt: '2022-08-30 16:00:00',
+    main: {
+      temp_min: 8.55,
+      temp_max: 7.55,
+    },
+    weather: [
+      {
+        main: 'Clear',
+      },
+    ],
+  },
+  {
+    dt_txt: '2022-08-30 18:00:00',
+    main: {
+      temp_min: 8.55,
+      temp_max: 7.55,
+    },
+    weather: [
+      {
+        main: 'Clouds',
+      },
+    ],
+  },
+  {
+    dt_txt: '2022-08-30 20:00:00',
+    main: {
+      temp_min: 8.55,
+      temp_max: 7.55,
+    },
+    weather: [
+      {
+        main: 'Rain',
+      },
+    ],
+  },
+];
+
+// 렌더 방식 컴포넌트
+const Item = ({ dt_txt, min, max, condition }) => {
+  return (
+    <View style={styles.item}>
+      <Feather name={'sun'} size={50} color={'white'} />
+      <Text style={styles.date}>{dt_txt}</Text>
+      <Text style={styles.temp}>{min}</Text>
+      <Text style={styles.temp}>{max}</Text>
+    </View>
+  );
+};
+
+function UpcomingWeather() {
+  // 렌더 방식
+  const renderItem = ({ item }) => (
+    <Item
+      condition={item.weather[0].main}
+      dt_txt={item.dt_txt}
+      min={item.main.temp_min}
+      max={item.main.temp_max}
+    />
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text>Upcoming Weather</Text>
+      <FlatList
+        data={DATA} // 배열식으로 된 데이터
+        renderItem={renderItem} // 렌더 방식
+        keyExtractor={(item) => item.dt_txt} // Key 값
+      />
+    </SafeAreaView>
+  );
+}
+
+// 스타일
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0, // 상태바 크기만큼 마진 주기
+    backgroundColor: 'red',
+  },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderWidth: 5,
+    backgroundColor: 'pink',
+  },
+  temp: {
+    color: 'white',
+    fontSize: 20,
+  },
+  date: {
+    color: 'white',
+    fontSize: 15,
+  },
+});
+
+export default UpcomingWeather;
 // ######## 아이콘 ############################################################################################################################
+
+  
           
 // @@@@@@@@@@@ Weather App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // ######## ############################################################################################################################
