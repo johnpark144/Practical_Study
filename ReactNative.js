@@ -25,48 +25,52 @@
 // npx eslint --init  // eslint 초기설정
 // npm i @react-native-community/eslint-config --save-dev
 
-// ############## .eslintrc.js (나중에 변경)
+// ############## .eslintrc.js
 module.exports = {
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
   },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    '@react-native-community'
+    '@react-native-community',
   ],
   overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: ['react'],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'off',
+      },
+    ],
     semi: ['error', 'never'],
-    'comma-dangle': [2, 'never'],
+    'comma-dangle': 0,
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'no-use-before-define': [
       'error',
-      { functions: true, classes: true, variables: false }
-    ]
-  }
-}
+      { functions: true, classes: true, variables: false },
+    ],
+  },
+};
+
 
 // ############## prettier 설정
 // npm i --save-dev --save-exact prettier  // prettier 다운
 // .prettierrc.js 파일 생성
 // package.json 안에 scripts에 "lint": "eslint ." 입력  // cli로 전체 문법 검사
 
-// ############## .prettierrc.js (나중에 변경)
-module.exports = {
-  bracketSpacing: true,
-  singleQuote: true,
-  tabWidth: 2,
-  useTabs: false,
-  trailingComma: "none",
-  semi: false
-};
+// ############## .prettierrc (나중에 변경)
+{
+  "printWidth": 80,
+  "singleQuote": true,
+  "trailingComma": "all"
+}
 
 // ######## 기본 컴포넌트 설명 ############################################################################################################################
 import React from "react";
