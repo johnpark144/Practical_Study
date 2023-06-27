@@ -72,7 +72,7 @@ module.exports = {
   "trailingComma": "all"
 }
 
-// ######## 기본 컴포넌트 설명 ############################################################################################################################
+// ######## 기본 컴포넌트 ##################################################################################################################################
 import React from "react";
 import { View, Text, SafeAreaView, StyleSheet } from "react-native"; \
 // View = Div, Text = P, 
@@ -237,15 +237,44 @@ const styles = StyleSheet.create({
 });
 
 export default UpcomingWeather;
-// ######## 이미지 ############################################################################################################################
-import { Image } from 'react-native';
- return (
+// ######## Image, ImageBackground, 배열 스타일 ############################################################################################################################
+import { Image, ImageBackground } from 'react-native';
+
+function City() {
+  const { cityName, countryName, cityText } = styles;
+  return (
+       // 이미지
       <Image
         source={require('../../assets/upcoming-background.jpg')}  // 이미지 위치
-        style={styles.image}
+        style={styles.image}  // 스타일
       />
+       // 이미지 배경
+      <ImageBackground  // 배경은 셀프 클로징이 아닌 배경을 줄 컴포넌트들을 감쌈
+        source={require('../../assets/upcoming-background.jpg')}
+        style={styles.image}
+      >
+          // 스타일을 배열로 주기
+        <Text style={[cityName, cityText]}>London</Text>
+        <Text style={[countryName, cityText]}>UK</Text>
+      </ImageBackground>
   );
-  
-          
+
+const styles = StyleSheet.create({
+  cityName: {
+    fontSize: 40,
+  },
+  countryName: {
+    fontSize: 30,
+  },
+  cityText: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    color: 'white',
+  },
+});
+// ######## ############################################################################################################################
+
+
 // @@@@@@@@@@@ Weather App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // ######## ############################################################################################################################
