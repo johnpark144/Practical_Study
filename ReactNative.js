@@ -63,7 +63,46 @@ module.exports = {
   semi: false
 };
 
-// ######## ############################################################################################################################
+// ######## 기본 컴포넌트 설명 ############################################################################################################################
+import React from "react";
+import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+
+const App = () => {
+  return (
+    <SafeAreaView style={styles.wrapper}>
+      <View style={styles.container}>
+        <Text>Current Weather</Text>
+        <Text style={styles.temp}>6</Text>
+        <Text style={styles.feels}>Feels like 5</Text>
+        <Text>High: 8 Low: 6</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  wrapper: {
+    paddingTop: 30,
+    backgroundColor: "lightgray",
+    flex: 1,
+  },
+  container: {
+    backgroundColor: "pink",
+    flex: 1,
+    alignItems: "center",
+  },
+  temp: {
+    color: "black",
+    fontSize: 48,
+  },
+  feels: {
+    color: "black",
+    fontSize: 30,
+  },
+});
+
+export default App;
+
 
 
 // @@@@@@@@@@@ Weather App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
