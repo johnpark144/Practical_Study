@@ -273,7 +273,20 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-// ######## ############################################################################################################################
+// ######## 네비게이션 (React Navigation 위주) ############################################################################################################################
+// 리액트 네이티브에서 가장 많이 사용되는 두 라이브러리
+// React Navigation : 빠르게 시작하고 상대적으로 간단한 응용 프로그램을 개발
+// React Native Navigation :  성능이 중요한 프로젝트
+
+// https://reactnavigation.org/docs/getting-started  // React Navigation 사이트
+// https://github.com/react-navigation/react-navigation  // React Navigation 깃허브
+
+// npm i @react-navigation/native      // React Navigation 다운
+// npx expo install react-native-screens react-native-safe-area-context      // react-native-screens는 앱의 화면 전환과 탐색을 최적화 // react-native-safe-area-context는 앱이 안전 영역 안에서 표시되도록
+
+// ################ 
+
+
 
 
 // @@@@@@@@@@@ Weather App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
