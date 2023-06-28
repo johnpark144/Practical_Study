@@ -387,11 +387,6 @@ const App = () => {
   }
 };
 export default App;
-
-// ######## expo-location ############################################################################################################################
-// npx expo install expo-location
-
-
 // ######## 환경변수 ############################################################################################################################
 // npm i -D react-native-dotenv  // 환경변수
 
@@ -400,15 +395,222 @@ module.exports = function (api) {
   api.cache(true);
   return {
     presets: ['babel-preset-expo'],
-    plugins: ['module:react-native-dotenv'],
+    plugins: [
+      [
+        'module:react-native-dotenv',
+        {
+          moduleName: 'react-native-dotenv',
+        },
+      ],
+    ],
   };
 };
+
 // ############### .env
-WEATHER_API_KEY=ab68a116541f49e9ca4946c8bdf733b9
+WEATHER_API_KEY=ab68a116541f49e9ca4946c8bdf733b1
 
 // ###############
 import { WEATHER_API_KEY } from 'react-native-dotenv';
 console.log(WEATHER_API_KEY);
+
+// ######## expo-location (위치 정보), 커스텀 훅(위치로 날씨API를 사용하여 날씨 불러옴) #######################################################################################################
+// npx expo install expo-location  // 위치 정보에 관한 라이브러리
+
+// ################ hooks/useGetWeather.js (커스텀 훅)
+import { useState, useEffect } from 'react';
+import * as Location from 'expo-location';  // 위치 정보 라이브러리
+import { WEATHER_API_KEY } from 'react-native-dotenv';
+
+export const useGetWeather = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [weather, setWeather] = useState([]);
+  const [lat, setLat] = useState([]);
+  const [lon, setLon] = useState([]);
+
+  // 위도, 경도를 이용하여 날씨정보 찾기
+  const fetchWeatherData = async () => {
+    try {
+      const res = await fetch(
+        `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric` // 날씨정보 API
+      );
+      const data = await res.json();
+      setWeather(data);
+    } catch (err) {
+      setError('could not fetch weather');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 경도, 위도 저장하기
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync(); // 위치정보 가져와도 되는지 요청
+
+      // 위치정보 요청에 거절한경우
+      if (status !== 'granted') {
+        setError('permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({}); // 현재 위치 정보를 가져옴
+      setLat(location.coords.latitude);
+      setLon(location.coords.longitude);
+      await fetchWeatherData();
+    })();
+  }, [lat, lon]);
+
+  return [loading, error, weather];
+};
+
+
+// ################ App.js
+import React from 'react';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import Tabs from './src/components/Tabs';
+import { useGetWeather } from './src/hooks/useGetWeather';
+
+const App = () => {
+  const { container } = styles;
+  const [loading, error, weather] = useGetWeather(); // 현재 위치를 가져오고, 그위치의 날씨정보 가져오는 커스텀 훅
+
+  if (weather && weather.list) {
+    return (
+      // 날씨정보를 네비게이션에 전달
+      <NavigationContainer>
+        <Tabs weather={weather} />
+      </NavigationContainer>
+    );
+  }
+
+  if (loading) {
+    return (
+      <View style={container}>
+        <ActivityIndicator size={'large'} color={'blue'} />
+      </View>
+    );
+  }
+};
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    flex: 1,
+  },
+});
+
+export default App;
+
+// ################ Components/Tabs.js
+import React from 'react';
+import CurrentWeather from '../screens/CurrentWeather';
+import UpcomingWeather from '../screens/UpcomingWeather';
+import City from '../screens/City';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Feather } from '@expo/vector-icons';
+
+const { Navigator, Screen } = createBottomTabNavigator();
+
+function Tabs({ weather }) {
+  return (
+    <Navigator
+      screenOptions={{
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'grey',
+        tabBarStyle: {
+          backgroundColor: 'lightblue',
+        },
+        headerStyle: {
+          backgroundColor: 'lightblue',
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 25,
+          color: 'tomato',
+        },
+      }}
+    >
+      <Screen
+        name={'Current'}
+        options={{
+          tabBarIcon: (
+            { focused }
+          ) => (
+            <Feather
+              name={'droplet'}
+              size={25}
+              color={focused ? 'tomato' : 'black'}
+            />
+          ),
+        }}
+      >
+        {/* 네비게이션탭들에 props를 넘겨주고 싶을떄 component props대신에 사용 */}
+        {() => <CurrentWeather weatherData={weather.list[0]} />}
+      </Screen>
+     // ... 생략 ...
+    </Navigator>
+  );
+}
+
+export default Tabs;
+
+// ################ screens/CurrentWeather.js
+import React from 'react';
+import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import RowText from '../components/RowText';
+import { weatherType } from '../utilities/weatherType';
+
+//  받아온 날씨데이터 뿌리기
+const CurrentWeather = ({ weatherData }) => {
+  const {
+    main: { temp, feels_like, temp_max, temp_min },
+    weather,
+  } = weatherData;
+
+  const weatherCondition = weather[0].main;
+
+  return (
+    <SafeAreaView
+      style={[
+        wrapper,
+        { backgroundColor: weatherType[weatherCondition].backgroundColor },
+      ]}
+    >
+      <View style={container}>
+        <Feather
+          name={weatherType[weatherCondition].icon}
+          size={100}
+          color='white'
+        />
+        <Text style={tempStyles}>{temp}</Text>
+        <Text style={feels}>{`Feels like ${feels_like}`}</Text>
+        <RowText
+          messageOne={`High: ${temp_max}`}
+          messageTwo={`Low: ${temp_min}`}
+          containerStyles={highLowWrapper}
+          messageOneStyles={highLow}
+          messageTwoStyles={highLow}
+        />
+      </View>
+      <RowText
+        messageOne={weather[0].description}
+        messageTwo={weatherType[weatherCondition].message}
+        containerStyles={bodyWrapper}
+        messageOneStyles={description}
+        messageTwoStyles={message}
+      />
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  // ... 생략 ...
+});
+
+export default CurrentWeather;
 
 // @@@@@@@@@@@ Weather App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // ######## ############################################################################################################################
