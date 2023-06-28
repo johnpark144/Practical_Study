@@ -308,7 +308,10 @@ const App = () => {
       screenOptions={{
         tabBarActiveTintColor: 'tomato', // 네비게이션되 있을때 색깔
         tabBarInactiveTintColor: 'grey', // 그 외에 기존 색깔
-        tabBarStyle: {  // 네비바에 스타일
+        tabBarStyle: { // 버튼 누르는 부분 스타일
+          backgroundColor: 'lightblue',
+        },
+        headerStyle: { // 헤더 부분 스타일
           backgroundColor: 'lightblue',
         },
       }}
