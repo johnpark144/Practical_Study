@@ -305,11 +305,14 @@ const App = () => {
   return (
     <NavigationContainer>
       <Navigator
-        screenOptions={{
-          tabBarActiveTintColor: 'tomato', // 네비게이션되 있을때 색깔
-          tabBarInactiveTintColor: 'grey', // 그 외에 기존 색깔
-        }}
-      >
+      screenOptions={{
+        tabBarActiveTintColor: 'tomato', // 네비게이션되 있을때 색깔
+        tabBarInactiveTintColor: 'grey', // 그 외에 기존 색깔
+        tabBarStyle: {  // 네비바에 스타일
+          backgroundColor: 'lightblue',
+        },
+      }}
+    >
         <Screen
           name={'Current'}
           component={CurrentWeather} // 네비게이션할 컴포넌트
