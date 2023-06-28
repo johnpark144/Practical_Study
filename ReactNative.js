@@ -308,11 +308,19 @@ const App = () => {
       screenOptions={{
         tabBarActiveTintColor: 'tomato', // 네비게이션되 있을때 색깔
         tabBarInactiveTintColor: 'grey', // 그 외에 기존 색깔
-        tabBarStyle: { // 버튼 누르는 부분 스타일
+        tabBarStyle: {
+          // 버튼 누르는 부분 스타일
           backgroundColor: 'lightblue',
         },
-        headerStyle: { // 헤더 부분 스타일
+        // 헤더의 배경색, 테두리, 그림자 등 헤더의 뒷 배경과 관련된 속성을 지정
+        headerStyle: {
           backgroundColor: 'lightblue',
+        },
+        // 헤더의 제목의 글꼴, 크기, 색상, 줄 간격 등과 관련된 스타일 속성을 지정
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 25,
+          color: 'tomato',
         },
       }}
     >
