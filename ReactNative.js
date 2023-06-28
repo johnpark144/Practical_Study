@@ -281,8 +281,12 @@ const styles = StyleSheet.create({
 // https://reactnavigation.org/docs/getting-started  // React Navigation 사이트
 // https://github.com/react-navigation/react-navigation  // React Navigation 깃허브
 
+// 필수 다운
 // npm i @react-navigation/native      // React Navigation 다운
 // npx expo install react-native-screens react-native-safe-area-context      // react-native-screens는 앱의 화면 전환과 탐색을 최적화 // react-native-safe-area-context는 앱이 안전 영역 안에서 표시되도록
+
+// 종류에 따라 다르게 다운
+// npm i @react-navigation/bottom-tabs  // 버튼 탭 종류로 사용하기
 
 // ################ 
 
