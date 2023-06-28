@@ -13,7 +13,7 @@
 
 
 // ######## Expo 기본 세팅 ############################################################################################################################
-// npm i -g expo-cli   // Expo를 사용 가능하게
+// npm i -g expo-cli   // Expo를 사용 가능하게 하는 것 설치
 // npx create-expo-app@latest -e with-router  // Expo로 리액트 네이티브 앱 만들기
 
 
@@ -372,6 +372,43 @@ const App = () => {
 
 export default App;
 
+// ######## 로딩 (ActivityIndicator, 스피너) ############################################################################################################################
+import React, { useState } from 'react';
+import { ActivityIndicator, View } from 'react-native'; // ActivityIndicator는 스피너를 제공해주는 컴포넌트
+
+const App = () => {
+  const [loading, setLoading] = useState(true);
+  if (loading) {
+    return (
+      <View>
+        <ActivityIndicator size={'large'} color={'blue'} />  // 스피너의 크기와 색을 지정 가능
+      </View>
+    );
+  }
+};
+export default App;
+
+// ######## expo-location ############################################################################################################################
+// npx expo install expo-location
+
+
+// ######## 환경변수 ############################################################################################################################
+// npm i -D react-native-dotenv  // 환경변수
+
+// ################ babel.config.js
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ['babel-preset-expo'],
+    plugins: ['module:react-native-dotenv'],
+  };
+};
+// ############### .env
+WEATHER_API_KEY=ab68a116541f49e9ca4946c8bdf733b9
+
+// ###############
+import { WEATHER_API_KEY } from 'react-native-dotenv';
+console.log(WEATHER_API_KEY);
 
 // @@@@@@@@@@@ Weather App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // ######## ############################################################################################################################
