@@ -118,6 +118,29 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+// ######## 버튼(TouchableOpacity, Button) ##################################################################################################################################
+import React from 'react';
+import { Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
+
+function OurButton() {
+  const onPress = () => {
+    console.log('press');
+  };
+
+  return (
+    <>
+      <TouchableOpacity style={styles.container} onPress={onPress}>  // 스타일시트로 스타일 줄수있음, (더 자주쓰임)
+        <Text style={styles.buttonText}>Hello</Text>
+      </TouchableOpacity>
+      <Button
+        onPress={onPress}
+        title='Hello'
+        color='#841584'    // Props에 스타일 지정
+        accessibilityLabel='Learn more about this purple button'
+      />
+    </>
+  );
+}
 
 // ######## 아이콘 ############################################################################################################################
 // https://icons.expo.fyi     // 아이콘 검색하여 사용하게 함
