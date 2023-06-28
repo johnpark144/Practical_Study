@@ -288,9 +288,75 @@ const styles = StyleSheet.create({
 // 종류에 따라 다르게 다운
 // npm i @react-navigation/bottom-tabs  // 버튼 탭 종류로 사용하기
 
-// ################ 
+// ################ App.js
+import React from 'react';
+import CurrentWeather from './src/screens/CurrentWeather';
+import UpcomingWeather from './src/screens/UpcomingWeather';
+import City from './src/screens/City';
+import { NavigationContainer } from '@react-navigation/native'; // 전체 네비게이션을 감싸줌
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; // Navigator, Screen 컴포넌트
+import { Feather } from '@expo/vector-icons';
 
+// Navigator는 네비게이션 정의할 부분을 감싸줌, Screen은 어디로 네비게이션 할지
+// 리액트라우터와 비교 : NavigationContainer = BrowserRouter // Navigator = Routes // Screen = Route
+const { Navigator, Screen } = createBottomTabNavigator();
 
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Navigator
+        screenOptions={{
+          tabBarActiveTintColor: 'tomato', // 네비게이션되 있을때 색깔
+          tabBarInactiveTintColor: 'grey', // 그 외에 기존 색깔
+        }}
+      >
+        <Screen
+          name={'Current'}
+          component={CurrentWeather} // 네비게이션할 컴포넌트
+          options={{
+            tabBarIcon: (
+              { focused } // 네비바 아이콘 지정, 함수 파라미터안에 active되있는지 안되있는지 "focused"라는 불린 값 존재
+            ) => (
+              <Feather
+                name={'droplet'}
+                size={25}
+                color={focused ? 'tomato' : 'black'} // active되있을떄 tomato색 아이콘으로
+              />
+            ),
+          }}
+        />
+        <Screen
+          name={'Upcoming'}
+          component={UpcomingWeather}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Feather
+                name={'clock'}
+                size={25}
+                color={focused ? 'tomato' : 'black'}
+              />
+            ),
+          }}
+        />
+        <Screen
+          name={'City'}
+          component={City}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Feather
+                name={'home'}
+                size={25}
+                color={focused ? 'tomato' : 'black'}
+              />
+            ),
+          }}
+        />
+      </Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
 
 
 // @@@@@@@@@@@ Weather App @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
