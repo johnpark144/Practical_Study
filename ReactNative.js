@@ -300,9 +300,10 @@ const styles = StyleSheet.create({
   },
 });
 // ######## 네비게이션 (React Navigation 위주) ############################################################################################################################
-// 리액트 네이티브에서 가장 많이 사용되는 두 라이브러리
+// 리액트 네이티브에서 가장 많이 사용되는 세 라이브러리
 // React Navigation : 빠르게 시작하고 상대적으로 간단한 응용 프로그램을 개발
 // React Native Navigation :  성능이 중요한 프로젝트
+// Expo router
 
 // https://reactnavigation.org/docs/getting-started  // React Navigation 사이트
 // https://github.com/react-navigation/react-navigation  // React Navigation 깃허브
