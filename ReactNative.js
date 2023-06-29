@@ -7,7 +7,9 @@
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
 
 // ######## 기본 참고 사이트 ############################################################################################################################
-//  https://reactnative.dev/docs/intro-react-native-components  // 리액트 네이티브 핵심 컴포넌트
+// https://reactnative.dev/docs/intro-react-native-components  // 리액트 네이티브 핵심 컴포넌트
+// https://reactnavigation.org/docs/getting-started  // React Navigation 사이트
+// https://expo.github.io/router/docs/  // Expo Router 사이트
 // https://icons.expo.fyi     // 아이콘 사이트
 
 
@@ -15,7 +17,7 @@
 // ######## Expo 기본 세팅 ############################################################################################################################
 // npm i -g expo-cli   // Expo를 사용 가능하게 하는 것 설치
 
-// npx create-expo-app@latest // 다른 라우터(네비게이션)용으로 네이티브 앱 만들기
+// npx create-expo-app@latest // 다른 라우터(React Navigation 등)용으로 네이티브 앱 만들기
 // npx create-expo-app@latest -e with-router  // Expo-router용으로 리액트 네이티브 앱 만들기
 
 
