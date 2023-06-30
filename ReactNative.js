@@ -275,7 +275,7 @@ function City() {
   return (
        // 이미지
       <Image
-        source={require('../../assets/upcoming-background.jpg')}  // 이미지 위치
+        source={require('../../assets/upcoming-background.jpg')}  // 이미지 위치 (import from형식으로 불러와도됨)
         style={styles.image}  // 스타일
       />
        // 이미지 배경
@@ -303,11 +303,11 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-// ######## 네비게이션 (React Navigation 위주) ############################################################################################################################
+// ######## 네비게이션, 라우팅 (React Navigation 위주) ############################################################################################################################
 // 리액트 네이티브에서 가장 많이 사용되는 세 라이브러리
 // React Navigation : 빠르게 시작하고 상대적으로 간단한 응용 프로그램을 개발
 // React Native Navigation :  성능이 중요한 프로젝트
-// Expo router
+// Expo router : 폴더 라우팅 가능
 
 // https://reactnavigation.org/docs/getting-started  // React Navigation 사이트
 // https://github.com/react-navigation/react-navigation  // React Navigation 깃허브
@@ -437,11 +437,33 @@ module.exports = function (api) {
   };
 };
 
+// 위에거 안되면
+// module.exports = function (api) {
+//   api.cache(true);
+//   return {
+//     presets: ['babel-preset-expo'],
+//     plugins: [
+//       [
+//         'module:react-native-dotenv',
+//         {
+//           moduleName: '@env',
+//           path: '.env',
+//           blacklist: null,
+//           whitelist: null,
+//           safe: false,
+//           allowUndefined: false,
+//         },
+//       ],
+//     ],
+//   };
+// };
 // ############### .env
 WEATHER_API_KEY=ab68a116541f49e9ca4946c8bdf733b1
 
 // ###############
 import { WEATHER_API_KEY } from 'react-native-dotenv';
+// import { WEATHER_API_KEY } from '@env';
+
 console.log(WEATHER_API_KEY);
 
 // ######## expo-location (위치 정보), 커스텀 훅(위치로 날씨API를 사용하여 날씨 불러옴) #######################################################################################################
@@ -663,11 +685,155 @@ return (
 // @@@@@@@@@@@ JobSeeking App @@@@ (Expo router 이용) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // npm i -g expo-cli   // Expo를 사용 가능하게 하는 것 설치
+// npx create-expo-app@latest -e with-router  // Expo라우터를 이용하게
 // npm i expo-font axios react-native-dotenv  // 폰트, axios, 환경변수 이용할 수 있도록
 
 
+//  params가져오기, 
 
-// ######## ######################################################################################################################################################
+// ######## 기본세팅, 네비게이션, 라우팅 (Expo router 위주: 폴더위치로 라우팅) ############################################################################################################
+// ################ app/_layout.js (공통으로 들어갈 layout을 담당)
+import { Stack } from 'expo-router';
+
+const Layout = () => {
+  return <Stack />;  // 모든 스크린이 Stack을 거침
+};
+
+export default Layout;
+
+// ################ app/index.js (Home)
+import { useState } from 'react';
+import { SafeAreaView, ScrollView, View } from 'react-native';
+import { Stack, useRouter } from 'expo-router';
+
+const Home = () => {
+  return (
+    <SafeAreaView>
+      <Stack.Screen
+        options={{
+          headerStyle: { backgroundColor: 'lightblue' }, // 헤더 스타일
+          headerShadowVisible: false, // 헤더와 컨텐츠 구분하는 선 보여줄지 여부
+          headerLeft: () => (
+            // 헤더에 왼쪽부븐에 들어갈 내용
+            <ScreenHeaderBtn iconUrl={require("../assets/icons/menu.png")} dimension='60%' />
+          ),
+          headerRight: () => (
+            // 헤더에 오른쪽부븐에 들어갈 내용
+            <ScreenHeaderBtn iconUrl={require("../assets/images/kemal.jpg")} dimension='100%' />
+          ),
+          headerTitle: '', // 헤더 가운데 들어갈 말
+        }}
+      />
+
+      {/* ScrollView는 스크롤 하는 View // showsVerticalScrollIndicator는 스크롤 보일지 여부 */}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
+         <Text>Home</Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default Home;
+
+
+// ######## Redirect과 useRouter ######################################################################################################################################################
+import { Redirect, useRouter } from 'expo-router';
+
+export default function Index() {
+  const router = useRouter();
+
+  return <>
+    <Redirect href='/home' />      // 이 컴포넌트를 발견했을 때 href에 링크로 이동시킴
+
+    
+    <TouchableOpacity
+      onPress={() => {
+        router.push(`/search/${item}`); // router.push가 실행될때 화면 이동시킴 (Nextjs와 비슷)
+      }}
+    >
+      <Text>item</Text>
+    </TouchableOpacity>
+    </>
+}
+
+// ######## onChangeText, 이미지 resizeMode, contentContainerStyle #########################################################################################################################################
+import { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput, // 텍스트 작성 하도록
+  TouchableOpacity,
+  Image,
+  FlatList,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import styles from './welcome.style';
+import { icons, SIZES } from '../../../constants';
+
+const jobTypes = ['Full-time', 'Part-time', 'Contractor'];
+
+const Welcome = ({ searchTerm, setSearchTerm, handleClick }) => {
+  const router = useRouter();
+  const [activeJobType, setActiveJobType] = useState('Full-time');
+
+  return (
+    <View>
+      <View style={styles.searchContainer}>
+        <View style={styles.searchWrapper}>
+          <TextInput
+            style={styles.searchInput}
+            value={searchTerm}
+            // onChange대신 onChangeText이고, 첫 매개변수가 일반 event 대신 웹의 event.target.value와 같이 전달
+            onChangeText={(text) => setSearchTerm(text)}
+            placeholder='What are you looking for?'
+          />
+        </View>
+
+        <TouchableOpacity style={styles.searchBtn} onPress={handleClick}>
+          <Image
+            source={icons.search} // 이미지 src
+            resizeMode='contain'
+            // cover(디폴트) : 비율유지하되 View와비율 일치 않으면 일부분 잘림
+            // contain : 비율유지하되 모든 영역이 View안에 보이도록
+            // stretch : View의 크기대로 리사이징하여 비율이 잘라질수있음
+            // repeat : 바둑판식
+            // center : 중앙에
+            style={styles.searchBtnImage}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.tabsContainer}>
+        <FlatList // map같이 반복 출력 (ScrollView와 마찬가지로 자동으로 스크롤 가능하게 함)
+          data={jobTypes}
+          renderItem={(
+            { item } // item에 data 안에 배열들의 값이 하나하나 전달됨
+          ) => (
+            <TouchableOpacity
+              style={styles.tab(activeJobType, item)}
+              onPress={() => {
+                setActiveJobType(item);
+                router.push(`/search/${item}`); // 화면 이동시킴 (Nextjs와 비슷)
+              }}
+            >
+              <Text style={styles.tabText(activeJobType, item)}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item}
+          contentContainerStyle={{ columnGap: SIZES.small }} // ScrollView와 FlatList의 스타일이라 보면됨
+          horizontal // 수평으로 정렬
+        />
+      </View>
+    </View>
+  );
+};
+
+export default Welcome;
+
+
+// ######## SplashScreen ######################################################################################################################################################
 
 
 
