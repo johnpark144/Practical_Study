@@ -152,7 +152,7 @@ function OurButton() {
 import { Feather } from "@expo/vector-icons";
 <Feather name="sun" size={100} color="black" />
 
-// ######## FlatList (리액트에서 Map으로 리스트 구현하는 것과 비슷) ###############################################################################
+// ######## FlatList (리액트에서 map과 비슷, ScrollView와 마찬가지로 자동으로 스크롤 가능하게함) ###############################################################################
 import React from 'react';
 import {
   Text,
