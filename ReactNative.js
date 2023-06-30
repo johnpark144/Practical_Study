@@ -1,7 +1,8 @@
 
 // ######### 리마인더 #######################################################################################################################################
-
-
+// SplashScreen 정리하기 --> SplashScreen.preventAutoHideAsync()는 SplashScreen.hideAsync()가 뜰떄까지 임시화면을 뿌려줌(브랜드 로고 등)
+// 폰트 다운받는 사이트 폰트 있는부분에 적어두기
+// flex: 1 에 대해
 
 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
@@ -134,7 +135,7 @@ function OurButton() {
   return (
     <>
       <TouchableOpacity style={styles.container} onPress={onPress}>  // 스타일시트로 스타일 줄수있음, (더 자주쓰임)
-        <Text style={styles.buttonText}>Hello</Text>
+        <Text style={styles.buttonText} numberOfLines={1}>Hello</Text>  {/* numberOfLines 으로 몇 줄까지 쓸지 작성하고 초과하면 ... 처리 */}
       </TouchableOpacity>
       <Button
         onPress={onPress}
@@ -725,7 +726,7 @@ const Home = () => {
         }}
       />
 
-      {/* ScrollView는 스크롤 하는 View // showsVerticalScrollIndicator는 스크롤 보일지 여부 */}
+      {/* ScrollView는 스크롤 하는 View // showsVerticalScrollIndicator는 세로 스크롤 보일지 여부 cf) showsHorizontalScrollIndicator는 가로 스크롤 */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
          <Text>Home</Text>
@@ -833,9 +834,292 @@ const Welcome = ({ searchTerm, setSearchTerm, handleClick }) => {
 export default Welcome;
 
 
-// ######## SplashScreen ######################################################################################################################################################
+// ######## 폰트 ######################################################################################################################################################
+// 폰트 다운받는 사이트 적어두기
+
+// ################ app/_layout.js
+import { Stack } from 'expo-router';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useCallback } from 'react';
+
+const Layout = () => {
+  const [fontsLoaded] = useFonts({
+    DMBold: require('../assets/fonts/DMSans-Bold.ttf'), // assets에 있는 폰트를 불러옴
+    DMMedium: require('../assets/fonts/DMSans-Medium.ttf'),
+    DMRegular: require('../assets/fonts/DMSans-Regular.ttf'),
+  });
+
+  if (!fontsLoaded) return null;  // 폰트가 불려오자 않았으면 null
+
+  return <Stack />;
+};
+
+export default Layout;
 
 
+// ######## useFetch (직업 구하는 데이터 가져오는 커스텀훅) ######################################################################################################################################################
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { RAPID_API_KEY } from '@env';
+
+const rapidApiKey = RAPID_API_KEY;
+
+const useFetch = (endpoint, query) => {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const options = {
+    method: 'GET',
+    url: `https://jsearch.p.rapidapi.com/${endpoint}`,
+    headers: {
+      'X-RapidAPI-Key': rapidApiKey,
+      'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
+    },
+    params: { ...query },
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.request(options);
+
+      setData(response.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const refetch = () => {
+    fetchData();
+  };
+
+  return { data, isLoading, error, refetch };
+};
+
+export default useFetch;
+
+// ################ Popularjobs.jsx
+import useFetch from "../../../hook/useFetch";
+// ... 생략 ...
+
+const Popularjobs = () => {
+  const { data, isLoading, error } = useFetch("search", {
+    query: "React developer",
+    num_pages: "1",
+  });
+// ... 생략 ...
+  return (
+    // ... 생략 ...
+      <View style={styles.cardsContainer}>
+        {isLoading ? (
+          <ActivityIndicator size='large' color={COLORS.primary} />
+        ) : error ? (
+          <Text>Something went wrong</Text>
+        ) : (
+          <FlatList
+            data={data}
+            renderItem={({ item }) => (
+              <PopularJobCard
+                item={item}
+                selectedJob={selectedJob}
+                handleCardPress={handleCardPress}
+              />
+            )}
+            keyExtractor={(item) => item.job_id}
+            contentContainerStyle={{ columnGap: SIZES.medium }}
+            horizontal
+          />
+        )}
+      </View>
+  );
+};
+
+export default Popularjobs;
+
+// ######## 다이나믹 라우팅, useSearchParams, 스크롤 내려서 새로고침, 탭에 따라 다르게 컴포넌트 렌더링  #############################################################################################
+// ################ PopularJobCard.jsx
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { useRouter } from 'expo-router';
+
+const PopularJobCard = ({ item, selectedJob, setSelectedJob }) => {
+  const router = useRouter();
+  
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        router.push(`/job-details/${item.job_id}`);  // job-detail 폴더에 SearchParams로써 다이나믹하게 적용
+      }}
+    >
+      // ... 생략 ...
+    </TouchableOpacity>
+  );
+};
+
+export default PopularJobCard;
+
+// ################ app/job-details/[id].js
+import { Stack, useRouter, useSearchParams } from 'expo-router';
+import { useCallback, useState } from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,  // 스크롤 새로고침을 위한
+} from 'react-native';
+
+import {
+  Company,
+  JobAbout,
+  JobFooter,
+  JobTabs,
+  ScreenHeaderBtn,
+  Specifics,
+} from '../../components';
+import { COLORS, icons, SIZES } from '../../constants';
+import useFetch from '../../hook/useFetch';
+
+const tabs = ['About', 'Qualifications', 'Responsibilities'];
+
+const JobDetails = () => {
+  const params = useSearchParams(); // id SearchParams 값을 가지고있음
+  const router = useRouter();
+
+  const { data, isLoading, error, refetch } = useFetch('job-details', {
+    job_id: params.id,  // params에 id값 대입
+  });
+
+  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [refreshing, setRefreshing] = useState(false); // 디폴트로 새로고침을 안하고잇음
+
+  // 스크롤을 내리는 새로고침시 작동
+  const onRefresh = useCallback(() => {
+    setRefreshing(true); // 새로고침 화살표 등장
+    refetch(); // 커스텀 훅에서 만들어논 refetch
+    setRefreshing(false); // 새로고침 화살표 사라짐
+  }, []);
+
+  // Tab을 누를때 activeTab의 값이 Tab의 이름으로 바껴서 그에맞게 컴포넌트 출력
+  const displayTabContent = () => {
+    switch (activeTab) {
+      case 'Qualifications':
+        return (
+          <Specifics
+            title='Qualifications'
+            points={data[0].job_highlights?.Qualifications ?? ['N/A']}
+          />
+        );
+
+      case 'About':
+        return (
+          <JobAbout info={data[0].job_description ?? 'No data provided'} />
+        );
+
+      case 'Responsibilities':
+        return (
+          <Specifics
+            title='Responsibilities'
+            points={data[0].job_highlights?.Responsibilities ?? ['N/A']}
+          />
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+      <Stack.Screen
+        options={{
+          headerStyle: { backgroundColor: 'lightblue' },
+          headerShadowVisible: false, // 헤더 밑 그림자 존재 여부
+          headerBackVisible: false, // 디폴트 뒤로가기 버튼 존재 여부
+          headerLeft: () => (
+            <ScreenHeaderBtn
+              iconUrl={icons.left}
+              dimension='60%'
+              handlePress={() => router.back()} // 뒤로가기 기능을 handlePress라는 props로 전달
+            />
+          ),
+          headerRight: () => (
+            <ScreenHeaderBtn iconUrl={icons.share} dimension='60%' />
+          ),
+          headerTitle: '',
+        }}
+      />
+
+      <>
+        <ScrollView
+          showsVerticalScrollIndicator={false} // 스크롤을 보여줄지 여부
+          refreshControl={
+            // refreshing=true는 스크롤을 내릴때 시계모양만 화살표나오게함, onRefresh는 스크롤을 내릴때 함수 실행
+            // 즉, 스크롤 내릴때 새로고침 하기위한 기능
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {isLoading ? (
+            <ActivityIndicator size='large' color={COLORS.primary} />
+          ) : error ? (
+            <Text>Something went wrong</Text>
+          ) : data.length === 0 ? (
+            <Text>No data available</Text>
+          ) : (
+            <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
+              <Company
+                companyLogo={data[0].employer_logo}
+                jobTitle={data[0].job_title}
+                companyName={data[0].employer_name}
+                location={data[0].job_country}
+              />
+
+              <JobTabs
+                tabs={tabs}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
+
+              {displayTabContent()}
+            </View>
+          )}
+        </ScrollView>
+
+        <JobFooter
+          url={
+            data[0]?.job_google_link ??
+            'https://careers.google.com/jobs/results/'
+          }
+        />
+      </>
+    </SafeAreaView>
+  );
+};
+
+export default JobDetails;
+
+// ######## url 연결 ######################################################################################################################################################
+// ... 생략 ...
+<TouchableOpacity
+  style={styles.applyBtn}
+  onPress={() => Linking.openURL(url)} // 클릭하면 그 url과 연결되도록
+>
+  <Text style={styles.applyBtnText}>Apply for job</Text>
+</TouchableOpacity>
+// ... 생략 ...
+
+// ######## ListHeaderComponent, ListFooterComponent ######################################################################################################################################################
 
 
 
