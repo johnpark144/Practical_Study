@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 
 const Layout = () => {
   const [fontsLoaded] = useFonts({
-    DMBold: require('../assets/fonts/DMSans-Bold.ttf'), // assets에 있는 폰트를 불러옴
+    DMBold: require('../assets/fonts/DMSans-Bold.ttf'), // assets에 있는 폰트를 불러옴 // https://fonts.google.com/ 
     DMMedium: require('../assets/fonts/DMSans-Medium.ttf'),
     DMRegular: require('../assets/fonts/DMSans-Regular.ttf'),
   });
