@@ -320,7 +320,8 @@ const styles = StyleSheet.create({
 // npx expo install react-native-screens react-native-safe-area-context      // react-native-screens는 앱의 화면 전환과 탐색을 최적화 // react-native-safe-area-context는 앱이 안전 영역 안에서 표시되도록
 
 // 종류에 따라 다르게 다운
-// npm i @react-navigation/bottom-tabs  // 버튼 탭 종류로 사용하기
+// npm i @react-navigation/bottom-tabs  // 버텀 탭 종류(위 아래)로 사용하기 (이번 앱에 사용)
+// npm i @react-navigation/native-stack  // 네이티브 스택 종류(only 위)로 사용하기
 
 // ################ App.js
 import React from 'react';
@@ -691,8 +692,6 @@ return (
 // npx create-expo-app@latest -e with-router  // Expo라우터를 이용하게
 // npm i expo-font axios react-native-dotenv  // 폰트, axios, 환경변수 이용할 수 있도록
 
-
-//  params가져오기, 
 
 // ######## 기본세팅, 네비게이션, 라우팅 (Expo router 위주: 폴더위치로 라우팅) ############################################################################################################
 // ################ app/_layout.js (공통으로 들어갈 layout을 담당)
@@ -1277,4 +1276,66 @@ registerRootComponent(App);
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
-// ########  ##################################################################################################################################################################
+// ######## React Navigation의 useNavigation ######################################################################################################################################################
+// ################
+// @react-navigation/native의 useNavigation의 메서드
+
+  // "addListener": 
+  // "canGoBack":
+  // "dispatch": 
+  // "getId":
+  // "getParent": 
+  // "getState": 
+  // "goBack": 이전 스크린으로 이동합니다.
+  // "isFocused":
+  // "navigate": 지정된 스크린으로 이동합니다.
+  // "pop": 스택에서 현재 스크린을 팝하여 이전 스크린으로 이동합니다.
+  // "popToTop": 
+  // "push": 새로운 스크린을 스택에 푸시하여 이동합니다.
+  // "removeListener": 
+  // "replace": 현재 스크린을 다른 스크린으로 대체합니다.
+  // "reset": 스택 내의 모든 스크린을 교체하여 새로운 스크린으로 이동합니다.
+  // "setOptions": 스크린 옵션을 바꿔줌
+  // "setParams": 다른 스크린으로 매개변수를 전달합니다.
+
+// ################
+import { View, Text, StyleSheet } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+
+const HomeScreen = () => {
+  const { container } = styles;
+  const navigation = useNavigation(); // navigation 변수에
+
+  // 첫 렌더링전
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'testing',  // 위 부분 타이틀 바꿔주기
+      headerShown: false,   // 헤더 보일지 여부
+    });
+  }, []);
+
+  return (
+    <View>
+      <Text style={container}>HomeScreen</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    color: 'blue',
+  },
+});
+
+export default HomeScreen;
+
+// ################
+
+
+
+// ########  ######################################################################################################################################################
+
+
+
+
