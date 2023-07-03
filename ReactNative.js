@@ -1250,9 +1250,18 @@ const handlePagination = (direction) => {
 
 // ######## deploy ##################################################################################################################################################################
 // npm i -g expo-cli   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
-// expo publish
 
+// ################ index.js (package.json과 같은루트에 있는)
+import { registerRootComponent } from "expo";
+import { ExpoRoot } from "expo-router";
 
+// Must be exported or Fast Refresh won't update the context
+export function App() {
+  const ctx = require.context("./app");
+  return <ExpoRoot context={ctx} />;
+}
 
+registerRootComponent(App);
 
-
+// ################
+// expo publish    // 배포  // bash에서 작동 안되면 cmd 터미널에서
