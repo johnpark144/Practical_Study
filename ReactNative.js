@@ -1253,6 +1253,7 @@ const handlePagination = (direction) => {
 // 곧 배포방법 바뀔 수도 있음
 
 // ################ index.js (package.json과 같은루트에 있는)
+// expo-router 사용하는 경우
 import { registerRootComponent } from "expo";
 import { ExpoRoot } from "expo-router";
 
