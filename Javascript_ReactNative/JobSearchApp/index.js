@@ -1,10 +1,8 @@
-import { registerRootComponent } from 'expo';
-import { ExpoRoot } from 'expo-router';
+// expo-router 사용하는 경우  (docs홈피에 나와있음)
+import { registerRootComponent } from "expo";
+import { ExpoRoot } from "expo-router";
 
-// Must be exported or Fast Refresh won't update the context
 export function App() {
-  const ctx = require.context('./app');
+  const ctx = require.context("./app");
   return <ExpoRoot context={ctx} />;
 }
-
-registerRootComponent(App);
