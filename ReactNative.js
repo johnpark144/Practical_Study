@@ -16,7 +16,7 @@
 
 
 // ######## Expo 기본 세팅 ############################################################################################################################
-// npm i -g expo-cli   // Expo를 사용 가능하게 하는 것 설치
+// npm i -g expo-cli   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
 
 // npx create-expo-app@latest // 다른 라우터(React Navigation 등)용으로 네이티브 앱 만들기
 // npx create-expo-app@latest -e with-router  // Expo-router용으로 리액트 네이티브 앱 만들기
@@ -1065,7 +1065,7 @@ const JobDetails = () => {
         <ScrollView
           showsVerticalScrollIndicator={false} // 스크롤을 보여줄지 여부
           refreshControl={
-            // refreshing=true는 스크롤을 내릴때 시계모양만 화살표나오게함, onRefresh는 스크롤을 내릴때 함수 실행
+            // refreshing=true는 스크롤을 내릴때 시계모양 화살표나오게함, onRefresh는 스크롤을 내릴때 함수 실행
             // 즉, 스크롤 내릴때 새로고침 하기위한 기능
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -1118,8 +1118,141 @@ export default JobDetails;
   <Text style={styles.applyBtnText}>Apply for job</Text>
 </TouchableOpacity>
 // ... 생략 ...
+    
+// ######## 정규표현식으로 판단 ######################################################################################################################################################
+// ################ PopularJobCard.js
+// ... 생략 ...
+<TouchableOpacity style={styles.logoContainer(selectedJob, item)}>
+  <Image
+    source={{
+      uri: checkImageURL(item?.employer_logo) // 정규표현식으로 이미지 파일인지 확인하기
+        ? item.employer_logo // 이미지가 있으면 그 이미지 사용, 없으면 기본사진
+        : 'https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg',
+    }}
+    resizeMode='contain'
+    style={styles.logoImage}
+  />
+</TouchableOpacity>
+// ... 생략 ...
 
-// ######## ListHeaderComponent, ListFooterComponent ######################################################################################################################################################
+// ################ utils/index.js
+export const checkImageURL = (url) => {
+    if (!url) return false
+    else {
+        const pattern = new RegExp('^https?:\\/\\/.+\\.(png|jpg|jpeg|bmp|gif|webp)$', 'i');    // 이미지 파일인지 아닌지
+        return pattern.test(url);  // 정규표현식에 인한 결과를 불린 값으로 전달
+    }
+};
+
+
+// ######## FlatList의 ListHeaderComponent와 ListFooterComponent ######################################################################################################################################################
+// ... 생략 ...
+<FlatList
+  data={searchResult}
+  renderItem={({ item }) => (
+    <NearbyJobCard
+      job={item}
+      handleNavigate={() => router.push(`/job-details/${item.job_id}`)}
+    />
+  )}
+  keyExtractor={(item) => item.job_id}
+  contentContainerStyle={{ padding: SIZES.medium, rowGap: SIZES.medium }}
+  // ListHeaderComponent는 renderItem들이 렌더되기 이전 헤더로써 먼저 렌더할 것
+  ListHeaderComponent={() => (
+    <>
+        // ... 생략 ...
+    </>
+  )}
+  // ListFooterComponent 푸터로써 renderItem들 이후에 렌더할 것
+  ListFooterComponent={() => (
+    <View style={styles.footerContainer}>
+        // ... 생략 ...
+    </View>
+  )}
+/>
+// ... 생략 ...
+
+// ######## 페이지 네이션 ##################################################################################################################################################################
+// ... 생략 ...
+const JobSearch = () => {
+  const params = useSearchParams();
+  const router = useRouter();
+
+  const [searchResult, setSearchResult] = useState([]);
+  const [searchLoader, setSearchLoader] = useState(false);
+  const [searchError, setSearchError] = useState(null);
+  const [page, setPage] = useState(1);  // 페이지 디폴트 1
+  
+const handleSearch = async () => {
+    setSearchLoader(true);
+    setSearchResult([]);
+
+    try {
+      const options = {
+        method: 'GET',
+        url: `https://jsearch.p.rapidapi.com/search`,
+        headers: {
+          'X-RapidAPI-Key': rapidApiKey,
+          'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
+        },
+        params: {
+          query: params.id,  // id params에 입력된 어떤 검색결과
+          page: page.toString(),  // 그 검색결과의 몇 페이지 정보를 fetch 할지
+        },
+      };
+
+      const response = await axios.request(options);
+      setSearchResult(response.data.data);
+    } catch (error) {
+      setSearchError(error);
+    } finally {
+      setSearchLoader(false);
+    }
+  };
+
+  // 페이지네이션 핸들러
+const handlePagination = (direction) => {
+    if (direction === 'left' && page > 1) {
+      setPage(page - 1);
+      handleSearch();
+    } else if (direction === 'right') {
+      setPage(page + 1);
+      handleSearch();
+    }
+  };
+
+// ... 생략 ...
+<View style={styles.footerContainer}>
+  <TouchableOpacity
+    onPress={() => handlePagination('left')}  // handlePagination함수에 left 인자
+  >
+    <Image
+      source={icons.chevronLeft}
+      style={styles.paginationImage}
+      resizeMode='contain'
+    />
+  </TouchableOpacity>
+  <View style={styles.paginationTextBox}>
+    <Text style={styles.paginationText}>{page}</Text>
+  </View>
+  <TouchableOpacity
+    onPress={() => handlePagination('right')}  // handlePagination함수에 right 인자
+  >
+    <Image
+      source={icons.chevronRight}
+      style={styles.paginationImage}
+      resizeMode='contain'
+    />
+  </TouchableOpacity>
+</View>
+// ... 생략 ...
+
+
+// ######## deploy ##################################################################################################################################################################
+// npm i -g expo-cli   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
+// expo publish
+
+
 
 
 
