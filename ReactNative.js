@@ -1279,7 +1279,6 @@ registerRootComponent(App);
 // ######## React Navigation의 useNavigation ######################################################################################################################################################
 // ################
 // @react-navigation/native의 useNavigation의 메서드
-
   // "addListener": 
   // "canGoBack":
   // "dispatch": 
@@ -1330,7 +1329,11 @@ const styles = StyleSheet.create({
 
 export default HomeScreen;
 
-// ########  ######################################################################################################################################################
+// ######## Sanity.io ######################################################################################################################################################
+// https://www.sanity.io/
+// npm create sanity@latest -- --template get-started --project [프로젝트ID] --dataset production --provider google  // 프로젝트와 sanity 연결  (폴더명을 sanity로 바꿔주는게 나음)
+// cd [폴더명]  -->  npm start    // sanity 폴더안에 들어가서 작동시키기
+
 
 
 
