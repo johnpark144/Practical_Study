@@ -1332,10 +1332,96 @@ export default HomeScreen;
 // ######## Sanity.io ######################################################################################################################################################
 // https://www.sanity.io/
 // npm create sanity@latest -- --template get-started --project [프로젝트ID] --dataset production --provider google  // 프로젝트와 sanity 연결  (폴더명을 sanity로 바꿔주는게 나음)
-// cd [폴더명]  -->  npm start    // sanity 폴더안에 들어가서 작동시키기
+// cd [폴더명]  -->  npm start    // sanity 폴더안에 들어가서 작동시키기 (스키마 지정 후)
 
 
 
+// ################ [폴더명]/schemas/index.ts 
+import category from './category'
+import dish from './dish'
+import featured from './featured'
+import restaurant from './restaurant'
 
+export const schemaTypes = [restaurant, category, dish, featured]
 
-// ################
+// ################ [폴더명]/schemas/restaurant.ts 
+export default {
+  name: 'restaurant',
+  title: 'Restaurant',
+  type: 'document',
+  fields: [
+    {
+      name: 'name',
+      type: 'string',
+      title: 'Restaurant name',
+      validation: (Rule: any) => Rule.required(), // 무조건 포함 되야 하는 항목
+    },
+    {
+      name: 'short_description',
+      type: 'string',
+      title: 'Short description',
+      validation: (Rule: any) => Rule.max(200), // 200자 이내로
+    },
+    {
+      name: 'image',
+      type: 'image', // 이미지 첨부 가능
+      title: 'Image of the Restraurant',
+    },
+    {
+      name: 'lat',
+      type: 'number',
+      title: 'Latitude of the Restraurant',
+    },
+    {
+      name: 'long',
+      type: 'number',
+      title: 'Latitude of the Restraurant',
+    },
+    {
+      name: 'address',
+      type: 'string',
+      title: 'Restaurant address',
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: 'rating',
+      type: 'number',
+      title: 'Enter a Rating from (1-5 Stars)',
+      validation: (Rule: any) =>
+        Rule.required().min(1).max(5).error('Please enter a Valur between 1 and 5'), // 최소 1 최대 5까지 가능, 에러메세지
+    },
+    {
+      name: 'type',
+      type: 'reference',
+      title: 'Category',
+      validation: (Rule: any) => Rule.required(),
+      to: [{type: 'category'}], // category 라는 파일을 세부 스키마로 지정
+    },
+    {
+      name: 'dishes',
+      type: 'array',
+      title: 'Dishes',
+      of: [{type: 'reference', to: [{type: 'dish'}]}], // 배열 필드에서 사용(여러 개 타입 나열가능)  // dish 라는 파일을 세부 스키마로 지정
+    },
+  ],
+}
+
+// ################ [폴더명]/schemas/category.ts 
+export default {
+  name: 'category',
+  type: 'document',
+  title: 'Menu Category',
+  fields: [
+    {
+      name: 'name',
+      type: 'string',
+      title: 'Categoty name',
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: 'image',
+      type: 'image',
+      title: 'Image of the Categoty',
+    },
+  ],
+}
