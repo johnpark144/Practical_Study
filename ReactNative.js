@@ -1426,13 +1426,14 @@ export default {
 }
 // ############################################################################################################################# 클라이언트 연결하기 ##############################
 // npm i @sanity/client @sanity/image-url
-
+// npm install react-native-url-polyfill --save-dev  // 폴리필
 
 // ################ sanity.js  // 클라이언트 쪽 package.json 과 동일경로애서
-import sanityClient, { SanityClient } from '@sanity/client';
+import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
+import 'react-native-url-polyfill/auto';
 
-const client = SanityClient({
+const client = createClient({
   projectId: 'zpj6qd2o', // sanity.config.ts 혹은 sanity사이트에있음
   dataset: 'production',
   useCdn: true,
@@ -1445,9 +1446,9 @@ export const urlFor = (source) => builder.image(source);
 export default client;
 
 // ################
-// http://localhost:19000이랑 http://localhost:3000를 CORS origins 리스트에 적어두기
+// http://localhost:19006이랑 http://localhost:3000를 CORS origins 리스트에 적어두기
 // 방법 1 ) https://www.sanity.io/manage/personal/project/(프로젝트ID)/api에 CORS origins 적기
-// 방법 2 ) cd sanity --> sanity cors add http://localhost:19000
+// 방법 2 ) cd sanity --> sanity cors add http://localhost:19006
 
 // ################################################################################################################################ sanity 배포하기 ##############################
 // cd sanity --> sanity deploy    (로컬과 배포한 사이트가 이때부터 연동됨)
@@ -1455,7 +1456,7 @@ export default client;
 // ################################################################################################################################# graphQL 쿼리 예시 ############################
 // sanity 배포한 사이트에 Vision에서 쿼리
 
-*[_type == "featured"]{
+*[_type == "featured"]{  // 여러가지 조건 넣을 수 있음
   ...,                  //  전체 불러오기
   restaurants[]->{  //  restaurants 배열에서
     ...,
@@ -1466,6 +1467,136 @@ export default client;
   }
 }
 
+// ################################################################################################################################# Fetch 하기, 다이나믹 쿼리, sanity 이미지url #####################
+// ################ HomeScreen.js
+import React, { useState, useEffect } from 'react';
+import sanityClient from '../sanity';  // projectId와 연결된 데이터 호출 하게 가능
+// ... 생략 ...
+
+const HomeScreen = () => {
+// ... 생략 ...
+const [featuredCategories, setFeaturedCategories] = useState([]);
+useEffect(() => {
+    sanityClient
+      .fetch(    // GraphQL 쿼리에 맞춰서 Fetch함
+       `
+          *[_type == "featured"]{
+            ...,
+            restaurants[]->{
+              ...,
+              dishes[]->
+              }
+            }
+        `
+      )
+      .then((data) => {
+        setFeaturedCategories(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  
+// ... 생략 ...
+return (
+// ... 생략 ...
+      {featuredCategories?.map((category) => (  // FlatList 사용해도 됨
+        <FeaturedRow
+          key={category._id}
+          id={category._id}
+          title={category.name}
+          description={category.short_description}
+        />
+      ))}
+  // ... 생략 ...
+)}
+
+
+// ################ FeaturedRow.js  (GraphQL 쿼리 다이나믹하게 적용)
+import React, { useEffect, useState } from 'react';
+import RestaurantCard from './RestaurantCard';
+import sanityClient from '../sanity'; // projectId와 연결된 데이터 호출 하게 가능
+
+const FeaturedRow = ({ id, title, description }) => {
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    sanityClient
+      .fetch(
+        // 2번째 인수로 id를 $id 부분에 다이나믹하게 적용
+        `
+            *[_type == "featured" && _id == $id]{
+                ...,
+                restaurants[]->{
+                  ...,
+                  dishes[]->,
+                  type->{
+                    name
+                  }
+                }
+              }[0]
+            `,
+        { id } // { id:id }  // props id를 전달
+      )
+      .then((data) => {
+        setRestaurants(data?.restaurants);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  return (
+        {/* 레스토랑카드.... */}
+        {restaurants?.map((restaurant) => (
+          <RestaurantCard
+            key={restaurant._id}
+            id={restaurant._id}
+            imgUrl={restaurant.image}
+            title={restaurant.name}
+            rating={restaurant.rating}
+            genre={restaurant.type?.name}
+            address={restaurant.address}
+            short_description={restaurant.short_description}
+            dishes={restaurant.dishes}
+            long={restaurant.long}
+            lat={restaurant.lat}
+          />
+        ))}
+};
+  // ... 생략 ...
+
+// ################ RestaurantCard.js  (Sanity 이미지 Url사용)
+import {
+  Image,
+} from 'react-native';
+import { urlFor } from '../sanity'; // 이미지url 생성용
+// ... 생략 ...
+const RestaurantCard = ({
+  id,
+  imgUrl,
+  title,
+  rating,
+  genre,
+  address,
+  short_description,
+  dishes,
+  long,
+  lat,
+}) => {
+    // ... 생략 ...
+  return (
+    // ... 생략 ...
+      <Image
+        source={{
+          uri: urlFor(imgUrl).url(), // Sanity에서 Fetch해온 이미지를 Url로 전환하여 사용
+        }}
+        style={cardImage}
+      />
+    // ... 생략 ...
+  );
+};
+  // ... 생략 ...
 
 
 // ########  ######################################################################################################################################################
