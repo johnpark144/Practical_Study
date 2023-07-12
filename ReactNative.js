@@ -85,7 +85,7 @@ module.exports = {
 // ######## 기본 컴포넌트 ##################################################################################################################################
 import React from "react";
 import { View, Text, SafeAreaView, StyleSheet } from "react-native"; \
-// View = Div, Text = P, 
+// View = Div 태그, Text = P 태그, 
 // SafeAreaView 는 탐색 표시줄, 탭 표시줄, 툴바, 기타 상위 뷰에서 다루지 않는 뷰 부분을 반영하도록 패딩을 자동 적용시켜줌
 // StyleSheet는 Css효과를 줄 수있는 객체
 
