@@ -84,7 +84,7 @@ module.exports = {
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // ######## 기본 컴포넌트 ##################################################################################################################################
 import React from "react";
-import { View, Text, SafeAreaView, StyleSheet } from "react-native"; \
+import { View, Text, SafeAreaView, StyleSheet } from "react-native";
 // View = Div 태그, Text = P 태그, 
 // SafeAreaView 는 탐색 표시줄, 탭 표시줄, 툴바, 기타 상위 뷰에서 다루지 않는 뷰 부분을 반영하도록 패딩을 자동 적용시켜줌
 // StyleSheet는 Css효과를 줄 수있는 객체
@@ -1275,9 +1275,7 @@ registerRootComponent(App);
 // @@@@@@@@@@@ Deliveroo_clone @@@@ (React Navigation) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-
-// ######## React Navigation의 useNavigation ######################################################################################################################################################
-// ################
+// ######## React Navigation의 useNavigation, useRoute ########################################################################################### useNavigation의 setOptions ##########################################
 // @react-navigation/native의 useNavigation의 메서드
   // "addListener": 
   // "canGoBack":
@@ -1328,6 +1326,102 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
+// ############################################################################################################################### useNavigation의 navigate (페이지 이동)과 useRoute (Params 가져오기) #################
+// ################ App.js
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screen/HomeScreen';
+import RestaurantScreen from './screen/RestaurantScreen';
+
+const { Navigator, Screen } = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Navigator>
+        {/* name은 navigate할때 사용됨 */}
+        <Screen name='Home' component={HomeScreen} />
+        <Screen name='Restaurant' component={RestaurantScreen} />
+      </Navigator>
+    </NavigationContainer>
+  );
+}
+
+// ################ RestaurantCard.js (useNavigation으로 props전달하며 navigate시킴)
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+const RestaurantCard = ({
+  id,
+  imgUrl,
+  title,
+  rating,
+  genre,
+  address,
+  short_description,
+  dishes,
+  long,
+  lat,
+}) => {
+const navigation = useNavigation();  // navigate 하기위해 사용
+return (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('Restaurant', {   // navigation기능으로 Restaurant으로 감, 2번째 인수로 props전달
+          id,
+          imgUrl,
+          title,
+          rating,
+          genre,
+          address,
+          short_description,
+          dishes,
+          long,
+          lat,
+        });
+      }}
+      style={card}
+    >
+        // ... 생략 ...
+</TouchableOpacity>
+  );
+};
+
+// ################ RestaurantScreen.js (navigate된곳과 params)
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { useRoute } from '@react-navigation/native';
+
+const RestaurantScreen = () => {
+  const {
+    params: {
+      id,
+      imgUrl,
+      title,
+      rating,
+      genre,
+      address,
+      short_description,
+      dishes,
+      long,
+      lat,
+    },
+  } = useRoute();
+  return (
+    <View>
+      <Text>{title}</Text>
+    </View>
+  );
+};
+
+export default RestaurantScreen;
+
 
 // ######## Sanity.io ###################################################################################################################### sanity 서버 부분 #################################
 // https://www.sanity.io/
