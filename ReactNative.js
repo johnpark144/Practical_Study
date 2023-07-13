@@ -1412,7 +1412,7 @@ const RestaurantScreen = () => {
       long,
       lat,
     },
-  } = useRoute();
+  } = useRoute();    // navigate되며 전달된 props를 params로받음
   return (
     <View>
       <Text>{title}</Text>
