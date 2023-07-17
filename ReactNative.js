@@ -5,6 +5,7 @@
 // 알림 기능
 // flex: 1 에 대해
 // 컴퓨터로 화면 확인법
+// keyboardAvoidingView(키보드쳐야할때 View스타일 바꿀 수 있음, Platform(안드인지 아이폰인지)
 
 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
@@ -1760,6 +1761,12 @@ const styles = StyleSheet.create({
 
 // ######## Map ######################################################################################################################################################
 // expo install react-native-maps
+
+
+// ################ 여기선 구현하지 않은 참고 사항
+// 지도 주소 찾기 기능은 googlePlacesAutocpmplete 사용
+// 지도 길찾기 기능은 react-native-maps-directions을 사용
+// 두 지점 가는데 걸리시는 시간 및 거리 찾기 기능은 API인 googleapi의 distancematrix를 사용
 
 // ################ 
 import MapView, { MapMarker } from 'react-native-maps';
