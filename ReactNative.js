@@ -749,7 +749,6 @@ export default function Index() {
   return <>
     <Redirect href='/home' />      // 이 컴포넌트를 발견했을 때 href에 링크로 이동시킴
 
-    
     <TouchableOpacity
       onPress={() => {
         router.push(`/search/${item}`); // router.push가 실행될때 화면 이동시킴 (Nextjs와 비슷)
@@ -1694,8 +1693,9 @@ const RestaurantCard = ({
 };
   // ... 생략 ...
 
-// ######## 애니메이션 ######################################################################################################################################################
-// npm i react-native-animatable -save
+// ######## 애니메이션 효과 ######################################################################################################################################################
+// npm i react-native-animatable -save    // 애니메이션 주기
+// https://www.npmjs.com/package/react-native-animatable 
 
 // ################ 
 import { StyleSheet, Text, View } from 'react-native';
@@ -1732,3 +1732,60 @@ const styles = StyleSheet.create({
     width: 150,
   },
 });
+
+// ######## progress바 라이브러리 (로딩중, 스피너) ################################################################################################################################################
+// npm i react-native-progress    // progress Bar
+// https://www.npmjs.com/package/react-native-progress
+
+// npx expo install react-native-svg  // react-native-progress 사용 중 svg 오류뜰 경우 설치
+
+// ################ 
+import React from 'react';
+import * as Progress from 'react-native-progress';
+
+const PreparingOrderScreen = () => {
+  return (
+      <Progress.Circle size={60} indeterminate={true} color='white' />
+  );
+};
+
+
+// ######## 그림자 효과 ######################################################################################################################################################
+const styles = StyleSheet.create({
+  etaContainer: {
+    shadowColor: 'black', // 그림자 색
+    elevation: 4, // 그림자 강도
+  },
+});
+
+// ######## Map ######################################################################################################################################################
+// expo install react-native-maps
+
+// ################ 
+import MapView, { MapMarker } from 'react-native-maps';
+
+const DeliveryScreen = () => {
+  return (
+      {/* 지도 */}
+      <MapView
+        initialRegion={{   // 초기 지역 위도, 경도
+          latitude: restaurant.lat,
+          longitude: restaurant.long,
+          latitudeDelta: 0.005, // 첫 화면 확대 정도(작을수록 확대)
+          longitudeDelta: 0.005, // 첫 화면 확대 정도(작을수록 확대)
+        }}
+        mapType='mutedStandard' // 지도 종류
+        style={MapContainer}
+      >
+        <MapMarker
+          coordinate={{ latitude: restaurant.lat, longitude: restaurant.long }}
+          title={restaurant.title}  // 마커 타이틀
+          description={restaurant.short_description}    // 마커 설명
+          identifier='origin'
+          pinColor='#00CCBB'
+        />
+      </MapView>
+  );
+};
+
+export default DeliveryScreen;
