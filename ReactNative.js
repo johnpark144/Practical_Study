@@ -1,10 +1,8 @@
 // ######### 리마인더 #######################################################################################################################################
 // SplashScreen 정리하기 --> SplashScreen.preventAutoHideAsync()는 SplashScreen.hideAsync()가 뜰떄까지 임시화면을 뿌려줌(브랜드 로고 등)
-// 사진 기능
 // 알림 기능
-// flex: 1 에 대해
 // 컴퓨터로 화면 확인법
-// keyboardAvoidingView(키보드쳐야할때 View스타일 바꿀 수 있음, Platform(안드인지 아이폰인지)
+// keyboardAvoidingView(키보드쳐야할때 View 스타일 바꿀 수 있음, Platform(안드인지 아이폰인지)
 // tailwind 사용 하려면 nativeWind 사용
 
 
