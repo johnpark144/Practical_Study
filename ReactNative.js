@@ -1707,10 +1707,10 @@ const PreparingOrderScreen = () => {
   const { orderScreenContainer, PreparingOrderImage } = styles;
   return (
     <SafeAreaView style={orderScreenContainer}>
-      <Animatable.Image
+      <Animatable.Image // Text도 가능
         source={require('../assets/orderLoading.gif')}
-        animation='slideInUp'
-        iterationCount={1}
+        animation='slideInUp' // 애니메이션 종류
+        iterationCount={1} // 반복 회수
         style={PreparingOrderImage}
       />
     </SafeAreaView>
