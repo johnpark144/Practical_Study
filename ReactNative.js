@@ -1694,6 +1694,41 @@ const RestaurantCard = ({
 };
   // ... 생략 ...
 
-// ########  ######################################################################################################################################################
+// ######## 애니메이션 ######################################################################################################################################################
+// npm i react-native-animatable -save
 
 // ################ 
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Animatable from 'react-native-animatable';
+
+const PreparingOrderScreen = () => {
+  const { orderScreenContainer, PreparingOrderImage } = styles;
+  return (
+    <SafeAreaView style={orderScreenContainer}>
+      <Animatable.Image
+        source={require('../assets/orderLoading.gif')}
+        animation='slideInUp'
+        iterationCount={1}
+        style={PreparingOrderImage}
+      />
+    </SafeAreaView>
+  );
+};
+
+export default PreparingOrderScreen;
+
+const styles = StyleSheet.create({
+  orderScreenContainer: {
+    backgroundColor: '#51B8CC',
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  PreparingOrderImage: {
+    height: 150,
+    width: 150,
+  },
+});
