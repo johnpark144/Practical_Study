@@ -1,11 +1,12 @@
 // ######### 리마인더 #######################################################################################################################################
 // SplashScreen 정리하기 --> SplashScreen.preventAutoHideAsync()는 SplashScreen.hideAsync()가 뜰떄까지 임시화면을 뿌려줌(브랜드 로고 등)
-// 컴퓨터로 화면 확인법
+// 컴퓨터로 안드로이드 화면 확인법
 // keyboardAvoidingView(키보드쳐야할때 View 스타일 바꿀 수 있음, Platform(안드인지 아이폰인지)
 // tailwind 사용 하려면 nativeWind 사용
-// expo-auth
 // session 스토리지
 // PanResponder 
+// 애니메이션 효과
+// expo-auth
 // 알림 기능
 
 // 자주쓰는 라이브러리들 사용할때 마다 적어두기
