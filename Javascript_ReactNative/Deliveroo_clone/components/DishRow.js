@@ -27,11 +27,13 @@ const DishRow = ({ id, name, description, price, image }) => {
   // 리덕스
   const items = useSelector((state) => selectBasketItemsWithId(state, id));
   const dispatch = useDispatch();
-
+  
+  // 아이템 추가
   const addItemToBasket = () => {
     dispatch(addToBasket({ id, name, description, price, image }));
   };
-
+  
+  // 아이템 제거
   const removeItemFromBasket = () => {
     if (!items.length > 0) return;
     dispatch(removeFromBasket({ id }));
