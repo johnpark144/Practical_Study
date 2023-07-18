@@ -36,7 +36,6 @@
 
 
 
-
 // ######## 기본 참고 사이트 ############################################################################################################################
 // https://reactnative.dev/docs/intro-react-native-components  // 리액트 네이티브 핵심 컴포넌트
 // https://reactnavigation.org/docs/getting-started  // React Navigation 사이트
