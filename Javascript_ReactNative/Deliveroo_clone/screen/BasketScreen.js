@@ -41,7 +41,6 @@ const BasketScreen = () => {
   const items = useSelector(selectBasketItems); // 주문할 메뉴들
   const basketTotal = useSelector(selectBasketTotal); // 주문할 메뉴들 가격 합계
   const dispatch = useDispatch();
-
   const [groupedItemsInBasket, setGroupedItemsInBasket] = useState([]);
 
   useEffect(() => {
