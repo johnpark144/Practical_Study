@@ -4,9 +4,37 @@
 // 컴퓨터로 화면 확인법
 // keyboardAvoidingView(키보드쳐야할때 View 스타일 바꿀 수 있음, Platform(안드인지 아이폰인지)
 // tailwind 사용 하려면 nativeWind 사용
+// expo-auth
+// session 스토리지
+// PanResponder 
 
+// 자주쓰는 라이브러리들 사용할때 마다 적어두기
 
+// ######### 자주쓰이는 라이브러리들 #######################################################################################################################
+// React Native Elements: 컴포넌트를 쉽게 스타일링하고 구성 (https://reactnativeelements.com/)
+// AsyncStorage: 영구 저장소로, 로컬 스토리지에 앱 데이터를 저장할 때 용이 (@react-native-async-storage/async-storage)
+// React Native Vector Icons: 다양한 아이콘을 제공해주는 패키지 (https://github.com/oblador/react-native-vector-icons)
+// react-native-gesture-handler: 고급 터치 및 제스처 인식 기능을 사용하여 사용자 인터페이스를 구축 (https://github.com/software-mansion/react-native-gesture-handler).
+// react-native-reanimated: 부드럽고 자연스러운 애니메이션 (https://github.com/software-mansion/react-native-reanimated)
+// react-native-web: 웹 앱으로 변환하고 디버깅하기 위함 (https://github.com/necolas/react-native-web)
+// react-native-svg: 안드로이드와 iOS에서 SVG 이미지를 사용하는 데 도움 (https://github.com/react-native-svg/react-native-svg)
+// react-native-push-notification: 안드로이드와 iOS에서 푸시 알림 (https://github.com/zo0r/react-native-push-notification)
+// Lottie-react-native: Lottie 애니메이션을 사용할 수 있도록 함 (https://github.com/lottie-react-native/lottie-react-native)
+// react-native-firebase: Firebase와 쉽게 통합할 수 있도록(https://rnfirebase.io/)
+// react-native-picker-select: 드롭다운 형태를 구현 (https://github.com/lawnstarter/react-native-picker-select)
+// react-native-video: 비디오 재생을 위함
+// react-native-maps: 지도를 사용하기 위함
+// react-native-maps-directions는 구글 지도를 기반으로 경로, 길찾기 기능 제공
+// react-native-camera: 카메라를 사용
+  
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
+
+
+
+
+
+
+
 
 // ######## 기본 참고 사이트 ############################################################################################################################
 // https://reactnative.dev/docs/intro-react-native-components  // 리액트 네이티브 핵심 컴포넌트
@@ -860,7 +888,7 @@ const Layout = () => {
 export default Layout;
 
 
-// ######## useFetch (직업 구하는 데이터 가져오는 커스텀훅) ######################################################################################################################################################
+// ######## useFetch (직업 구하는 데이터 가져오는 커스텀훅) ##################################################################################################################################
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { RAPID_API_KEY } from '@env';
@@ -1147,7 +1175,7 @@ export const checkImageURL = (url) => {
 };
 
 
-// ######## FlatList의 ListHeaderComponent와 ListFooterComponent ######################################################################################################################################################
+// ######## FlatList의 ListHeaderComponent와 ListFooterComponent ###############################################################################################################################
 // ... 생략 ...
 <FlatList
   data={searchResult}
@@ -1251,7 +1279,7 @@ const handlePagination = (direction) => {
 
 
 // ######## deploy ##################################################################################################################################################################
-// npm i -g expo-cli   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
+// npm i -g expo-cli --force   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
 
 // !!!! 곧 배포방법 바뀔 수도 있음 !!!!
 
@@ -1276,7 +1304,7 @@ registerRootComponent(App);
 // @@@@@@@@@@@ Deliveroo_clone @@@@ (React Navigation) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-// ######## React Navigation의 useNavigation, useRoute ########################################################################################### useNavigation의 setOptions ##########################################
+// ######## React Navigation의 useNavigation, useRoute ################################################################################### useNavigation의 setOptions ##########################
 // @react-navigation/native의 useNavigation의 메서드
   // "addListener": 
   // "canGoBack":
@@ -1328,7 +1356,7 @@ const styles = StyleSheet.create({
 
 export default HomeScreen;
 
-// ############################################################################################################################### useNavigation의 navigate (페이지 이동)과 useRoute (Params 가져오기) #################
+// ################################################################################################################ useNavigation의 navigate (페이지 이동)과 useRoute (Params 가져오기) ###########
 // ################ App.js
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -1735,7 +1763,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// ######## progress바 라이브러리 (로딩중, 스피너) ################################################################################################################################################
+// ######## progress바 라이브러리 (로딩중, 스피너) #################################################################################################################################
 // npm i react-native-progress    // progress Bar
 // https://www.npmjs.com/package/react-native-progress
 
@@ -1801,8 +1829,7 @@ export default DeliveryScreen;
 // ########## 기타 ReactNative 유용한것들 ###########################################################################################
 // ###############################################################################################################################
 // ######## 카메라 기능 ###############################################################################################################################
-// expo install expo-media-library
-// expo install expo-camera
+// npx expo install expo-camera expo-media-library
 
 // ################ 
 import { Camera, CameraType } from 'expo-camera';
@@ -1953,3 +1980,11 @@ const styles = StyleSheet.create({
   },
 });
 
+// ######## 알림 기능 ###############################################################################################################################
+// npx expo install expo-notifications expo-device
+
+// https://expo.dev/notifications  // 알림 기능주기
+// https://expo.dev/  // 프로제트 아이디 생성하기
+// https://expo.dev/accounts/[아이디]/settings/access-tokens    // 토큰 생성하기
+
+// ################ 
