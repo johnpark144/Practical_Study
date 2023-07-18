@@ -3,7 +3,7 @@ import imageUrlBuilder from '@sanity/image-url';
 import 'react-native-url-polyfill/auto';
 
 const client = createClient({
-  projectId: 'zpj6qd2o', // sanity.config.ts 혹은 sanity사이트에있음
+  projectId: 'zpj6qd2o', // sanity.config.ts 혹은 sanity사이트에 있음
   dataset: 'production',
   useCdn: true,
   apiVersion: '2021-10-21',
