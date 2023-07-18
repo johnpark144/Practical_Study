@@ -61,7 +61,6 @@ const BasketScreen = () => {
             <Text style={basket}>Basket</Text>
             <Text style={restaurantTitle}>{restaurant.title}</Text>
           </View>
-
           <TouchableOpacity onPress={navigation.goBack} style={closeBtn}>
             <AntDesign name='closecircle' size={40} color='#00CCBB' />
           </TouchableOpacity>
@@ -103,7 +102,7 @@ const BasketScreen = () => {
             </View>
           ))}
         </ScrollView>
-
+            
         <View style={totalFeePlaceOrder}>
           {/* Subtotal */}
           <View style={totalSection}>
