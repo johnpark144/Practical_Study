@@ -340,7 +340,6 @@ const styles = StyleSheet.create({
 // ######## 네비게이션, 라우팅 (React Navigation 위주) ############################################################################################################################
 // 리액트 네이티브에서 가장 많이 사용되는 세 라이브러리
 // React Navigation : 빠르게 시작하고 상대적으로 간단한 응용 프로그램을 개발
-// React Native Navigation :  성능이 중요한 프로젝트
 // Expo router : 폴더 라우팅 가능
 
 // https://reactnavigation.org/docs/getting-started  // React Navigation 사이트
@@ -827,7 +826,7 @@ const Welcome = ({ searchTerm, setSearchTerm, handleClick }) => {
           <Image
             source={icons.search} // 이미지 src
             resizeMode='contain'
-            // cover(디폴트) : 비율유지하되 View와비율 일치 않으면 일부분 잘림
+            // cover(디폴트) : 비율유지하되 View와 비율 일치 않으면 일부분 잘림
             // contain : 비율유지하되 모든 영역이 View안에 보이도록
             // stretch : View의 크기대로 리사이징하여 비율이 잘라질수있음
             // repeat : 바둑판식
@@ -1981,6 +1980,123 @@ const styles = StyleSheet.create({
   },
 });
 
-// ########  ###############################################################################################################################
+// ######## splash screen (비디오로), 비디오 ###############################################################################################################################
+// npx expo install expo-splash-screen
+// npx expo install expo-av
 
+// ################ Splash.js
+import { StyleSheet } from 'react-native';
+import { ResizeMode, Video } from 'expo-av';
+import { hideAsync } from 'expo-splash-screen';
+
+const Splash = ({ setSplashComplete }) => {
+  const onPlaybackStatusUpdate = (status) => {
+    hideAsync();
+
+    // 동영상이 종료되면
+    if (status.didJustFinish) {
+      setSplashComplete(true);
+    }
+  };
+  return (
+    <Video
+      style={StyleSheet.absoluteFill} // absoluteFill은 absolute에 top,left,right,bottom에 0을 준것
+      resizeMode={ResizeMode.COVER} // 이미지 resize와 비슷
+      source={require('../assets/splash.mp4')}
+      isLooping={false}
+      onPlaybackStatusUpdate={onPlaybackStatusUpdate} // 해당 함수에 비디오 상태를 계속 업데이트해주는 인자를 전달함
+      positionMillis={13000} // 재생시작부분
+      shouldPlay={true}
+    />
+  );
+};
+
+export default Splash;
+
+// ################ App.js
+import { useState } from 'react';
+import Home from './Screens/Home';
+import Splash from './components/Splash';
+import { preventAutoHideAsync } from 'expo-splash-screen';
+
+preventAutoHideAsync();  // Splash를 가리지 않고 유지해 주고 hideAsync 호출때 까지 안전하게 실행됨
+
+export default function App() {
+  const [splahsComplete, setSplashComplete] = useState(false);
+
+  return !splahsComplete ? (
+    <Splash setSplashComplete={setSplashComplete} />
+  ) : (
+    <Home />
+  );
+}
+
+
+// ######## splash screen (lottie로), lottie ###############################################################################################################################
+// npm i --save lottie-react-native
+// npm i --save lottie-ios
+
+// https://github.com/lottie-react-native/lottie-react-native 
+
+// ################ Splash.js
+import { useNavigation } from '@react-navigation/native';
+import AnimatedLottieView from 'lottie-react-native';
+import { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+
+const Splash = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('home');    // 3초뒤 Home으로
+    }, 3000);
+  }, []);
+
+  return (
+    <View style={styles.root}>
+      {/* Lottie 사용 */}
+      <AnimatedLottieView
+        source={require('../assets/splash.json')}
+        autoPlay
+        loop={false}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+export default Splash;
+
+// ################ App.js  (Bottom Tab없는 네비게이션 이용해야함)
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Home from './Screens/Home';
+import Splash from './Screens/Splash';
+
+export default function App() {
+  const { Navigator, Screen } = createNativeStackNavigator();
+
+  return (
+    <NavigationContainer>
+      <Navigator initialRouteName='Splash'>
+        <Screen
+          name='splash'
+          component={Splash}
+          options={{ header: () => null }}
+        />
+        <Screen name='home' component={Home} />
+      </Navigator>
+    </NavigationContainer>
+  );
+}
+
+// ########  ###############################################################################################################################
 // ################ 
