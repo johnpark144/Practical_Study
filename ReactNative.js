@@ -2099,5 +2099,33 @@ export default function App() {
   );
 }
 
+// ######## KeyboardAvoidingView, Platform ###############################################################################################################################
+// <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} > // 키보드가 올라오면 ios는 padding 을 줘서 TextInput을 가리지 않게함, android는 기본 내장되있고, 그외에 플랫폼은 height 유지하도록
+
+// ################ 
+import { useState } from 'react';
+import { Text, TextInput, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+
+const Home = () => {
+  const [inputValue, setInputValue] = useState('');
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <Text>Hi there, Enter some text below:</Text>
+      <TextInput
+        style={styles.input}
+        value={inputValue}
+        onChangeText={setInputValue}
+        placeholder='Enter Text'
+      />
+    </KeyboardAvoidingView>
+  );
+};
+
+
+
+
 // ########  ###############################################################################################################################
 // ################ 
