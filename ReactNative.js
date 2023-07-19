@@ -3,6 +3,7 @@
 // 컴퓨터로 안드로이드 화면 확인법
 // keyboardAvoidingView(키보드쳐야할때 View 스타일 바꿀 수 있음, Platform(안드인지 아이폰인지)
 // tailwind 사용 하려면 nativeWind 사용
+// 스타일컴포넌트 사용하기
 // session 스토리지
 // PanResponder 
 // 애니메이션 효과
