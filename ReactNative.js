@@ -42,7 +42,7 @@
 // https://expo.github.io/router/docs/  // Expo Router 사이트
 // https://icons.expo.fyi     // 아이콘 사이트
 
-
+// https://snack.expo.dev/?platform=ios  // Android, Ios 가상 환경으로 확인
 
 // ######## Expo 기본 세팅 ############################################################################################################################
 // npm i -g expo-cli   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
