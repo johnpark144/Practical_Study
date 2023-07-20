@@ -53,14 +53,20 @@
 
 
 // ######## Tailwind css (!!! 방법 완성하기 !!!) ##################################################################################################################################
+// 타입스크립트 사용하려면 홈페이지 참고
+// https://www.nativewind.dev/
+
 // npm i nativewind
-// npm i --dev tailwindcss
+// npm i -D tailwindcss@3.3.2    // 에러 고쳐질떄까지 이 버전으로
 // npx tailwindcss init
 
 // ############## tailwind.config.js
 module.exports = {
   content: [
+    // 사용하는 파일, 폴더 선택해서 적용
     './App.{js,jsx,ts,tsx}',
+    './index.{js,jsx,ts,tsx}',
+    './app/**/*.{js,jsx,ts,tsx}',
     './screen/**/*.{js,jsx,ts,tsx}',
     './components/**/*.{js,jsx,ts,tsx}',
   ],
@@ -69,6 +75,7 @@ module.exports = {
   },
   plugins: [],
 };
+
 
 // ################ babel.config.js
 module.exports = function (api) {
