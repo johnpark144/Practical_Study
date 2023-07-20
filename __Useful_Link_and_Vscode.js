@@ -48,7 +48,6 @@
 
 
 ######## 그외 프론트엔드 관련
-
 // 코드펜                   https://codepen.io/pen/?editors=0012
 // 코드 샌드박스            https://codesandbox.io/dashboard/home?workspace=9fbdea18-e125-4d0e-8b8f-9a1631cbf2d6
 // 타입스크립트 가상연습     https://www.typescriptlang.org/play?#
@@ -93,6 +92,7 @@ f11  // 전체화면
 ctrl + b  // 폴더 부분 열고닫기
 ctrl + `  // 터미널 열고 닫기
 
+ctrl + space  // 자동완성 기능 열기 (자동 import, 메서드확인, css 벨류 찾기 등에 유용) 
 ctrl + p  // 이름으로 파일 찾기
 ctrl + g  // 원하는 라인으로 이동
 alt + (좌 또는 우) // 커서 위치를 이전으로, 커서 위치 다시 되돌리기
