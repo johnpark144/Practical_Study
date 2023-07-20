@@ -6,7 +6,7 @@
 // expo-auth
 // mongoDB같이쓰기
 
-// https://www.youtube.com/watch?v=wEVjaXK4sYQ    // 요거 코드보고 정리해보기 (Gestures and Animations)
+// https://www.youtube.com/watch?v=fWHiSuz-V68&list=PLiY8mHmShYeVLqydQGXfrF7-katOAT-Lg&index=24    // 요거 코드보고 정리해보기 (Gestures and Animations)
 // https://www.youtube.com/watch?v=Ud_GWxu1_Xg&t=185s  // 요거 코드보고 정리해보기 (auth)
 
 
@@ -2224,7 +2224,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
   
 
-// ######## Pan Responder (제스처를 인식하는 기능), Animated (이동시키는 애니메이션을 구현) ##################################################################### 예시 1) ###############################
+// ######## Pan Responder (제스처를 인식하는 기능), Animated (이동시키는 애니메이션을 구현) ##################################################################### 예시 1) 아직 정리 필요 ###############################
 // ################ 
 import React, { useRef } from 'react';
 import {
@@ -2292,3 +2292,13 @@ const styles = StyleSheet.create({
 
 // ########################################################################################################################################################### 예시 2) ###############################
 // ################ 
+
+
+
+
+
+
+
+
+
+
