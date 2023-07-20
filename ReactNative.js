@@ -794,6 +794,7 @@ const Home = () => {
             <ScreenHeaderBtn iconUrl={require("../assets/images/kemal.jpg")} dimension='100%' />
           ),
           headerTitle: '', // 헤더 가운데 들어갈 말
+          // headerShown: false,    // 헤더를 보일지 말지
         }}
       />
 
