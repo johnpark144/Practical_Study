@@ -14,6 +14,8 @@
 
 // 얼굴 인식
 // 알림 기능
+
+// 인덱스 정리
 // 자주쓰는 라이브러리들 사용할때 마다 적어두기
 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
@@ -2222,15 +2224,71 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
   
 
-// ######## Pan Responder (제스처를 인식하는 기능), Animated (이동시키는 애니메이션을 구현) #########################################################################################################
+// ######## Pan Responder (제스처를 인식하는 기능), Animated (이동시키는 애니메이션을 구현) ##################################################################### 예시 1) ###############################
+// ################ 
+import React, { useRef } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  PanResponder,
+  Animated,
+  TouchableOpacity,
+} from 'react-native';
+import { useRouter } from 'expo-router';
 
-// ################
+const Home = () => {
+  const router = useRouter();
+  const pan = useRef(new Animated.ValueXY()).current;
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true, // 터치가 시작될 때 PanResponder를 활성화할지 여부
+      // 터치가 움직일 때 발생하는 이벤트를 처리하는 콜백
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+        useNativeDriver: false,
+      }),
+      // 터치가 종료될 때 발생하는 이벤트를 처리하는 콜백
+      onPanResponderRelease: () => {
+        Animated.spring(pan, {
+          toValue: { x: 0, y: 0 },
+          useNativeDriver: false,
+        }).start();
+      },
+    })
+  ).current;
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity>
+        <Text onPress={() => router.push('/test2')}>test 2로 갑니다</Text>
+      </TouchableOpacity>
+      <Animated.View
+        style={[
+          styles.square, // 기존 스타일로 초기 위치 지정
+          { transform: [{ translateX: pan.x }, { translateY: pan.y }] },
+        ]}
+        {...panResponder.panHandlers}
+      />
+    </View>
+  );
+};
+
+export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  square: {
+    width: 150,
+    height: 150,
+    backgroundColor: 'red',
+  },
+});
 
 
-
-
-
-
-
-// ########  ###############################################################################################################################
+// ########################################################################################################################################################### 예시 2) ###############################
 // ################ 
