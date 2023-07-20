@@ -2189,7 +2189,32 @@ const Home = () => {
 };
 
 
-// ######## session 스토리지 ###############################################################################################################################
+// ######## AsyncStorage ###############################################################################################################################
+// npm i @react-native-async-storage/async-storage
 
+// ################ AsyncStorage에 저장
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// ... 생략 ...
+  const subtract = () => {
+    AsyncStorage.setItem('total', String(total - 1));     // 저장하기   // string만 들어가야함
+    setTotal((prev) => prev - 1);
+  };
+// ... 생략 ...
+  
+// ################ AsyncStorage에서 불러오기
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// ... 생략 ...
+  useEffect(() => {
+      (async () => {  // async를 붙이기 위한 자기선언함수(IIFE)
+        const tempTotal = await AsyncStorage.getItem('total');   // 불러오기   // 웹과는 다르게 await를 붙여줌
+        setTotal(tempTotal);
+      })();
+    }, []);
+// ... 생략 ...
+
+  
+
+// ########  ###############################################################################################################################
 // ################ 
