@@ -1,5 +1,4 @@
 // ######### 리마인더 #######################################################################################################################################
-// tailwind 사용 하려면 nativeWind 사용
 // 스타일컴포넌트 사용하기
 // session 스토리지
 
@@ -52,7 +51,7 @@
 // npx create-expo-app@latest -e with-router  // Expo-router용으로 리액트 네이티브 앱 만들기
 
 
-// ######## Tailwind css (!!! 방법 완성하기 !!!) ##################################################################################################################################
+// ######## Tailwind css ##################################################################################################################################
 // 타입스크립트 사용하려면 홈페이지 참고
 // https://www.nativewind.dev/
 
@@ -91,13 +90,30 @@ module.exports = function (api) {
   };
 };
 
+
+// ######## styled-components ##################################################################################################################################
+// npm i styled-components
+// 일반 리액트에서 사용한방법과 동일
+
 // ################ 
+import { Text, View } from 'react-native';
+import { styled } from 'styled-components/native';    // native를 붙여야함
 
+const HomeTitle = styled.Text`
+  height: 90%;
+  width: 100%;
+  background-color: grey;
+`;
 
-  
-// https://www.nativewind.dev/quick-starts/expo
+const Home = () => {
+  return (
+    <View>
+      <HomeTitle>스타일 컴포넌트</HomeTitle>
+    </View>
+  );
+};
 
-// ################ 
+export default Home;
 
 
 
