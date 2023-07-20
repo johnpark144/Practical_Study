@@ -7,8 +7,8 @@
 // 애니메이션 효과
 
 // expo-auth
-// 알림 기능
 
+// 알림 기능
 // 자주쓰는 라이브러리들 사용할때 마다 적어두기
 
 
@@ -57,6 +57,37 @@
 // npm i --dev tailwindcss
 // npx tailwindcss init
 
+// ############## tailwind.config.js
+module.exports = {
+  content: [
+    './App.{js,jsx,ts,tsx}',
+    './screen/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+// ################ babel.config.js
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo"],
+    plugins: [
+      "nativewind/babel",    // -------> 기존에 내용에 이 부분만 추가
+      "@babel/plugin-proposal-export-namespace-from",
+      "react-native-reanimated/plugin",
+      require.resolve("expo-router/babel"),
+    ],
+  };
+};
+
+// ################ 
+
+
+  
 // https://www.nativewind.dev/quick-starts/expo
 
 // ################ 
