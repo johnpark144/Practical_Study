@@ -2,21 +2,18 @@
 // PanResponder 
 // Animated
 
-// Realm
 // expo-auth
 // mongoDB같이쓰기
 
 // https://www.youtube.com/watch?v=fWHiSuz-V68&list=PLiY8mHmShYeVLqydQGXfrF7-katOAT-Lg&index=24    // 요거 코드보고 정리해보기 (Gestures and Animations)
 // https://www.youtube.com/watch?v=Ud_GWxu1_Xg&t=185s  // 요거 코드보고 정리해보기 (auth)
 
+// 화면 height, scroll등 값 불러오기
 
 // 달력
-
+// Realm
 // 얼굴 인식
 // 알림 기능
-
-// 인덱스 정리
-// 자주쓰는 라이브러리들 사용할때 마다 적어두기
 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
 
