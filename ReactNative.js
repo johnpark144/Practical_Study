@@ -1,7 +1,4 @@
 // ######### 리마인더 #######################################################################################################################################
-// PanResponder 
-// Animated
-
 // expo-auth
 // mongoDB같이쓰기
 
@@ -2338,7 +2335,7 @@ const styles = StyleSheet.create({
 });
 
 
-// ######### 제스쳐 인식, 애니메이션 2, + useWindowDimensions ######################################### react-native-gesture-handler(제스처를 인식), react-native-reanimated(이동시키는 애니메이션을 구현) ##########
+// ######### 제스쳐 인식, 애니메이션 2, + useWindowDimensions(모바일 크기) ##################################### react-native-gesture-handler(제스처를 인식), react-native-reanimated(이동시키는 애니메이션을 구현) ##########
 // 기존 PanResponder, Animated는 자바스크립트 스레드기반으로 동작하고 gesture-handler와 reanimated는 UI스레드 기반으로 동작함
 // 그리고 성능 향상에 도움, 코드 최적화, 더 많은 제스쳐지원
 
@@ -2445,9 +2442,32 @@ const styles = StyleSheet.create({
 });
 
 
-// ########  #############################################################################################################################################################
+// ######## 스크롤 위치 #############################################################################################################################################################
+import React, { useState } from 'react';
+import { ScrollView, Text } from 'react-native';
+
+const MyScrollComponent = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const handleScroll = (e) => {
+    const positionY = e.nativeEvent.contentOffset.y;  // Y 좌표 스크롤 값
+    setScrollPosition(positionY);
+  };
+
+  return (
+    <ScrollView // FlatList에서도 onScroll가능
+      onScroll={handleScroll} // 스크롤시 Event를 파라미터로 전달
+      scrollEventThrottle={16} // 스크롤 이벤트 발생 빈도 설정
+    >
+      <Text>{`현재 스크롤 위치: ${scrollPosition}`}</Text>
+    </ScrollView>
+  );
+};
+
+export default MyScrollComponent;
+
+
+// ########   #############################################################################################################################################################
 // ################ 
-
-
 
 
