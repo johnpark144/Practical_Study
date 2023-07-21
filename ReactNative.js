@@ -2291,9 +2291,29 @@ const styles = StyleSheet.create({
 
 
 // ########################################################################################################################################################### 예시 2) ###############################
+// 자바스크립트 스레드 잡아먹지 않는 라이브러리, useWindowDimensions
+
+// npx expo install react-native-gesture-handler react-native-reanimated
+// https://docs.swmansion.com/react-native-gesture-handler/docs/
+
+// ################  
+// useAnimatedGestureHandler에 onStart, onActive, onEnd의 이벤트 값 예시
+
+// {
+//   "absoluteX": 235.96873474121094,    // X축 절대값
+//   "absoluteY": 704.5217895507812,     // Y축 절대값
+//   "eventName": "47onGestureHandlerEvent",
+//   "handlerTag": 1,
+//   "numberOfPointers": 1,
+//   "state": 4,
+//   "translationX": -0.07243923842906952,  // X축 이동값
+//   "translationY": -0.9007812738418579,  // Y축 이동값
+//   "velocityX": -6.87349796295166,  // X축 속도  (정방향은 양수, 역방향은 음수, 절대값이 클수록 빠름)
+//   "velocityY": -397.5526123046875,  // Y축 속도
+//   "x": 235.9687042236328,
+//   "y": 49.0102424621582
+// }
 // ################ 
-
-
 
 
 
