@@ -1,8 +1,6 @@
 // ######### 리마인더 #######################################################################################################################################
 // expo-auth
 // mongoDB같이쓰기
-
-// https://www.youtube.com/watch?v=fWHiSuz-V68&list=PLiY8mHmShYeVLqydQGXfrF7-katOAT-Lg&index=24    // 요거 코드보고 정리해보기 (Gestures and Animations)
 // https://www.youtube.com/watch?v=Ud_GWxu1_Xg&t=185s  // 요거 코드보고 정리해보기 (auth)
 
 // 달력
