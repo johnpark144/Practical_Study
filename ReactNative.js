@@ -2194,7 +2194,7 @@ const Home = () => {
 };
 
 
-// ######## AsyncStorage ###############################################################################################################################
+// ######## AsyncStorage #############################################################################################################################################################
 // npm i @react-native-async-storage/async-storage
 
 // ################ AsyncStorage에 저장
@@ -2221,51 +2221,45 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
   
 
-// ######## Pan Responder (제스처를 인식하는 기능), Animated (이동시키는 애니메이션을 구현) ##################################################################### 예시 1) 아직 정리 필요 ###############################
-// ################ 
-import React, { useRef } from 'react';
+// ############ 제스쳐 인식, 애니메이션 #################################################################### PanResponder (제스쳐 인식), Animated (이동시키는 애니메이션을 구현)  ################
+// ################ 예제 1) 중앙으로 되돌아오는 정사각형
+import React from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   PanResponder,
   Animated,
-  TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
 const Home = () => {
   const router = useRouter();
-  const pan = useRef(new Animated.ValueXY()).current;
+  const pan = new Animated.ValueXY();  // 원래있어야 할 곳에서 상대적 좌표 값
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true, // 터치가 시작될 때 PanResponder를 활성화할지 여부
-      // 터치가 움직일 때 발생하는 이벤트를 처리하는 콜백
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+  const panResponder = PanResponder.create({
+    // onStartShouldSetPanResponder: () => true, // 터치가 시작될 때 PanResponder를 활성화할지 여부(아래거랑 이것 중 택1)
+    onMoveShouldSetPanResponderCapture: () => true, // 움직임이 시작될 때 PanResponder를 활성화할지 여부
+    // 터치가 움직일 때 발생하는 콜백
+    onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+      useNativeDriver: false,
+    }),
+    // 터치가 종료될 때 발생하는 콜백
+    onPanResponderRelease: () => {
+      Animated.spring(pan, {
+        toValue: { x: 0, y: 0 }, // 터치 종료시 제자리로
         useNativeDriver: false,
-      }),
-      // 터치가 종료될 때 발생하는 이벤트를 처리하는 콜백
-      onPanResponderRelease: () => {
-        Animated.spring(pan, {
-          toValue: { x: 0, y: 0 },
-          useNativeDriver: false,
-        }).start();
-      },
-    })
-  ).current;
+      }).start();
+    },
+  });
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
-        <Text onPress={() => router.push('/test2')}>test 2로 갑니다</Text>
-      </TouchableOpacity>
       <Animated.View
         style={[
           styles.square, // 기존 스타일로 초기 위치 지정
-          { transform: [{ translateX: pan.x }, { translateY: pan.y }] },
+          { transform: [{ translateX: pan.x }, { translateY: pan.y }] }, // 이것 대신 pan.getLayout()을 사용 가능
         ]}
-        {...panResponder.panHandlers}
+        {...panResponder.panHandlers} // 위 핸들러를 적용
       />
     </View>
   );
@@ -2286,16 +2280,73 @@ const styles = StyleSheet.create({
   },
 });
 
+// ################ 예제 2) 옴겨진 곳에 지속적으로 머무는 원
+import { Animated, PanResponder, StyleSheet, View } from 'react-native';
 
-// ########################################################################################################################################################### 예시 2) ###############################
-// 자바스크립트 스레드 잡아먹지 않는 라이브러리, useWindowDimensions
+const VanillaAnimated = () => {
+  const pan = new Animated.ValueXY(); // 원래있어야 할 곳에서 상대적 좌표 값
+
+  const panResponder = PanResponder.create({
+    // onStartShouldSetPanResponder: () => true, // 터치가 시작될 때 PanResponder를 활성화할지 여부(아래거랑 이것 중 택1)
+    onMoveShouldSetPanResponderCapture: () => true, // 움직임이 시작될 때 PanResponder를 활성화할지 여부
+    // 터지가 될때 콜백
+    onPanResponderGrant: () => {
+      // 현재 위치를 계산함(위치 초기화 방지)
+      pan.setOffset({
+        x: pan.x._value,
+        y: pan.y._value,
+      });
+      pan.setValue({ x: 0, y: 0 });
+    },
+    // 터치가 움직일 때 발생하는 콜백
+    onPanResponderMove: Animated.event(
+      [null, { dx: pan.x, dy: pan.y }], // 터치하여 움직이는 만큼 움직임
+      {
+        useNativeDriver: false,
+      }
+    ),
+    // 터치가 종료될 때 발생하는 콜백
+    onPanResponderRelease: () => {
+      pan.flattenOffset(); // 현재 위치값을 애니메이션 값에 반영
+    },
+  });
+
+  return (
+    <View style={styles.container}>
+      <Animated.View
+        style={[styles.ball, pan.getLayout()]} // position.getLayout에는 상대적 top과 left값이 저장되어 있음
+        {...panResponder.panHandlers} // 위 핸들러 적용
+      />
+    </View>
+  );
+};
+
+export default VanillaAnimated;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ball: {
+    backgroundColor: '#3884ff',
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+  },
+});
+
+
+// ######### 제스쳐 인식, 애니메이션 2, + useWindowDimensions ######################################### react-native-gesture-handler(제스처를 인식), react-native-reanimated(이동시키는 애니메이션을 구현) ##########
+// 기존 PanResponder, Animated는 자바스크립트 스레드기반으로 동작하고 gesture-handler와 reanimated는 UI스레드 기반으로 동작함
+// 그리고 성능 향상에 도움, 코드 최적화, 더 많은 제스쳐지원
 
 // npx expo install react-native-gesture-handler react-native-reanimated
 // https://docs.swmansion.com/react-native-gesture-handler/docs/
 
 // ################  
 // useAnimatedGestureHandler에 onStart, onActive, onEnd의 이벤트 값 예시
-
 // {
 //   "absoluteX": 235.96873474121094,    // X축 절대값
 //   "absoluteY": 704.5217895507812,     // Y축 절대값
@@ -2310,11 +2361,92 @@ const styles = StyleSheet.create({
 //   "x": 235.9687042236328,
 //   "y": 49.0102424621582
 // }
+// ################ 예제) 잠금화면 슬라이드용 직사각형 공간
+import { View, useWindowDimensions, StyleSheet } from 'react-native';
+import React from 'react';
+import { PanGestureHandler } from 'react-native-gesture-handler'; // 터치 및 제스쳐 인식
+import Animated, {
+  Easing,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated'; // 부드러운 애니메이션
+
+const index = () => {
+  const { height } = useWindowDimensions(); // 모바일폰의 width, height등의 값 가져옴
+  const y = useSharedValue(height); // 메모리에서 상태를 공유 // y.value 에 초기값으로 height가 들어감
+
+  // onGestureEvent를 통하여 제스쳐의 시작, 진행, 종료시 Event 전달
+  const unlockGestureHandler = useAnimatedGestureHandler({
+    onStart: () => {
+      console.log('onStart');
+    },
+    onActive: (e) => {
+      y.value = e.absoluteY + 50; // Y축 절대 값의 상태를 메모리에서 공유시킴 // 숫자 50은 붕 뜨는 효과 방지
+    },
+    onEnd: (e) => {
+      // 속도를 빠르게 슬라이드한 경우도 적용
+      if (e.velocityY < -500) {
+        // withTiming은 앞에 값과 애니메이션 속성 적용 // withTiming(전달할 값, { duration, easing }, 커스텀easing)
+        y.value = withTiming(150, { easing: Easing.linear });
+      } else if (e.velocityY > 500) {
+        y.value = withTiming(height, { easing: Easing.linear });
+        // 슬라이드시 절반 넘었는지
+      } else if (y.value < height / 2) {
+        y.value = withTiming(150, { easing: Easing.linear });
+      } else {
+        y.value = withTiming(height, { easing: Easing.linear });
+      }
+    },
+  });
+
+  // 실시간 없데이트 되는 스타일
+  const animatedContainerStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY: y.value - height,
+      },
+    ],
+  }));
+
+  return (
+    <View style={styles.container}>
+      <PanGestureHandler // 제스쳐를 인식하며, 인식될때 onGestureEvent의 메소드 함수 실행
+        onGestureEvent={unlockGestureHandler}
+      >
+        <Animated.View
+          style={[
+            animatedContainerStyle, // 실시간 스타일 적용
+            {
+              position: 'absolute',
+              width: '100%',
+              height: 100,
+              borderColor: 'red',
+              borderWidth: 50,
+              bottom: 0,
+              left: 0,
+            },
+          ]}
+        />
+      </PanGestureHandler>
+    </View>
+  );
+};
+
+export default index;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+
+// ########  #############################################################################################################################################################
 // ################ 
-
-
-
-
 
 
 
