@@ -415,6 +415,7 @@ const styles = StyleSheet.create({
 // 종류에 따라 다르게 다운
 // npm i @react-navigation/bottom-tabs  // 버텀 탭 종류(위 아래)로 사용하기 (이번 앱에 사용)
 // npm i @react-navigation/native-stack  // 네이티브 스택 종류(only 위)로 사용하기
+// npm i @react-navigation/drawer   //  drawer (서랍식)으로 사용하기
 
 // ################ App.js
 import React from 'react';
