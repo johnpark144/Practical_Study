@@ -5,7 +5,7 @@
 // https://www.youtube.com/watch?v=Ud_GWxu1_Xg&t=185s  // 요거 코드보고 정리해보기 (auth)
 
 // 달력
-// Realm
+// Realm (로컬 데이터베이스로 사용,  데이터를 저장, 검색, 쿼리 및 동기화하는 기능을 제공)
 // 얼굴 인식
 // 알림 기능
 
