@@ -2248,7 +2248,7 @@ export default MyScrollComponent;
 // https://www.npmjs.com/package/react-native-responsive-screen
 // https://www.npmjs.com/package/@faker-js/faker
 
-// ################ 예제 1) 스크롤 애니메이션  Animated.event,
+// ################ 예제 1) 스크롤 애니메이션  Animated.event,    // 가로로도 비슷하게 만들기 가능
 import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
