@@ -11,6 +11,7 @@
 // 얼굴 인식
 // 알림 기능
 
+// expo라우팅 폴더 예약어 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
 
 
@@ -2333,6 +2334,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
 });
+
+// ################ 예제 3) 스크롤 애니메이션
+// npm i react-native-responsive-screen
+// npm i @faker-js/faker    // 주로 테스트 데이터를 만들거나, 모의 데이터를 생성하는데 유용
+
+// https://www.npmjs.com/package/react-native-responsive-screen
+// https://www.npmjs.com/package/@faker-js/faker
+
+
+
+
 
 
 // ######### 제스쳐 인식, 애니메이션 2, + useWindowDimensions(모바일 크기) ##################################### react-native-gesture-handler(제스처를 인식), react-native-reanimated(이동시키는 애니메이션을 구현) ##########
