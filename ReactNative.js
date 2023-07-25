@@ -2249,7 +2249,7 @@ export default MyScrollComponent;
 // https://www.npmjs.com/package/react-native-responsive-screen
 // https://www.npmjs.com/package/@faker-js/faker
 
-// ################ 예제 1) 스크롤 애니메이션
+// ################ 예제 1) 스크롤 애니메이션  Animated.event,
 import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
@@ -2384,9 +2384,87 @@ const styles = StyleSheet.create({
   },
 });
 
-// ################ 예제 2) 
+// ################ 예제 2) 텍스트 순차적 애니메이션 (Animated.timing, Animated.stagger)
+import { StatusBar } from 'expo-status-bar';
+import { useRef, useEffect } from 'react';
+import { StyleSheet, View, Animated } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
+const TEXT = '텍스트 애니메이션을 구현하기 위해 만든 앱입니다. ^_^';
+const ARR = TEXT.split(' ');
 
+export default function App() {
+  const ref_arr = useRef(
+    Array.from({ length: ARR.length }, () => new Animated.Value(0)) // ARR의 길이만큼 Animated.Value를 0으로 채운 배열을 만듬
+  ).current;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      // Value를 1로 하나하나 바꾸는 배열
+      const animations = ref_arr.map((item) => {
+        // item에 Animated.Value가 들어감   // timing은 애니메이션 값에 따라 변경하는 기능
+        return Animated.timing(item, {
+          toValue: 1, // Animated.Value를 1로 바꿈
+          duration: 100,
+          useNativeDriver: true, // JavaScript 쓰레드의 부하를 줄임
+        });
+      });
+
+      // 1로 바꾸는 애니메이션 시작 후, 완료 후 실행  // stagger는 여러 애니메이션을 배열로 전달하여 순차적으로 실행
+      Animated.stagger(100, animations).start(() => {
+        setTimeout(() => {
+          // Value를 0으로 하나하나 바꾸는 배열
+          const animations2 = ref_arr.map((item) => {
+            return Animated.timing(item, {
+              toValue: 0, // Animated.Value를 0으로 바꿈
+              duration: 100,
+              useNativeDriver: true,
+            });
+          });
+          // 배열의 뒷 부분 값부터 0으로 변경
+          Animated.stagger(100, animations2.reverse()).start();
+        }, 1000);
+      });
+    }, 3000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: wp(80) }}>
+        {ARR.map((item, index) => (
+          <Animated.Text
+            key={index}
+            style={{
+              fontSize: hp(4),
+              fontWeight: 'bold',
+              opacity: ref_arr[index], // Animated.Value가 바뀔때 마다 투명도도 바뀜
+            }}
+          >
+            {/* index가 배열의 길이보다 짧으면 item 뒤에 띄어쓰기 */}
+            {item} {index < ARR.length ? ' ' : ''}{' '}
+          </Animated.Text>
+        ))}
+      </View>
+      <StatusBar style='auto' />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 
 // ############ 제스쳐 인식과 애니메이션 #################################################################### PanResponder (제스쳐 인식), Animated (이동시키는 애니메이션을 구현) ################
