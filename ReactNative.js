@@ -2217,9 +2217,179 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
     }, []);
 // ... 생략 ...
 
-  
 
-// ############ 제스쳐 인식, 애니메이션 #################################################################### PanResponder (제스쳐 인식), Animated (이동시키는 애니메이션을 구현)  ################
+// ######## 스크롤 위치 #############################################################################################################################################################
+import React, { useState } from 'react';
+import { ScrollView, Text } from 'react-native';
+
+const MyScrollComponent = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const handleScroll = (e) => {
+    const positionY = e.nativeEvent.contentOffset.y;  // Y 좌표 스크롤 값
+    setScrollPosition(positionY);
+  };
+
+  return (
+    <ScrollView // FlatList에서도 onScroll가능
+      onScroll={handleScroll} // 스크롤시 Event를 파라미터로 전달
+      scrollEventThrottle={16} // 스크롤 이벤트 발생 빈도 설정
+    >
+      <Text>{`현재 스크롤 위치: ${scrollPosition}`}</Text>
+    </ScrollView>
+  );
+};
+
+export default MyScrollComponent;
+
+// ######## 애니메이션 Animated, 반응형, 임의값 faker ##########################################################################################################################################################
+// npm i react-native-responsive-screen  // 반응형 앱 만들때 사용
+// npm i @faker-js/faker    // 주로 테스트 데이터를 만들거나, 모의 데이터를 생성하는데 유용
+
+// https://www.npmjs.com/package/react-native-responsive-screen
+// https://www.npmjs.com/package/@faker-js/faker
+
+// ################ 예제 1) 스크롤 애니메이션
+import { StatusBar } from 'expo-status-bar';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Animated,
+  Image,
+} from 'react-native';
+import { faker } from '@faker-js/faker';
+import {
+  widthPercentageToDP as wp, // width 반응형
+  heightPercentageToDP as hp, // height 반응형
+} from 'react-native-responsive-screen';
+
+// faker로 폼에 맞는 랜덤의 임의 값들 20개를 배열로 저장
+const DATA = Array.from({ length: 20 }).map((item, index) => {
+  return {
+    userId: faker.string.uuid(),
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    avatar: faker.image.avatar(),
+    password: faker.internet.password(),
+    birthdate: faker.date.birthdate(),
+    registeredAt: faker.date.past(),
+  };
+});
+
+export default function App() {
+  const scrollY = new Animated.Value(0);  // Animated.event로 스크롤값 전달받기 위해
+
+  const renderItem = ({ item, index }) => {
+    // 선명도             // inputRange, outputRange의 같은 인덱스 값과 그 사이값도 매치되어 부드럽게 진행됨
+    const opacity = scrollY.interpolate({
+      inputRange: [-1, 0, index * hp(10), (index + 1) * hp(10)], // 스크롤 위치 입력 범위
+      outputRange: [1, 1, 1, 0], // 값 출력 범위
+    });
+
+    // 선명도
+    const scale = scrollY.interpolate({
+      inputRange: [-1, 0, index * hp(10), (index + 1) * hp(10)],
+      outputRange: [1, 1, 1, 0],
+    });
+
+    return (
+      <Animated.View
+        style={{
+          flexDirection: 'row',
+          width: wp(90),
+          height: hp(10),
+          borderRadius: 10,
+          backgroundColor: '#ddd',
+          marginHorizontal: wp(5),
+          marginBottom: hp(1),
+          opacity: opacity, // 스크롤에 따른 선명도 애니메이션
+          transform: [
+            // 스크롤에 따른 크기 애니메이션
+            {
+              scale: scale,
+            },
+          ],
+        }}
+      >
+        <View style={{ width: wp(30), justifyContent: 'center' }}>
+          <Image
+            style={{
+              marginHorizontal: wp(3),
+              borderRadius: 100,
+              width: hp(8),
+              height: hp(8),
+            }}
+            source={{ uri: item.avatar }}
+          />
+        </View>
+        <View
+          style={{
+            paddingHorizontal: wp(3),
+            width: wp(60),
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ fontSize: hp(2), fontWeight: 'bold' }}>
+            {item.username}
+          </Text>
+          <Text
+            numberOfLines={2} // 두 줄까지만
+            style={{ fontSize: hp(1.3), color: '#aaa' }}
+          >
+            {item.email}
+          </Text>
+        </View>
+      </Animated.View>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <Animated.FlatList
+        data={DATA}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        bounces={true} // 스크롤이 끝에 도달할때 바운스 효과 (Ios만 적용됨)
+        onScroll={Animated.event(
+          // 스크롤 이벤트 발생시 실행
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  // contentOffset는 스크롤 위치 가리킴
+                  y: scrollY, // Y 스크롤 위치를 scrollY에 계속 전달해줌
+                },
+              },
+            },
+          ],
+          { useNativeDriver: true }
+        )}
+      />
+      {/* 앱의 상태 표시줄을 제어 */}
+      <StatusBar style='auto' />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: hp(13),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+// ################ 예제 2) 
+
+
+
+
+// ############ 제스쳐 인식과 애니메이션 #################################################################### PanResponder (제스쳐 인식), Animated (이동시키는 애니메이션을 구현) ################
 // ################ 예제 1) 중앙으로 되돌아오는 정사각형
 import React from 'react';
 import {
@@ -2335,20 +2505,8 @@ const styles = StyleSheet.create({
   },
 });
 
-// ################ 예제 3) 스크롤 애니메이션
-// npm i react-native-responsive-screen
-// npm i @faker-js/faker    // 주로 테스트 데이터를 만들거나, 모의 데이터를 생성하는데 유용
-
-// https://www.npmjs.com/package/react-native-responsive-screen
-// https://www.npmjs.com/package/@faker-js/faker
-
-
-
-
-
-
-// ######### 제스쳐 인식, 애니메이션 2, + useWindowDimensions(모바일 크기) ##################################### react-native-gesture-handler(제스처를 인식), react-native-reanimated(이동시키는 애니메이션을 구현) ##########
-// 기존 PanResponder, Animated는 자바스크립트 스레드기반으로 동작하고 gesture-handler와 reanimated는 UI스레드 기반으로 동작함
+// ######### 제스쳐 인식과 애니메이션 2, + useWindowDimensions(모바일 크기) ##################################### react-native-gesture-handler(제스처를 인식), react-native-reanimated(이동시키는 애니메이션을 구현) ##########
+// 기존 PanResponder, Animated는 자바스크립트 스레드 기반으로 동작하고, gesture-handler와 reanimated는 UI스레드 기반으로 동작함
 // 그리고 성능 향상에 도움, 코드 최적화, 더 많은 제스쳐지원
 
 // npx expo install react-native-gesture-handler react-native-reanimated
@@ -2452,31 +2610,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-
-// ######## 스크롤 위치 #############################################################################################################################################################
-import React, { useState } from 'react';
-import { ScrollView, Text } from 'react-native';
-
-const MyScrollComponent = () => {
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  const handleScroll = (e) => {
-    const positionY = e.nativeEvent.contentOffset.y;  // Y 좌표 스크롤 값
-    setScrollPosition(positionY);
-  };
-
-  return (
-    <ScrollView // FlatList에서도 onScroll가능
-      onScroll={handleScroll} // 스크롤시 Event를 파라미터로 전달
-      scrollEventThrottle={16} // 스크롤 이벤트 발생 빈도 설정
-    >
-      <Text>{`현재 스크롤 위치: ${scrollPosition}`}</Text>
-    </ScrollView>
-  );
-};
-
-export default MyScrollComponent;
 
 
 // ########   #############################################################################################################################################################
