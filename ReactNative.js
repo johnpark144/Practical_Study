@@ -47,8 +47,18 @@
 // 페이지 네이션
 // deploy -- publish, 배포  
 // ------------------ 유용 ----------------------
-
-
+// 카메라 -- 카메라 여부
+// splash screen -- 비디오, lottie, 애니메이션 종료시 
+// KeyboardAvoidingView, Platform
+// AsyncStorage -- setItem, getItem
+// 스크롤 위치 -- e.nativeEvent.contentOffset.y, Y 좌표 스크롤 값, 발생 빈도
+// 애니메이션 Animated, 반응형, 임의값 fake -- 모의 데이터
+// 스크롤 애니메이션 -- widthPercentageToDP, heightPercentageToDP, Animated.Value, Animated.event 바운스 효과, 스크롤 위치를 scrollY에 계속 전달, StatusBar, 앱의 상태 표시줄을 제어
+// 텍스트 순차적 애니메이션 -- Animated.timing, Animated.stagger
+// 제스쳐 인식과 애니메이션 -- PanResponder, 중앙으로 되돌아오는 정사각형, Animated.ValueXY, 상대적 좌표 값, Animated.spring, 옴겨진 곳에 지속적으로 머무는 원, setOffset, 현재 위치를 계산, 
+// -->, flattenOffset, 현재 위치값을 애니메이션 값에 반영, getLayout
+// 제스쳐 인식과 애니메이션 2 -- 모바일 크기, useWindowDimensions, gesture-handler, reanimated, 잠금화면 슬라이드용 직사각형 공간
+// Expo 라우터 폴더 라우팅, 탭바 -- notFound, Link, Redirect
 
 
 // ######### 자주 쓰이는 라이브러리들 참고 #######################################################################################################################
