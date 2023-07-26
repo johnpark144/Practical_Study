@@ -51,7 +51,7 @@
 
 // npx create-expo-app@latest // 다른 라우터(React Navigation 등)용으로 네이티브 앱 만들기
 // npx create-expo-app@latest -e with-router  // Expo-router용으로 리액트 네이티브 앱 만들기
-
+// npx create-expo-app@latest tabs-app -e with-router  // Expo-router용으로 tabs바와 함께 리액트 네이티브 앱 만들기
 
 // ######## Tailwind css ##################################################################################################################################
 // 타입스크립트 사용하려면 홈페이지 참고
