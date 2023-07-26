@@ -9,12 +9,22 @@
 // 달력
 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
-
-
-
-
-
-
+// 기본 세팅
+// Tailwind 
+// styled-components
+// eslint, prettier
+// 기본 컴포넌트 -- View, Text, SafeAreaView, StyleSheet
+// 버튼 -- TouchableOpacity, Button, numberOfLines, 몇 줄까지 쓸지
+// 아이콘 -- 아이콘 검색
+// FlatList -- map과 비슷, 스크롤 가능, StatusBar, 상태바
+// Image, ImageBackground, 배열 스타일 -- 이미지, 배경, 스타일을 배열로 주기
+// 네비게이션, 라우팅 -- React Navigation, react-native-screens, 앱의 화면 전환과 탐색을 최적화, react-native-safe-area-context, 안전 영역 안에, 
+// -->, bottom-tabs, 버텀 탭, native-stack, only 위, drawer, 서랍식, Navigator, Screen, 네비게이션되 있을때 색깔, 그 외에 기존 색깔, 버튼 누르는 부분 스타일, 헤더의 뒷 배경과 관련된 속성, headerTitleStyle
+// 로딩 -- ActivityIndicator, 스피너
+// 환경변수 -- .env
+// expo-location -- 위치정보 가져와도 되는지 요청, 현재 위치 정보, 날씨정보 가져오는 커스텀 훅, 정보를 네비게이션에 전달, 네비게이션탭들에 props를 넘겨주고 싶을떄
+// 시간 관련 라이브러리 -- 어떤 포맷, moment    
+// 
 
 
 // ######### 자주 쓰이는 라이브러리들 참고 #######################################################################################################################
@@ -229,7 +239,7 @@ function OurButton() {
 
   return (
     <>
-      <TouchableOpacity style={styles.container} onPress={onPress}>  // 스타일시트로 스타일 줄수있음, (더 자주쓰임)
+      <TouchableOpacity style={styles.container} onPress={onPress}>
         <Text style={styles.buttonText} numberOfLines={1}>Hello</Text>  {/* numberOfLines 으로 몇 줄까지 쓸지 작성하고 초과하면 ... 처리 */}
       </TouchableOpacity>
       <Button
@@ -777,6 +787,531 @@ return (
       </View>
   // ...생략...
   );
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@ Deliveroo_clone @@@@ (React Navigation) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+// ######## React Navigation의 useNavigation, useRoute ################################################################################### useNavigation의 setOptions ##########################
+// @react-navigation/native의 useNavigation의 메서드
+  // "addListener": 
+  // "canGoBack":
+  // "dispatch": 
+  // "getId":
+  // "getParent": 
+  // "getState": 
+  // "goBack": 이전 스크린으로 이동합니다.
+  // "isFocused":
+  // "navigate": 지정된 스크린으로 이동합니다.
+  // "pop": 스택에서 현재 스크린을 팝하여 이전 스크린으로 이동합니다.
+  // "popToTop": 
+  // "push": 새로운 스크린을 스택에 푸시하여 이동합니다.
+  // "removeListener": 
+  // "replace": 현재 스크린을 다른 스크린으로 대체합니다.
+  // "reset": 스택 내의 모든 스크린을 교체하여 새로운 스크린으로 이동합니다.
+  // "setOptions": 스크린 옵션을 바꿔줌
+  // "setParams": 다른 스크린으로 매개변수를 전달합니다.
+
+// ################
+import { View, Text, StyleSheet } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+
+const HomeScreen = () => {
+  const { container } = styles;
+  const navigation = useNavigation(); // navigation 변수에
+
+  // 첫 렌더링전
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'testing',  // 위 부분 타이틀 바꿔주기
+      headerShown: false,   // 헤더 보일지 여부
+    });
+  }, []);
+
+  return (
+    <View>
+      <Text style={container}>HomeScreen</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    color: 'blue',
+  },
+});
+
+export default HomeScreen;
+
+// ################################################################################################################ useNavigation의 navigate (페이지 이동)과 useRoute (Params 가져오기) ###########
+// ################ App.js
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screen/HomeScreen';
+import RestaurantScreen from './screen/RestaurantScreen';
+
+const { Navigator, Screen } = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Navigator>
+        {/* name은 navigate할때 사용됨 */}
+        <Screen name='Home' component={HomeScreen} />
+        <Screen name='Restaurant' component={RestaurantScreen} />
+      </Navigator>
+    </NavigationContainer>
+  );
+}
+
+// ################ RestaurantCard.js (useNavigation으로 props전달하며 navigate시킴)
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+const RestaurantCard = ({
+  id,
+  imgUrl,
+  title,
+  rating,
+  genre,
+  address,
+  short_description,
+  dishes,
+  long,
+  lat,
+}) => {
+const navigation = useNavigation();  // navigate 하기위해 사용
+return (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('Restaurant', {   // navigation기능으로 Restaurant으로 감, 2번째 인수로 props전달
+          id,
+          imgUrl,
+          title,
+          rating,
+          genre,
+          address,
+          short_description,
+          dishes,
+          long,
+          lat,
+        });
+      }}
+      style={card}
+    >
+        // ... 생략 ...
+</TouchableOpacity>
+  );
+};
+
+// ################ RestaurantScreen.js (navigate된곳과 params)
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { useRoute } from '@react-navigation/native';
+
+const RestaurantScreen = () => {
+  const {
+    params: {
+      id,
+      imgUrl,
+      title,
+      rating,
+      genre,
+      address,
+      short_description,
+      dishes,
+      long,
+      lat,
+    },
+  } = useRoute();    // navigate되며 전달된 props를 params로받음
+  return (
+    <View>
+      <Text>{title}</Text>
+    </View>
+  );
+};
+
+export default RestaurantScreen;
+
+
+// ######## Sanity.io ###################################################################################################################### sanity 서버 부분 #################################
+// https://www.sanity.io/      // Sanity 사이트에서 프로젝트를 만들어야함
+// npm create sanity@latest -- --template get-started --project [프로젝트ID] --dataset production --provider google  // 프로젝트와 sanity 연결  (폴더명을 sanity로 바꿔주는게 나음)
+// cd [폴더명]  -->  npm start    // sanity 폴더안에 들어가서 작동시키기 (스키마 지정 후)
+
+
+// ################ [폴더명]/schemas/index.ts 
+import category from './category'
+import dish from './dish'
+import featured from './featured'
+import restaurant from './restaurant'
+
+export const schemaTypes = [restaurant, category, dish, featured]
+
+// ################ [폴더명]/schemas/restaurant.ts 
+export default {
+  name: 'restaurant',
+  title: 'Restaurant',
+  type: 'document',
+  fields: [
+    {
+      name: 'name',
+      type: 'string',
+      title: 'Restaurant name',
+      validation: (Rule: any) => Rule.required(), // 무조건 포함 되야 하는 항목
+    },
+    {
+      name: 'short_description',
+      type: 'string',
+      title: 'Short description',
+      validation: (Rule: any) => Rule.max(200), // 200자 이내로
+    },
+    {
+      name: 'image',
+      type: 'image', // 이미지 첨부 가능
+      title: 'Image of the Restraurant',
+    },
+    {
+      name: 'lat',
+      type: 'number',
+      title: 'Latitude of the Restraurant',
+    },
+    {
+      name: 'long',
+      type: 'number',
+      title: 'Latitude of the Restraurant',
+    },
+    {
+      name: 'address',
+      type: 'string',
+      title: 'Restaurant address',
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: 'rating',
+      type: 'number',
+      title: 'Enter a Rating from (1-5 Stars)',
+      validation: (Rule: any) =>
+        Rule.required().min(1).max(5).error('Please enter a Valur between 1 and 5'), // 최소 1 최대 5까지 가능, 에러메세지
+    },
+    {
+      name: 'type',
+      type: 'reference',
+      title: 'Category',
+      validation: (Rule: any) => Rule.required(),
+      to: [{type: 'category'}], // category 라는 파일을 세부 스키마로 지정
+    },
+    {
+      name: 'dishes',
+      type: 'array',
+      title: 'Dishes',
+      of: [{type: 'reference', to: [{type: 'dish'}]}], // 배열 필드에서 사용(여러 개 타입 나열가능)  // dish 라는 파일을 세부 스키마로 지정
+    },
+  ],
+}
+
+// ################ [폴더명]/schemas/category.ts 
+export default {
+  name: 'category',
+  type: 'document',
+  title: 'Menu Category',
+  fields: [
+    {
+      name: 'name',
+      type: 'string',
+      title: 'Categoty name',
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: 'image',
+      type: 'image',
+      title: 'Image of the Categoty',
+    },
+  ],
+}
+// ############################################################################################################################# sanity 클라이언트 연결하기 ##############################
+// npm i @sanity/client @sanity/image-url
+// npm install react-native-url-polyfill --save-dev  // 폴리필
+
+// ################ sanity.js  // 클라이언트 쪽 package.json 과 동일경로애서
+import { createClient } from '@sanity/client';
+import imageUrlBuilder from '@sanity/image-url';
+import 'react-native-url-polyfill/auto';
+
+const client = createClient({
+  projectId: 'zpj6qd2o', // sanity.config.ts 혹은 sanity사이트에있음
+  dataset: 'production',
+  useCdn: true,
+  apiVersion: '2021-10-21',
+});
+
+const builder = imageUrlBuilder(client);
+export const urlFor = (source) => builder.image(source);
+
+export default client;
+
+// ################
+// http://localhost:19006이랑 http://localhost:3000를 CORS origins 리스트에 적어두기
+// 방법 1 ) https://www.sanity.io/manage/personal/project/(프로젝트ID)/api에 CORS origins 적기
+// 방법 2 ) cd sanity --> sanity cors add http://localhost:19006
+
+// ################################################################################################################################ sanity 배포하기 ##############################
+// cd sanity --> sanity deploy    (로컬과 배포한 사이트가 이때부터 연동됨)
+
+// ################################################################################################################################# graphQL 쿼리 예시 ############################
+// sanity 배포한 사이트에 Vision에서 쿼리
+
+*[_type == "featured"]{  // 여러가지 조건 넣을 수 있음
+  ...,                  //  전체 불러오기
+  restaurants[]->{  //  restaurants 배열에서
+    ...,
+    dishes[]->,
+    type->{
+      name  //  name만 불러오기
+    }
+  }
+}
+
+// ############################################################################################################################## sanity Fetch 하기, 다이나믹 쿼리, 이미지url ################
+// fetch 하는데 오류가 있는 경우 sanity 데이터들이 publish가 잘 되었는지 확인해줘야함
+
+// ################ HomeScreen.js
+import React, { useState, useEffect } from 'react';
+import sanityClient from '../sanity';  // projectId와 연결된 데이터 호출 하게 가능
+// ... 생략 ...
+
+const HomeScreen = () => {
+// ... 생략 ...
+const [featuredCategories, setFeaturedCategories] = useState([]);
+useEffect(() => {
+    sanityClient
+      .fetch(    // GraphQL 쿼리에 맞춰서 Fetch함
+       `
+          *[_type == "featured"]{
+            ...,
+            restaurants[]->{
+              ...,
+              dishes[]->
+              }
+            }
+        `
+      )
+      .then((data) => {
+        setFeaturedCategories(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  
+// ... 생략 ...
+return (
+// ... 생략 ...
+      {featuredCategories?.map((category) => (  // FlatList 사용해도 됨
+        <FeaturedRow
+          key={category._id}
+          id={category._id}
+          title={category.name}
+          description={category.short_description}
+        />
+      ))}
+  // ... 생략 ...
+)}
+
+
+// ################ FeaturedRow.js  (GraphQL 쿼리 다이나믹하게 적용)
+import React, { useEffect, useState } from 'react';
+import RestaurantCard from './RestaurantCard';
+import sanityClient from '../sanity'; // projectId와 연결된 데이터 호출 하게 가능
+
+const FeaturedRow = ({ id, title, description }) => {
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    sanityClient
+      .fetch(
+        // 2번째 인수로 id를 $id 부분에 다이나믹하게 적용
+        `
+            *[_type == "featured" && _id == $id]{
+                ...,
+                restaurants[]->{
+                  ...,
+                  dishes[]->,
+                  type->{
+                    name
+                  }
+                }
+              }[0]
+            `,
+        { id } // { id:id }  // props id를 전달
+      )
+      .then((data) => {
+        setRestaurants(data?.restaurants);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  return (
+        {/* 레스토랑카드.... */}
+        {restaurants?.map((restaurant) => (
+          <RestaurantCard
+            key={restaurant._id}
+            id={restaurant._id}
+            imgUrl={restaurant.image}
+            title={restaurant.name}
+            rating={restaurant.rating}
+            genre={restaurant.type?.name}
+            address={restaurant.address}
+            short_description={restaurant.short_description}
+            dishes={restaurant.dishes}
+            long={restaurant.long}
+            lat={restaurant.lat}
+          />
+        ))}
+};
+  // ... 생략 ...
+
+// ################ RestaurantCard.js  (Sanity 이미지 Url사용)
+import {
+  Image,
+} from 'react-native';
+import { urlFor } from '../sanity'; // 이미지url 생성용
+// ... 생략 ...
+const RestaurantCard = ({
+  id,
+  imgUrl,
+  title,
+  rating,
+  genre,
+  address,
+  short_description,
+  dishes,
+  long,
+  lat,
+}) => {
+    // ... 생략 ...
+  return (
+    // ... 생략 ...
+      <Image
+        source={{
+          uri: urlFor(imgUrl).url(), // Sanity에서 Fetch해온 이미지를 Url로 전환하여 사용
+        }}
+        style={cardImage}
+      />
+    // ... 생략 ...
+  );
+};
+  // ... 생략 ...
+
+// ######## 애니메이션 효과 ######################################################################################################################################################
+// npm i react-native-animatable -save    // 애니메이션 주기
+// https://www.npmjs.com/package/react-native-animatable 
+
+// ################ 
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Animatable from 'react-native-animatable';
+
+const PreparingOrderScreen = () => {
+  const { orderScreenContainer, PreparingOrderImage } = styles;
+  return (
+    <SafeAreaView style={orderScreenContainer}>
+      <Animatable.Image // Text도 가능
+        source={require('../assets/orderLoading.gif')}
+        animation='slideInUp' // 애니메이션 종류
+        iterationCount={1} // 반복 회수
+        style={PreparingOrderImage}
+      />
+    </SafeAreaView>
+  );
+};
+
+export default PreparingOrderScreen;
+
+const styles = StyleSheet.create({
+  orderScreenContainer: {
+    backgroundColor: '#51B8CC',
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  PreparingOrderImage: {
+    height: 150,
+    width: 150,
+  },
+});
+
+// ######## progress바 라이브러리 (로딩중, 스피너) #################################################################################################################################
+// npm i react-native-progress    // progress Bar
+// https://www.npmjs.com/package/react-native-progress
+
+// npx expo install react-native-svg  // react-native-progress 사용 중 svg 오류뜰 경우 설치
+
+// ################ 
+import React from 'react';
+import * as Progress from 'react-native-progress';
+
+const PreparingOrderScreen = () => {
+  return (
+      <Progress.Circle size={60} indeterminate={true} color='white' />
+  );
+};
+
+
+// ######## 그림자 효과 ######################################################################################################################################################
+const styles = StyleSheet.create({
+  etaContainer: {
+    shadowColor: 'black', // 그림자 색
+    elevation: 4, // 그림자 강도
+  },
+});
+
+// ######## Map ######################################################################################################################################################
+// expo install react-native-maps
+
+// ################ 여기선 구현하지 않은 참고 사항
+// 지도 주소 찾기 기능은 googlePlacesAutocpmplete 사용
+// 지도 길찾기 기능은 react-native-maps-directions을 사용
+// 두 지점 가는데 걸리시는 시간 및 거리 찾기 기능은 API인 googleapi의 distancematrix를 사용
+
+// ################ 
+import MapView, { MapMarker } from 'react-native-maps';
+
+const DeliveryScreen = () => {
+  return (
+      {/* 지도 */}
+      <MapView
+        initialRegion={{   // 초기 지역 위도, 경도
+          latitude: restaurant.lat,
+          longitude: restaurant.long,
+          latitudeDelta: 0.005, // 첫 화면 확대 정도(작을수록 확대)
+          longitudeDelta: 0.005, // 첫 화면 확대 정도(작을수록 확대)
+        }}
+        mapType='mutedStandard' // 지도 종류
+        style={MapContainer}
+      >
+        <MapMarker
+          coordinate={{ latitude: restaurant.lat, longitude: restaurant.long }}
+          title={restaurant.title}  // 마커 타이틀
+          description={restaurant.short_description}    // 마커 설명
+          identifier='origin'
+          pinColor='#00CCBB'
+        />
+      </MapView>
+  );
+};
+
+export default DeliveryScreen;
 
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -1362,550 +1897,6 @@ registerRootComponent(App);
 
 // ################
 // expo publish    // 배포  // bash에서 작동 안되면 cmd 터미널에서
-
-
-
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// @@@@@@@@@@@ Deliveroo_clone @@@@ (React Navigation) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-// ######## React Navigation의 useNavigation, useRoute ################################################################################### useNavigation의 setOptions ##########################
-// @react-navigation/native의 useNavigation의 메서드
-  // "addListener": 
-  // "canGoBack":
-  // "dispatch": 
-  // "getId":
-  // "getParent": 
-  // "getState": 
-  // "goBack": 이전 스크린으로 이동합니다.
-  // "isFocused":
-  // "navigate": 지정된 스크린으로 이동합니다.
-  // "pop": 스택에서 현재 스크린을 팝하여 이전 스크린으로 이동합니다.
-  // "popToTop": 
-  // "push": 새로운 스크린을 스택에 푸시하여 이동합니다.
-  // "removeListener": 
-  // "replace": 현재 스크린을 다른 스크린으로 대체합니다.
-  // "reset": 스택 내의 모든 스크린을 교체하여 새로운 스크린으로 이동합니다.
-  // "setOptions": 스크린 옵션을 바꿔줌
-  // "setParams": 다른 스크린으로 매개변수를 전달합니다.
-
-// ################
-import { View, Text, StyleSheet } from 'react-native';
-import React, { useLayoutEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-
-const HomeScreen = () => {
-  const { container } = styles;
-  const navigation = useNavigation(); // navigation 변수에
-
-  // 첫 렌더링전
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: 'testing',  // 위 부분 타이틀 바꿔주기
-      headerShown: false,   // 헤더 보일지 여부
-    });
-  }, []);
-
-  return (
-    <View>
-      <Text style={container}>HomeScreen</Text>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    color: 'blue',
-  },
-});
-
-export default HomeScreen;
-
-// ################################################################################################################ useNavigation의 navigate (페이지 이동)과 useRoute (Params 가져오기) ###########
-// ################ App.js
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screen/HomeScreen';
-import RestaurantScreen from './screen/RestaurantScreen';
-
-const { Navigator, Screen } = createNativeStackNavigator();
-
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Navigator>
-        {/* name은 navigate할때 사용됨 */}
-        <Screen name='Home' component={HomeScreen} />
-        <Screen name='Restaurant' component={RestaurantScreen} />
-      </Navigator>
-    </NavigationContainer>
-  );
-}
-
-// ################ RestaurantCard.js (useNavigation으로 props전달하며 navigate시킴)
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-const RestaurantCard = ({
-  id,
-  imgUrl,
-  title,
-  rating,
-  genre,
-  address,
-  short_description,
-  dishes,
-  long,
-  lat,
-}) => {
-const navigation = useNavigation();  // navigate 하기위해 사용
-return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('Restaurant', {   // navigation기능으로 Restaurant으로 감, 2번째 인수로 props전달
-          id,
-          imgUrl,
-          title,
-          rating,
-          genre,
-          address,
-          short_description,
-          dishes,
-          long,
-          lat,
-        });
-      }}
-      style={card}
-    >
-        // ... 생략 ...
-</TouchableOpacity>
-  );
-};
-
-// ################ RestaurantScreen.js (navigate된곳과 params)
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { useRoute } from '@react-navigation/native';
-
-const RestaurantScreen = () => {
-  const {
-    params: {
-      id,
-      imgUrl,
-      title,
-      rating,
-      genre,
-      address,
-      short_description,
-      dishes,
-      long,
-      lat,
-    },
-  } = useRoute();    // navigate되며 전달된 props를 params로받음
-  return (
-    <View>
-      <Text>{title}</Text>
-    </View>
-  );
-};
-
-export default RestaurantScreen;
-
-
-// ######## Sanity.io ###################################################################################################################### sanity 서버 부분 #################################
-// https://www.sanity.io/      // Sanity 사이트에서 프로젝트를 만들어야함
-// npm create sanity@latest -- --template get-started --project [프로젝트ID] --dataset production --provider google  // 프로젝트와 sanity 연결  (폴더명을 sanity로 바꿔주는게 나음)
-// cd [폴더명]  -->  npm start    // sanity 폴더안에 들어가서 작동시키기 (스키마 지정 후)
-
-
-// ################ [폴더명]/schemas/index.ts 
-import category from './category'
-import dish from './dish'
-import featured from './featured'
-import restaurant from './restaurant'
-
-export const schemaTypes = [restaurant, category, dish, featured]
-
-// ################ [폴더명]/schemas/restaurant.ts 
-export default {
-  name: 'restaurant',
-  title: 'Restaurant',
-  type: 'document',
-  fields: [
-    {
-      name: 'name',
-      type: 'string',
-      title: 'Restaurant name',
-      validation: (Rule: any) => Rule.required(), // 무조건 포함 되야 하는 항목
-    },
-    {
-      name: 'short_description',
-      type: 'string',
-      title: 'Short description',
-      validation: (Rule: any) => Rule.max(200), // 200자 이내로
-    },
-    {
-      name: 'image',
-      type: 'image', // 이미지 첨부 가능
-      title: 'Image of the Restraurant',
-    },
-    {
-      name: 'lat',
-      type: 'number',
-      title: 'Latitude of the Restraurant',
-    },
-    {
-      name: 'long',
-      type: 'number',
-      title: 'Latitude of the Restraurant',
-    },
-    {
-      name: 'address',
-      type: 'string',
-      title: 'Restaurant address',
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: 'rating',
-      type: 'number',
-      title: 'Enter a Rating from (1-5 Stars)',
-      validation: (Rule: any) =>
-        Rule.required().min(1).max(5).error('Please enter a Valur between 1 and 5'), // 최소 1 최대 5까지 가능, 에러메세지
-    },
-    {
-      name: 'type',
-      type: 'reference',
-      title: 'Category',
-      validation: (Rule: any) => Rule.required(),
-      to: [{type: 'category'}], // category 라는 파일을 세부 스키마로 지정
-    },
-    {
-      name: 'dishes',
-      type: 'array',
-      title: 'Dishes',
-      of: [{type: 'reference', to: [{type: 'dish'}]}], // 배열 필드에서 사용(여러 개 타입 나열가능)  // dish 라는 파일을 세부 스키마로 지정
-    },
-  ],
-}
-
-// ################ [폴더명]/schemas/category.ts 
-export default {
-  name: 'category',
-  type: 'document',
-  title: 'Menu Category',
-  fields: [
-    {
-      name: 'name',
-      type: 'string',
-      title: 'Categoty name',
-      validation: (Rule: any) => Rule.required(),
-    },
-    {
-      name: 'image',
-      type: 'image',
-      title: 'Image of the Categoty',
-    },
-  ],
-}
-// ############################################################################################################################# sanity 클라이언트 연결하기 ##############################
-// npm i @sanity/client @sanity/image-url
-// npm install react-native-url-polyfill --save-dev  // 폴리필
-
-// ################ sanity.js  // 클라이언트 쪽 package.json 과 동일경로애서
-import { createClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
-import 'react-native-url-polyfill/auto';
-
-const client = createClient({
-  projectId: 'zpj6qd2o', // sanity.config.ts 혹은 sanity사이트에있음
-  dataset: 'production',
-  useCdn: true,
-  apiVersion: '2021-10-21',
-});
-
-const builder = imageUrlBuilder(client);
-export const urlFor = (source) => builder.image(source);
-
-export default client;
-
-// ################
-// http://localhost:19006이랑 http://localhost:3000를 CORS origins 리스트에 적어두기
-// 방법 1 ) https://www.sanity.io/manage/personal/project/(프로젝트ID)/api에 CORS origins 적기
-// 방법 2 ) cd sanity --> sanity cors add http://localhost:19006
-
-// ################################################################################################################################ sanity 배포하기 ##############################
-// cd sanity --> sanity deploy    (로컬과 배포한 사이트가 이때부터 연동됨)
-
-// ################################################################################################################################# graphQL 쿼리 예시 ############################
-// sanity 배포한 사이트에 Vision에서 쿼리
-
-*[_type == "featured"]{  // 여러가지 조건 넣을 수 있음
-  ...,                  //  전체 불러오기
-  restaurants[]->{  //  restaurants 배열에서
-    ...,
-    dishes[]->,
-    type->{
-      name  //  name만 불러오기
-    }
-  }
-}
-
-// ############################################################################################################################## sanity Fetch 하기, 다이나믹 쿼리, 이미지url ################
-// fetch 하는데 오류가 있는 경우 sanity 데이터들이 publish가 잘 되었는지 확인해줘야함
-
-// ################ HomeScreen.js
-import React, { useState, useEffect } from 'react';
-import sanityClient from '../sanity';  // projectId와 연결된 데이터 호출 하게 가능
-// ... 생략 ...
-
-const HomeScreen = () => {
-// ... 생략 ...
-const [featuredCategories, setFeaturedCategories] = useState([]);
-useEffect(() => {
-    sanityClient
-      .fetch(    // GraphQL 쿼리에 맞춰서 Fetch함
-       `
-          *[_type == "featured"]{
-            ...,
-            restaurants[]->{
-              ...,
-              dishes[]->
-              }
-            }
-        `
-      )
-      .then((data) => {
-        setFeaturedCategories(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-  
-// ... 생략 ...
-return (
-// ... 생략 ...
-      {featuredCategories?.map((category) => (  // FlatList 사용해도 됨
-        <FeaturedRow
-          key={category._id}
-          id={category._id}
-          title={category.name}
-          description={category.short_description}
-        />
-      ))}
-  // ... 생략 ...
-)}
-
-
-// ################ FeaturedRow.js  (GraphQL 쿼리 다이나믹하게 적용)
-import React, { useEffect, useState } from 'react';
-import RestaurantCard from './RestaurantCard';
-import sanityClient from '../sanity'; // projectId와 연결된 데이터 호출 하게 가능
-
-const FeaturedRow = ({ id, title, description }) => {
-  const [restaurants, setRestaurants] = useState([]);
-
-  useEffect(() => {
-    sanityClient
-      .fetch(
-        // 2번째 인수로 id를 $id 부분에 다이나믹하게 적용
-        `
-            *[_type == "featured" && _id == $id]{
-                ...,
-                restaurants[]->{
-                  ...,
-                  dishes[]->,
-                  type->{
-                    name
-                  }
-                }
-              }[0]
-            `,
-        { id } // { id:id }  // props id를 전달
-      )
-      .then((data) => {
-        setRestaurants(data?.restaurants);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  return (
-        {/* 레스토랑카드.... */}
-        {restaurants?.map((restaurant) => (
-          <RestaurantCard
-            key={restaurant._id}
-            id={restaurant._id}
-            imgUrl={restaurant.image}
-            title={restaurant.name}
-            rating={restaurant.rating}
-            genre={restaurant.type?.name}
-            address={restaurant.address}
-            short_description={restaurant.short_description}
-            dishes={restaurant.dishes}
-            long={restaurant.long}
-            lat={restaurant.lat}
-          />
-        ))}
-};
-  // ... 생략 ...
-
-// ################ RestaurantCard.js  (Sanity 이미지 Url사용)
-import {
-  Image,
-} from 'react-native';
-import { urlFor } from '../sanity'; // 이미지url 생성용
-// ... 생략 ...
-const RestaurantCard = ({
-  id,
-  imgUrl,
-  title,
-  rating,
-  genre,
-  address,
-  short_description,
-  dishes,
-  long,
-  lat,
-}) => {
-    // ... 생략 ...
-  return (
-    // ... 생략 ...
-      <Image
-        source={{
-          uri: urlFor(imgUrl).url(), // Sanity에서 Fetch해온 이미지를 Url로 전환하여 사용
-        }}
-        style={cardImage}
-      />
-    // ... 생략 ...
-  );
-};
-  // ... 생략 ...
-
-// ######## 애니메이션 효과 ######################################################################################################################################################
-// npm i react-native-animatable -save    // 애니메이션 주기
-// https://www.npmjs.com/package/react-native-animatable 
-
-// ################ 
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import * as Animatable from 'react-native-animatable';
-
-const PreparingOrderScreen = () => {
-  const { orderScreenContainer, PreparingOrderImage } = styles;
-  return (
-    <SafeAreaView style={orderScreenContainer}>
-      <Animatable.Image // Text도 가능
-        source={require('../assets/orderLoading.gif')}
-        animation='slideInUp' // 애니메이션 종류
-        iterationCount={1} // 반복 회수
-        style={PreparingOrderImage}
-      />
-    </SafeAreaView>
-  );
-};
-
-export default PreparingOrderScreen;
-
-const styles = StyleSheet.create({
-  orderScreenContainer: {
-    backgroundColor: '#51B8CC',
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  PreparingOrderImage: {
-    height: 150,
-    width: 150,
-  },
-});
-
-// ######## progress바 라이브러리 (로딩중, 스피너) #################################################################################################################################
-// npm i react-native-progress    // progress Bar
-// https://www.npmjs.com/package/react-native-progress
-
-// npx expo install react-native-svg  // react-native-progress 사용 중 svg 오류뜰 경우 설치
-
-// ################ 
-import React from 'react';
-import * as Progress from 'react-native-progress';
-
-const PreparingOrderScreen = () => {
-  return (
-      <Progress.Circle size={60} indeterminate={true} color='white' />
-  );
-};
-
-
-// ######## 그림자 효과 ######################################################################################################################################################
-const styles = StyleSheet.create({
-  etaContainer: {
-    shadowColor: 'black', // 그림자 색
-    elevation: 4, // 그림자 강도
-  },
-});
-
-// ######## Map ######################################################################################################################################################
-// expo install react-native-maps
-
-// ################ 여기선 구현하지 않은 참고 사항
-// 지도 주소 찾기 기능은 googlePlacesAutocpmplete 사용
-// 지도 길찾기 기능은 react-native-maps-directions을 사용
-// 두 지점 가는데 걸리시는 시간 및 거리 찾기 기능은 API인 googleapi의 distancematrix를 사용
-
-// ################ 
-import MapView, { MapMarker } from 'react-native-maps';
-
-const DeliveryScreen = () => {
-  return (
-      {/* 지도 */}
-      <MapView
-        initialRegion={{   // 초기 지역 위도, 경도
-          latitude: restaurant.lat,
-          longitude: restaurant.long,
-          latitudeDelta: 0.005, // 첫 화면 확대 정도(작을수록 확대)
-          longitudeDelta: 0.005, // 첫 화면 확대 정도(작을수록 확대)
-        }}
-        mapType='mutedStandard' // 지도 종류
-        style={MapContainer}
-      >
-        <MapMarker
-          coordinate={{ latitude: restaurant.lat, longitude: restaurant.long }}
-          title={restaurant.title}  // 마커 타이틀
-          description={restaurant.short_description}    // 마커 설명
-          identifier='origin'
-          pinColor='#00CCBB'
-        />
-      </MapView>
-  );
-};
-
-export default DeliveryScreen;
-
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// @@@@@@@@@@@ @@@@ (Expo router ) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// 공사중
-
-
-
-
-
-
-// ########  ############################################################################################################################################################
-// ################ 
-
-
-
-
 
 
 // ###############################################################################################################################
