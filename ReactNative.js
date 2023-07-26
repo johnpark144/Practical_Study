@@ -5,15 +5,16 @@
 // Realm (로컬 데이터베이스로 사용,  데이터를 저장, 검색, 쿼리 및 동기화하는 기능을 제공)
 // 인덱스 적고 프로젝트 만들어 보기
 
+
 // Vibration(바이브레이션) : https://reactnative.dev/docs/vibration  (이처럼 자주쓰일것 같은 것들은 리액트네이티브, 엑스포 docs 링크 걸어두고 나중에 사용할떄 정리)
 // alert
 // 얼굴 인식
 // 알림 기능
 // 달력
 
-// expo라우팅 폴더 예약어 
-// Link
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
+
+
 
 
 
@@ -2685,10 +2686,63 @@ const styles = StyleSheet.create({
   },
 });
 
+// ######## Expo 라우터 폴더 라우팅(file base), 탭바, notFound, Link, Redirect #####################################################################################################################################
+// ################ app/_layout.jsx
+import { Stack } from 'expo-router';
 
-// ######## Expo 라우터 폴더 라우팅(file base), 탭바 #############################################################################################################################################################
+const Layout = () => {
+  return (
+    // 모든 스크린이 Stack을 거침
+    <Stack>
+      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+    </Stack>
+  );
+};
+
+export default Layout;
+
+// ################ app/index.jsx
+import { Redirect } from 'expo-router';
+
+const StartPage = () => {
+  return <Redirect href='/home' />; // home으로 Redirect 해줌
+};
+
+export default StartPage;
+
+// ################ app/[...notFound].jsx    // 자동 notFound 페이지  ([...] 사실 폴더 이름은 아무거나 상관없음)
+export { ErrorBoundary } from 'expo-router';
+
+// ################ app/(tabs)/_layout.jsx
+import { Tabs } from 'expo-router';
+
+export default () => {
+  return (
+    // 두 버튼 탭을 생성 (name안은 라우트 입력)
+    <Tabs>
+      <Tabs.Screen name='home' options={{ headerShown: false }} />
+      <Tabs.Screen name='list' />
+    </Tabs>
+  );
+};
+
+// ################ app/(tabs)/home/index.jsx
+import { View } from 'react-native';
+import { Link } from 'expo-router';  // 링크 연결해주는 컴포넌트
+
+const home = () => {
+  return (
+    <View>
+      <Link href='/home/settings'>Push Setting</Link>
+    </View>
+  );
+};
+
+export default home;
 
 
+
+// ########  ############################################################################################################################################################
 // ################ 
 
 
