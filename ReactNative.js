@@ -10,7 +10,7 @@
 // 얼굴 인식
 // 알림 기능
 
-// Vibration(바이브레이션) : https://reactnative.dev/docs/vibration  (이처럼 자주쓰일것 같은 것들은 리액트네이티브, 엑스포 docs 링크 걸어두기)
+// Vibration(바이브레이션) : https://reactnative.dev/docs/vibration  (이처럼 자주쓰일것 같은 것들은 리액트네이티브, 엑스포 docs 링크 걸어두고 나중에 사용할떄 정리)
 
 // expo라우팅 폴더 예약어 
 // Link
