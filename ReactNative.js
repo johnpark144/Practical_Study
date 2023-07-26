@@ -13,6 +13,7 @@
 // Tailwind 
 // styled-components
 // eslint, prettier
+// -------------- React Navigation --------------------
 // 기본 컴포넌트 -- View, Text, SafeAreaView, StyleSheet
 // 버튼 -- TouchableOpacity, Button, numberOfLines, 몇 줄까지 쓸지
 // 아이콘 -- 아이콘 검색
@@ -23,8 +24,31 @@
 // 로딩 -- ActivityIndicator, 스피너
 // 환경변수 -- .env
 // expo-location -- 위치정보 가져와도 되는지 요청, 현재 위치 정보, 날씨정보 가져오는 커스텀 훅, 정보를 네비게이션에 전달, 네비게이션탭들에 props를 넘겨주고 싶을떄
-// 시간 관련 라이브러리 -- 어떤 포맷, moment    
-// 
+// 시간 관련 라이브러리 -- 어떤 포맷, moment
+// useNavigation, useRoute -- useNavigation의 메서드, 이전 스크린, 지정된 스크린, 스크린 옵션을 바꿔줌, 매개변수를 전달, headerTitle, 위 부분 타이틀 바꿔주기, headerShown, 헤더 보일지 여부
+// -->, useNavigation의 navigate, 페이지 이동, useRoute, Params 가져오기, props전달
+// sanity 서버 -- sanity 연결, schemas, 무조건 포함 되야, 200자 이내로, 이미지 첨부, 최소 1 최대 5까지 가능, 에러메세지, 세부 스키마, 배열 필드
+// sanity 클라이언트 -- CORS origins, sanity 배포하기, graphQL 쿼리, sanity Fetch, 다이나믹 쿼리, 이미지 url, 다이나믹하게 적용, Sanity에서 Fetch해온 이미지
+// 애니메이션 효과 -- animation, 애니메이션 종류, iterationCount 반복 회수
+// progress, 로딩중
+// 그림자 효과
+// Map -- 주소 찾기, 길찾기, 걸리시는 시간 및 거리, 마커 
+// --------------- Expo-router -------------------
+// 기본세팅, 네비게이션, 라우팅 -- _layout, Stack, headerStyle, headerShadowVisible, 헤더와 컨텐츠 구분하는 선, headerLeft, 왼쪽부분,  headerRight, 오른쪽부분, headerTitle, 헤더 가운데 들어갈 말, headerShown, 헤더를 보일지
+// -->,ScrollView, showsVerticalScrollIndicator, 세로 스크롤 보일지, showsHorizontalScrollIndicator
+// Redirect, useRouter -- 발견했을 때 href에 링크로 이동, router.push
+// onChangeText, resizeMode, contentContainerStyle -- TextInput, 텍스트 작성, 웹의 event.target.value와 같이, cover, contain, stretch, repeat, center, horizontal, ScrollView와 FlatList의 스타일, 수평으로 정렬
+// 폰트
+// useFetch -- 커스텀훅
+// 다이나믹 라우팅, 스크롤 내려서 새로고침, 탭에 따라 다르게 컴포넌트 렌더링 -- RefreshControl, 스크롤 새로고침, useSearchParams,  뒤로가기 버튼 존재 여부, 
+// url 연결 -- Linking.openURL
+// 정규표현식 -- 정규표현식에 인한 결과를 불린 값
+// FlatList -- ListHeaderComponent, 헤더로써, ListFooterComponent, 푸터로써
+// 페이지 네이션
+// deploy -- publish, 배포  
+// ------------------ 유용 ----------------------
+
+
 
 
 // ######### 자주 쓰이는 라이브러리들 참고 #######################################################################################################################
@@ -1078,7 +1102,7 @@ export default client;
   }
 }
 
-// ############################################################################################################################## sanity Fetch 하기, 다이나믹 쿼리, 이미지url ################
+// ############################################################################################################################## sanity Fetch 하기, 다이나믹 쿼리, 이미지 url ################
 // fetch 하는데 오류가 있는 경우 sanity 데이터들이 publish가 잘 되었는지 확인해줘야함
 
 // ################ HomeScreen.js
@@ -1345,11 +1369,11 @@ const Home = () => {
           headerStyle: { backgroundColor: 'lightblue' }, // 헤더 스타일
           headerShadowVisible: false, // 헤더와 컨텐츠 구분하는 선 보여줄지 여부
           headerLeft: () => (
-            // 헤더에 왼쪽부븐에 들어갈 내용
+            // 헤더에 왼쪽부분에 들어갈 내용
             <ScreenHeaderBtn iconUrl={require("../assets/icons/menu.png")} dimension='60%' />
           ),
           headerRight: () => (
-            // 헤더에 오른쪽부븐에 들어갈 내용
+            // 헤더에 오른쪽부분에 들어갈 내용
             <ScreenHeaderBtn iconUrl={require("../assets/images/kemal.jpg")} dimension='100%' />
           ),
           headerTitle: '', // 헤더 가운데 들어갈 말
@@ -1480,7 +1504,7 @@ const Layout = () => {
     DMRegular: require('../assets/fonts/DMSans-Regular.ttf'),
   });
 
-  if (!fontsLoaded) return null;  // 폰트가 불려오자 않았으면 null
+  if (!fontsLoaded) return null;  // 폰트가 불려오지 않았으면 null
 
   return <Stack />;
 };
