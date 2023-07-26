@@ -2393,7 +2393,7 @@ import {
 } from 'react-native-responsive-screen';
 
 const TEXT = '텍스트 애니메이션을 구현하기 위해 만든 앱입니다. ^_^';
-const ARR = TEXT.split(' ');
+const ARR = TEXT.split(' ');  // TEXT의 스페이스 된 부분 기준으로 쪼개서 배열 만듬
 
 export default function App() {
   const ref_arr = useRef(
@@ -2412,7 +2412,7 @@ export default function App() {
         });
       });
 
-      // 1로 바꾸는 애니메이션 시작 후, 완료 후 실행  // stagger는 여러 애니메이션을 배열로 전달하여 순차적으로 실행
+      // stagger는 여러 애니메이션을 배열로 전달하여 순차적으로 실행  //  start의 콜백은 애니메이션 종료 후 실행
       Animated.stagger(100, animations).start(() => {
         setTimeout(() => {
           // Value를 0으로 하나하나 바꾸는 배열
