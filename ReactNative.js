@@ -2583,6 +2583,7 @@ const styles = StyleSheet.create({
 });
 
 // ######### 제스쳐 인식과 애니메이션 2, + useWindowDimensions(모바일 크기) ##################################### react-native-gesture-handler(제스처를 인식), react-native-reanimated(이동시키는 애니메이션을 구현) ##########
+// PanResponder, Animated는 순수 리액트네이티브 내장 라이브러리  //  gesture-handler와 reanimated는 expo로 다운받아 쓰는 라이브러리
 // 기존 PanResponder, Animated는 자바스크립트 스레드 기반으로 동작하고, gesture-handler와 reanimated는 UI스레드 기반으로 동작함
 // 그리고 성능 향상에 도움, 코드 최적화, 더 많은 제스쳐지원
 
