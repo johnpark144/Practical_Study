@@ -31,8 +31,8 @@
 // 그림자 효과
 // Map -- 주소 찾기, 길찾기, 걸리시는 시간 및 거리
 // --------------- Expo-router -------------------
-// 기본세팅, 네비게이션, 라우팅 -- _layout, Stack, headerStyle, headerShadowVisible, 헤더와 컨텐츠 구분하는 선, headerLeft, 왼쪽부분,  headerRight, 오른쪽부분, headerTitle, 헤더 가운데 들어갈 말, headerShown, 헤더를 보일지
-// -->,ScrollView, showsVerticalScrollIndicator, 세로 스크롤 보일지, showsHorizontalScrollIndicator
+// 기본세팅, 네비게이션, 라우팅 -- _layout, Stack, headerStyle, headerShadowVisible, 헤더와 컨텐츠 구분하는 선, headerLeft, 왼쪽부분,  headerRight, 오른쪽부분, headerTitle
+// -->, 헤더 가운데 들어갈 말, headerShown, 헤더를 보일지, ScrollView, showsVerticalScrollIndicator, 세로 스크롤 보일지, showsHorizontalScrollIndicator
 // Redirect, useRouter -- 발견했을 때 href에 링크로 이동, router.push
 // onChangeText, resizeMode -- TextInput, 텍스트 작성, 웹의 event.target.value와 같이, horizontal, contentContainerStyle, ScrollView와 FlatList의 스타일, 수평으로 정렬
 // 폰트
@@ -52,8 +52,8 @@
 // 애니메이션 Animated, 반응형, 임의값 fake -- 모의 데이터
 // 스크롤 애니메이션 -- widthPercentageToDP, heightPercentageToDP, Animated.Value, Animated.event 바운스 효과, 스크롤 위치를 scrollY에 계속 전달, StatusBar, 앱의 상태 표시줄을 제어
 // 텍스트 순차적 애니메이션 -- Animated.timing, Animated.stagger
-// 제스쳐 인식과 애니메이션 -- PanResponder, 중앙으로 되돌아오는 정사각형, Animated.ValueXY, 상대적 좌표 값, Animated.spring, 옴겨진 곳에 지속적으로 머무는 원, setOffset, 현재 위치를 계산, 
-// -->, flattenOffset, 현재 위치값을 애니메이션 값에 반영, getLayout
+// 제스쳐 인식과 애니메이션 -- PanResponder, 중앙으로 되돌아오는 정사각형, Animated.ValueXY, 상대적 좌표 값, Animated.spring,
+// -->, 옴겨진 곳에 지속적으로 머무는 원, setOffset, 현재 위치를 계산, flattenOffset, 현재 위치값을 애니메이션 값에 반영, getLayout
 // 제스쳐 인식과 애니메이션 2 -- 모바일 크기, useWindowDimensions, gesture-handler, reanimated, 잠금화면 슬라이드용 직사각형 공간
 // Expo 라우터 폴더 라우팅, 탭바 -- notFound, Link, Redirect
 
