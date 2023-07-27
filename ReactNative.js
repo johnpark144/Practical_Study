@@ -5,6 +5,15 @@
 
 // ############## 
 // npx expo install firebase ( 파이어베이스로 Oauth 로그인 하는법이 리액트랑 좀 다름)
+// npx expo customize metro.config.js
+
+// const { getDefaultConfig } = require('expo/metro-config');
+
+// const defaultConfig = getDefaultConfig(__dirname);
+// defaultConfig.resolver.assetExts.push('cjs');
+
+// module.exports = getDefaultConfig(__dirname);
+
 
 // ############## 
 // // 공통으로 동일한 폰트주기
