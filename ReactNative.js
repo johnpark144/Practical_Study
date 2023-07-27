@@ -23,7 +23,7 @@
 // 환경변수 -- .env
 // expo-location -- 위치정보, 커스텀 훅, 정보를 네비게이션에 전달, props를 넘겨
 // 시간 관련 라이브러리 -- 어떤 포맷, moment
-// useNavigation, useRoute -- useNavigation의 메서드, 매개변수를 전달, headerTitle, 위 부분 타이틀 바꿔주기, headerShown, 헤더 보일지 여부, navigate, Params 가져오기, props전달
+// useNavigation, useRoute -- useNavigation의 메서드, 매개변수를 전달, headerTitle, 타이틀 바꿔주기, headerShown, 헤더 보일지 여부, navigate, Params 가져오기, props전달
 // sanity 서버 -- sanity 연결, schemas
 // sanity 클라이언트 -- CORS origins, sanity 배포하기, graphQL 쿼리, sanity Fetch, 다이나믹 쿼리, 이미지 url, 다이나믹하게 적용, Sanity에서 Fetch해온 이미지
 // 애니메이션 효과 -- animation, 애니메이션 종류
