@@ -16,7 +16,7 @@
 // 버튼 -- TouchableOpacity, Button, numberOfLines, 몇 줄까지
 // 아이콘
 // FlatList -- map, StatusBar
-// Image, ImageBackground, 배열 스타일
+// Image, ImageBackground, 배열 스타일 -- 외부 이미지 파일
 // 네비게이션, 라우팅 -- React Navigation, react-native-screens, safe-area-context, 안전 영역, bottom-tabs, native-stack, drawer, Navigator, Screen,
 // -->,  네비게이션되 있을때 색깔, 그 외에 기존 색깔, 버튼 누르는 부분 스타일, headerTitleStyle
 // 로딩 -- ActivityIndicator, 스피너
@@ -413,6 +413,9 @@ function City() {
        // 이미지
       <Image
         source={require('../../assets/upcoming-background.jpg')}  // 이미지 위치 (import from형식으로 불러와도됨)
+        // source={{
+        //         uri: 'https://user-images.githubusercontent.com/106279616/217299245-76306248-6c80-4bf8-a1f0-ccb962648a8f.png',
+        // }}      // 외부 이미지 파일은 이같이
         style={styles.image}  // 스타일
       />
        // 이미지 배경
