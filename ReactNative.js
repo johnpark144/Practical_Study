@@ -1,5 +1,16 @@
 // ######### 리마인더 #######################################################################################################################################
-// 글로벌 스타일 적용 (npm i react-native-global-props)
+
+// // 공통으로 동일한 폰트주기
+// import { Text } from 'react-native';
+// import { VariableFontWght } from '../commonStyles';
+// const FontText = (props) => {
+//   return (
+//     <Text {...props} style={[VariableFontWght, ...props.style]}>
+//       {props.children}
+//     </Text>
+//   );
+// };
+// export default FontText;
 
 // mongoDB 같이쓰기 (express 배우고 나서)
 // Vibration(바이브레이션) : https://reactnative.dev/docs/vibration  (이처럼 자주쓰일것 같은 것들은 리액트네이티브, 엑스포 docs 링크 걸어두고 나중에 사용할떄 정리)
