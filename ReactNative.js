@@ -61,7 +61,7 @@
 // 정규표현식 -- 정규표현식에 인한 결과를 불린 값
 // FlatList -- ListHeaderComponent, 헤더로써, ListFooterComponent, 푸터로써
 // 페이지 네이션
-// deploy -- publish, 배포  
+// deploy -- expo-cli 버전, publish, 배포, eas-cli 버전
 // ------------------ 유용 ----------------------
 // 카메라 -- 카메라 여부
 // splash screen -- 비디오, lottie, 애니메이션 종료시 
@@ -105,7 +105,7 @@
 
 // ######## Expo 기본 세팅 ############################################################################################################################
 // npm i -g eas-cli  // 빌드, 테스트, 배포 등을 도움
-// npm i -g expo-cli   // 위에거 Old 버전 (eas-cli쓰면 필요없음)
+// npm i -g expo-cli   // 위에거의 Old 버전 (eas-cli쓰면 필요없음)
 
 // npx create-expo-app@latest // 다른 라우터(React Navigation 등)용으로 네이티브 앱 만들기
 // npx create-expo-app@latest -e with-router  // Expo-router용으로 리액트 네이티브 앱 만들기
@@ -1932,9 +1932,9 @@ const handlePagination = (direction) => {
 // ... 생략 ...
 
 
-// ######## deploy ##################################################################################################################################################################
-// npm i -g expo-cli --force   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
+// ######## deploy ########################################################################################################################################## expo-cli 버전 ###################
 
+// npm i -g expo-cli --force   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
 // !!!! 곧 배포방법 바뀔 수도 있음 !!!!
 
 // ################ index.js (package.json과 같은루트에 있는)
@@ -1951,6 +1951,14 @@ registerRootComponent(App);
 
 // ################
 // expo publish    // 배포  // bash에서 작동 안되면 cmd 터미널에서
+
+
+// ########################################################################################################################################################### eas-cli 버전 ###################
+// npm install -g eas-cli
+// eas build:configure
+
+
+
 
 
 // ###############################################################################################################################
@@ -2818,16 +2826,25 @@ defaultConfig.resolver.assetExts.push('cjs');
 module.exports = defaultConfig;
 
 
-// ################
+// ##################################################################################################################################################### 구글 API ################
+// https://console.cloud.google.com/ 에서 프로젝트 만들기
+// npx expo prebuild
 
+// IOS
+// 사용자 인증정보 (Credentials) --> 사용자 인증 정보 만들기 (Create Credentials)--> OAuth 클라이언트 ID --> 앱유형 --> IOS --> 번들ID : (app.json에 "com.[아이디].[프로젝트]" 이런식으로 되있는거)
 
+// Android
+// 사용자 인증정보 (Credentials) --> 사용자 인증 정보 만들기 (Create Credentials)--> OAuth 클라이언트 ID --> 앱유형 --> Android --> 패키지이름 : (app.json에 "com.[아이디].[프로젝트]" 이런식으로 되있는거)
+// --> eas credentials -p android --> production --> (그후 계속 동의 or enter) -- SHA1 Fingerprint 복사 --> SHA-1 인증서 디지털 지문 : ("35:54:12..." 이런식으로 되있음)
 
+// IOS 및 Android 처리후
+// Firebase --> Authentication --> Sign-in Method --> 구글 --> 외부 프로젝트의 클라이언트 ID 허용 목록에 추가(선택사항) --> 앞서받은 IOS와 Android의 Client Id를 각각입력
 
+// expoClientId
+// Web application --> Authorized JavaScript origins에 https://auth.expo.io 추가 --> Authorized redirect URIs에 https://auth.expo.io/@[아이디]/[SLUG] 추가(SLUG는 app.json에서 확인가능)
+// 클라이언트 아이디 복사해서 expoClientId로사용
 
-
-
-
-
+// ################ 
 
 
 
