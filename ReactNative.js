@@ -1,18 +1,7 @@
 // ######### 리마인더 #######################################################################################################################################
 // 프로젝트 끝날때 마다 주석들 체크하여 업데이트
 
-// ############## 
 
-// ############## 
-// npx expo install firebase ( 파이어베이스로 Oauth 로그인 하는법이 리액트랑 좀 다름)
-// npx expo customize metro.config.js
-
-// const { getDefaultConfig } = require('expo/metro-config');
-
-// const defaultConfig = getDefaultConfig(__dirname);
-// defaultConfig.resolver.assetExts.push('cjs');
-
-// module.exports = getDefaultConfig(__dirname);
 
 
 // ############## 
@@ -115,7 +104,8 @@
 // https://snack.expo.dev/?platform=ios  // Android, Ios 가상 환경으로 확인
 
 // ######## Expo 기본 세팅 ############################################################################################################################
-// npm i -g expo-cli   // Expo의 개발, 빌드 및 배포를 돕는 툴 설치
+// npm i -g eas-cli  // 빌드, 테스트, 배포 등을 도움
+// npm i -g expo-cli   // 위에거 Old 버전 (eas-cli쓰면 필요없음)
 
 // npx create-expo-app@latest // 다른 라우터(React Navigation 등)용으로 네이티브 앱 만들기
 // npx create-expo-app@latest -e with-router  // Expo-router용으로 리액트 네이티브 앱 만들기
@@ -2808,5 +2798,46 @@ const home = () => {
 };
 
 export default home;
+
+
+// ######## 파이어베이스 OAuth 로그인 ###############################################################################################################################################
+// npx expo install firebase
+// npx expo install expo-auth-session expo-crypto expo-web-browser    // auth-session는 로그인을 도움 // expo-crypto는 암호화 역할 // web-browser는 로그인할 Oauth 페이지 웹으로 띄워줌
+// npx expo install expo-application  // 앱의 설정에 대한 정보를 쉽게 접근
+// npx expo install expo-dev-client  // 개발 앱을 빌드하고 실행할 수 있도록 지원
+// npx expo install @react-native-async-storage/async-storage    // 로컬 스토리지
+
+// npx expo customize metro.config.js  // metro.config.js 파일 생성
+
+// ################ metro.config.js (이같이 변경)
+const { getDefaultConfig } = require('@expo/metro-config');
+
+const defaultConfig = getDefaultConfig(__dirname);
+defaultConfig.resolver.assetExts.push('cjs');
+
+module.exports = defaultConfig;
+
+
+// ################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
