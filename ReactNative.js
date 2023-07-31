@@ -2830,6 +2830,8 @@ module.exports = defaultConfig;
 // https://console.cloud.google.com/ 에서 프로젝트 만들기
 // npx expo prebuild
 
+// ################ 
+
 // IOS
 // 사용자 인증정보 (Credentials) --> 사용자 인증 정보 만들기 (Create Credentials)--> OAuth 클라이언트 ID --> 앱유형 --> IOS --> 번들ID : (app.json에 "com.[아이디].[프로젝트]" 이런식으로 되있는거)
 
@@ -2845,7 +2847,12 @@ module.exports = defaultConfig;
 // 클라이언트 아이디 복사해서 expoClientId로사용
 
 // ################ 
-
+ // 구글 로그인
+  // const [req, res, promptAsync] = Google.useAuthRequest({
+  //   expoClientId: process.env.EXPOCLIENT_ID,
+  //   iosClientId: process.env.IOSCLIENT_ID,
+  //   androidClientId: process.env.ANDROIDCLIENT_ID,
+  // });
 
 
 
