@@ -2846,7 +2846,7 @@ module.exports = defaultConfig;
 // Web application --> Authorized JavaScript origins에 https://auth.expo.io 추가 --> Authorized redirect URIs에 https://auth.expo.io/@[아이디]/[SLUG] 추가(SLUG는 app.json에서 확인가능)
 // 클라이언트 아이디 복사해서 expoClientId로사용
 
-// ################ 
+// ################ AuthContext.js
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -2949,7 +2949,6 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
 };
-
 
 // ##################################################################################################################################### 파이어베이스 없이 구굴 로그인 사용하는 방법 ############
 import { createContext, useEffect, useState } from 'react';
@@ -3116,12 +3115,35 @@ export const AuthProvider = ({ children }) => {
 
 
 
+// ##################################################################################################################################################### (페이스북 API)  ############
+// https://developers.facebook.com/apps  // 메타 개발자 사이트
+// settings --> Basic --> App ID, App secret를 CLINET_ID와 CLINET_SECRET로써 .env에 저장하기
+
+
+// ################ AuthContext.js
+// ... 생략 ...
+  // 페이스북 로그인
+  const [req2, res2, promptAsync2] = Facebook.useAuthRequest({
+    clientId: process.env.FACEBOOK_CLINET_ID,
+    clientSecret: process.env.FACEBOOK_CLINET_SECRET,
+  });
+
+  // 페이스북 로그인 성공시
+  useEffect(() => {
+    if (res2?.type === 'success') {
+      const { accessToken } = res2.authentication;
+      const credential = FacebookAuthProvider.credential(accessToken);
+      signInWithCredential(authService, credential);
+      router.replace('/home');
+    }
+  }, [res2]);
+// ... 생략 ...
+
+// ################
+// Facebook Login --> Settings --> Valid OAuth Redirect URIs에 URI입력 (continue with facebook 클릭 할 때 나오는 웹 주소)
 
 
 
-
-
-
-
+// #####################################################################################################################################################  ############
 
 
