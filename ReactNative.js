@@ -2808,7 +2808,7 @@ const home = () => {
 export default home;
 
 
-// ######## 파이어베이스 OAuth 로그인 ###############################################################################################################################################
+// ######## 파이어베이스 OAuth 로그인 (구글 API) ###############################################################################################################################################
 // npx expo install firebase
 // npx expo install expo-auth-session expo-crypto expo-web-browser    // auth-session는 로그인을 도움 // expo-crypto는 암호화 역할 // web-browser는 로그인할 Oauth 페이지 웹으로 띄워줌
 // npx expo install expo-application  // 앱의 설정에 대한 정보를 쉽게 접근
@@ -2826,7 +2826,7 @@ defaultConfig.resolver.assetExts.push('cjs');
 module.exports = defaultConfig;
 
 
-// ##################################################################################################################################################### 구글 API ################
+// ################ 
 // https://console.cloud.google.com/ 에서 프로젝트 만들기
 // npx expo prebuild
 
@@ -2846,13 +2846,168 @@ module.exports = defaultConfig;
 // Web application --> Authorized JavaScript origins에 https://auth.expo.io 추가 --> Authorized redirect URIs에 https://auth.expo.io/@[아이디]/[SLUG] 추가(SLUG는 app.json에서 확인가능)
 // 클라이언트 아이디 복사해서 expoClientId로사용
 
-// ################ 
- // 구글 로그인
-  // const [req, res, promptAsync] = Google.useAuthRequest({
-  //   expoClientId: process.env.EXPOCLIENT_ID,
-  //   iosClientId: process.env.IOSCLIENT_ID,
-  //   androidClientId: process.env.ANDROIDCLIENT_ID,
-  // });
+// ##################################################################################################################################### 파이어베이스 없이 사용하는 방법 ################
+import { createContext, useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import * as AuthSession from 'expo-auth-session';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text, View, Button } from 'react-native';
+
+const AuthContext = createContext();
+export default AuthContext;
+
+WebBrowser.maybeCompleteAuthSession(); // 웹 브라우저를 사용하여 인증을 완료하거나 세션을 종료
+
+export const AuthProvider = ({ children }) => {
+  const router = useRouter();
+  const [error, setError] = useState('');
+
+  const [user, setUser] = useState(null);
+  const [auth, setAuth] = useState();
+  const [requireRefresh, setRequireRefresh] = useState(false);
+
+  // 구글 로그인
+  const [req, res, promptAsync] = Google.useAuthRequest({
+    expoClientId: process.env.EXPOCLIENT_ID,
+    iosClientId: process.env.IOSCLIENT_ID,
+    androidClientId: process.env.ANDROIDCLIENT_ID,
+  });
+
+  // 구글 로그인 성공시
+  useEffect(() => {
+    if (res?.type === 'success') {
+      setAuth(res.authentication);
+      router.replace('/home');
+      (async () => {
+        await AsyncStorage.setItem('auth', JSON.stringify(res.authentication));
+      })();
+    }
+  }, [res]);
+
+  // OAuth 로그인 사용자가 페이지 바뀔때 마다 사용자, 토큰 갱신
+  useEffect(() => {
+    async () => {
+      const jsonValue = await AsyncStorage.getItem('auth');
+      if (jsonValue != null) {
+        const authFromJson = JSON.parse(jsonValue);
+        setAuth(authFromJson);
+        setRequireRefresh(
+          !AuthSession.TokenResponse.isTokenFresh({
+            expiresIn: authFromJson.expiresIn,
+            issuedAt: authFromJson.issuedAt,
+          })
+        );
+      }
+    };
+  }, []);
+
+  // OAuth 회원정보 데이터 가져오기
+  const getUserData = async () => {
+    try {
+      let userInfoRes = await fetch(
+        'https://www.googleapis.com/userinfo/v2/me',
+        {
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        }
+      );
+      const data = await userInfoRes.json();
+      setUser({
+        displayName: data.name,
+        uid: data.id,
+      });
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  // 토큰 갱신하기
+  const refreshToken = async () => {
+    const getClientId = () => {
+      if (Platform.OS === 'ios') {
+        return process.env.IOSCLIENT_ID;
+      } else if (Platform.OS === 'android') {
+        return process.env.ANDROIDCLIENT_ID;
+      } else {
+        console.log('Invalid platform - not handled');
+      }
+    };
+
+    const clientId = getClientId();
+    const tokenResult = await AuthSession.refreshAsync(
+      {
+        clientId: clientId,
+        refreshToken: auth.refreshToken,
+      },
+      {
+        tokenEndpoint: 'https://www.googleapis.com/oauth2/v4/token',
+      }
+    );
+
+    tokenResult.refreshToken = auth.refreshToken;
+    setAuth(tokenResult);
+    await AsyncStorage.setItem('auth', JSON.stringify(tokenResult));
+    setRequireRefresh(false);
+  };
+
+  // 토큰이 필요한경우 출력
+  if (requireRefresh) {
+    return (
+      <View className='absolute top-1/2 px-16 w-full'>
+        <Text className='text-2xl mb-4'>Token requires refresh...</Text>
+        <Button title='Refresh Token' onPress={refreshToken} />
+      </View>
+    );
+  }
+
+  // 로그아웃
+  const logoutUser = async () => {
+    // OAuth인지 일반 로그인인지 확인
+    if (auth) {
+      await AuthSession.revokeAsync(
+        {
+          token: auth.accessToken,
+        },
+        {
+          revocationEndpoint: 'https://oauth2.googleapis.com/revoke',
+        }
+      );
+      setAuth(undefined);
+      await AsyncStorage.removeItem('auth');
+    } else {
+      authService?.signOut();
+    }
+    setUser(undefined);
+    router.replace('log-in');
+  };
+
+  // 회원 인증 체크 (로그인한 사용자 정보)
+  const checkAuthState = async () => {
+      getUserData();
+  };
+
+  // 공유 할 데이터
+  const contextData = {
+    user,
+    loginUser,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    error,
+    checkAuthState,
+    promptAsync,
+    getUserData,
+    logoutUser,
+  };
+
+  return (
+    <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
+  );
+};
 
 
 
