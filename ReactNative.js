@@ -2170,7 +2170,7 @@ export default function App() {
 
 
 // ######## splash screen (lottie로), lottie ###############################################################################################################################
-// npm i --save lottie-react-native  // 버전확인 (애니메이션 동작 안할 수도 있음)
+// npm i --save lottie-react-native  // 버전확인 (애니메이션 동작 안할 수도 있음, 동작 안되면 --> npx expo install lottie-react-native@5.1.4)
 // npm i --save lottie-ios
 
 // https://github.com/lottie-react-native/lottie-react-native 
