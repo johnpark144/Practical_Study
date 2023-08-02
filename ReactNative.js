@@ -2250,6 +2250,7 @@ const Home = () => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={-300}  // 위치조정 가능
     >
       <Text>Hi there, Enter some text below:</Text>
       <TextInput
