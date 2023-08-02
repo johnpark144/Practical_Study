@@ -2197,6 +2197,8 @@ const Splash = () => {
         source={require('../assets/splash.json')}
         autoPlay
         loop={false}
+        width={200}
+        height={200}
         // resizeMode='contain'
         // onAnimationFinish={}    // 애니메이션 종료시 실행
       />
