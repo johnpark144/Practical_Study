@@ -37,8 +37,8 @@
 // 아이콘
 // FlatList -- map, StatusBar
 // Image, ImageBackground, 배열 스타일 -- 외부 이미지 파일
-// 네비게이션, 라우팅 -- React Navigation, react-native-screens, safe-area-context, 안전 영역, bottom-tabs, native-stack, drawer, Navigator, Screen,
-// -->,  네비게이션되 있을때 색깔, 그 외에 기존 색깔, 버튼 누르는 부분 스타일, headerTitleStyle
+// 네비게이션, 라우팅 -- React Navigation, react-native-screens, safe-area-context, 안전 영역, bottom-tabs, native-stack, drawer, Navigator, Screen
+// -->,  네비게이션되 있을때 색깔, 그 외에 기존 색깔, 버튼 누르는 부분 스타일, headerTitleStyle, tabBarIcon, 탭 아이콘 변경
 // 로딩 -- ActivityIndicator, 스피너
 // 환경변수 -- .env
 // expo-location -- 위치정보, 커스텀 훅, 정보를 네비게이션에 전달, props를 넘겨
@@ -51,7 +51,7 @@
 // 그림자 효과
 // Map -- 주소 찾기, 길찾기, 걸리시는 시간 및 거리
 // --------------- Expo-router -------------------
-// 기본세팅, 네비게이션, 라우팅 -- _layout, Stack, headerStyle, headerShadowVisible, 헤더와 컨텐츠 구분하는 선, headerLeft, 왼쪽부분,  headerRight, 오른쪽부분, headerTitle
+// 기본세팅, 네비게이션, 라우팅 -- _layout, Stack, headerStyle, headerShadowVisible, 헤더와 컨텐츠 구분하는 선, headerLeft, 왼쪽부분,  headerRight, 오른쪽부분, headerTitle, 
 // -->, 헤더 가운데 들어갈 말, headerShown, 헤더를 보일지, ScrollView, showsVerticalScrollIndicator, 세로 스크롤 보일지, showsHorizontalScrollIndicator
 // Redirect, useRouter -- 발견했을 때 href에 링크로 이동, router.push
 // onChangeText, resizeMode -- TextInput, 텍스트 작성, 웹의 event.target.value와 같이, horizontal, contentContainerStyle, ScrollView와 FlatList의 스타일, 수평으로 정렬
@@ -521,7 +521,7 @@ const App = () => {
           name={'Current'}
           component={CurrentWeather} // 네비게이션할 컴포넌트
           options={{
-            tabBarIcon: (
+            tabBarIcon: (  // 탭 아이콘 변경
               { focused } // 네비바 아이콘 지정, 함수 파라미터안에 active되있는지 안되있는지 "focused"라는 불린 값 존재
             ) => (
               <Feather
