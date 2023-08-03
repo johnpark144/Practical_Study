@@ -2,9 +2,13 @@
 // 프로젝트 끝날때 마다 주석들 체크하여 업데이트
 
 // ############## 
+// npm install react-native-linear-gradient // 그라데이션 주기
+
+// ############## 
 <TouchableWithoutFeedback // 이 공간안 클릭했을때 키보드 사라지게
   onPress={Keyboard.dismiss}
 >
+    
 // ############## 
 // // 공통으로 동일한 폰트주기
 // import { Text } from 'react-native';
