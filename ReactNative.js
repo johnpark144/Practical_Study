@@ -10,7 +10,7 @@
 // ############## 
 // npm install expo-linear-gradient // 그라데이션 주기
 // npm install @react-native-picker/picker  // Picker (select, option)
-// npm i @react-native-community/checkbox  // 체크박스
+// npm i expo-checkbox   // 체크박스
 
 // ############## 
 <TouchableWithoutFeedback // 이 공간안 클릭했을때 키보드 사라지게
