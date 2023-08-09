@@ -2,6 +2,9 @@
 // 프로젝트 끝날때 마다 주석들 체크하여 업데이트
 
 // ############## 
+// 무한스핀 에니메이션
+
+// ############## 
 // npm install expo-linear-gradient // 그라데이션 주기
 // npm install @react-native-picker/picker  // Picker (select, option)
 
