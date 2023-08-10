@@ -2561,11 +2561,11 @@ import { useRouter } from 'expo-router';
 
 const Home = () => {
   const router = useRouter();
-  const pan = new Animated.ValueXY();  // 원래있어야 할 곳에서 상대적 좌표 값
+  const pan = useRef(new Animated.ValueXY()).current;  // 원래있어야 할 곳에서 상대적 좌표 값 (useRef를 사용해야 이전 위치 기억)
 
   const panResponder = PanResponder.create({
-    // onStartShouldSetPanResponder: () => true, // 터치가 시작될 때 PanResponder를 활성화할지 여부(아래거랑 이것 중 택1)
-    onMoveShouldSetPanResponderCapture: () => true, // 움직임이 시작될 때 PanResponder를 활성화할지 여부
+    // onStartShouldSetPanResponder: () => true, // 터치가 시작고 움직일 때 (onPress 먹힘)(아래거랑 이것 중 택1)
+    onMoveShouldSetPanResponderCapture: () => true, // 터치시 움직임이 바로 시작됨 (onPress 안먹힘)
     // 터치가 움직일 때 발생하는 콜백
     onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
       useNativeDriver: false,
