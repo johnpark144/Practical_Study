@@ -2549,6 +2549,19 @@ const styles = StyleSheet.create({
 
 
 // ############ 제스쳐 인식과 애니메이션 #################################################################### PanResponder (제스쳐 인식), Animated (이동시키는 애니메이션을 구현) ################
+// ################ 밑에 매개변수 gestureState값 예시
+// _accountsForMovesUpTo: 마지막 이벤트를 나타내는 ID입니다.
+// dx: 이동한 거리의 x 좌표값입니다.
+// dy: 이동한 거리의 y 좌표값입니다.
+// moveX: 현재 터치 위치의 x 좌표값입니다.
+// moveY: 현재 터치 위치의 y 좌표값입니다.
+// numberActiveTouches: 현재 화면에서 활성화된 터치 수입니다.
+// stateID: 현재 터치 상태의 ID입니다.
+// vx: x 축으로의 속도입니다.
+// vy: y 축으로의 속도입니다.
+// x0: 터치가 시작된 x 좌표값입니다.
+// y0: 터치가 시작된 y 좌표값입니다.
+  
 // ################ 예제 1) 중앙으로 되돌아오는 정사각형
 import React from 'react';
 import {
@@ -2567,9 +2580,9 @@ const Home = () => {
     // onStartShouldSetPanResponder: () => true, // 터치가 시작고 움직일 때 (onPress 먹힘)(아래거랑 이것 중 택1)
     onMoveShouldSetPanResponderCapture: () => true, // 터치시 움직임이 바로 시작됨 (onPress 안먹힘)
     // 터치가 움직일 때 발생하는 콜백
-    onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+    onPanResponderMove: (e, gestureState) => { Animated.event([null, { dx: pan.x, dy: pan.y }], {
       useNativeDriver: false,
-    }),
+    })},
     // 터치가 종료될 때 발생하는 콜백
     onPanResponderRelease: () => {
       Animated.spring(pan, {
@@ -2672,8 +2685,7 @@ const styles = StyleSheet.create({
 // npx expo install react-native-gesture-handler react-native-reanimated
 // https://docs.swmansion.com/react-native-gesture-handler/docs/
 
-// ################  
-// useAnimatedGestureHandler에 onStart, onActive, onEnd의 이벤트 값 예시
+// ################ useAnimatedGestureHandler에 onStart, onActive, onEnd의 이벤트 값 예시
 // {
 //   "absoluteX": 235.96873474121094,    // X축 절대값
 //   "absoluteY": 704.5217895507812,     // Y축 절대값
