@@ -19,6 +19,7 @@
 // npx expo install expo-av  // 오디오
 // npm install react-native-webview // 웹뷰
 // expo-navigation-bar  // 네비바 속성들 바꾸기
+// npm i react-native-size-matters  // 반응형
 
 // ############## 
 <TouchableWithoutFeedback // 이 공간안 클릭했을때 키보드 사라지게
