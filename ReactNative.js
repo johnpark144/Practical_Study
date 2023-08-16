@@ -2853,6 +2853,8 @@ export default home;
 
 // npx expo customize metro.config.js  // metro.config.js 파일 생성
 
+// npx uri-scheme add (scheme이름)  // URI protocol 추가 (앱으로 redirect 하려면 필요)
+
 // ################ metro.config.js (이같이 변경)
 const { getDefaultConfig } = require('@expo/metro-config');
 
