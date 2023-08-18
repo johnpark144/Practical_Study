@@ -2,6 +2,8 @@
 // 프로젝트 끝날때 마다 주석들 체크하여 업데이트
 // 깃허브 로그인 강의 체크
 
+
+
 // ############# 다른 영상에서 본 유용한 것 (엑스포라우터, 리액트 네비게이션 둘다 지원)
 // useRootNavigationState
 // useSegments 
@@ -9,6 +11,7 @@
 // ############## 
 // useLocalSearchParams
 
+// TouchableOpacity는 react-native보다 react-native-gesture-handler꺼 사용할것 (IOS에서 가끔 안먹히는 문제 해결)
 // ############## 
 // 무한스핀 에니메이션
 
@@ -22,6 +25,7 @@
 // npm i react-native-size-matters  // 반응형
 // expo start -c  // 캐시 삭제 후 시작
 // expo start --force-manifest-type=classic  // ?
+
 // ############## 
 <TouchableWithoutFeedback // 이 공간안 클릭했을때 키보드 사라지게
   onPress={Keyboard.dismiss}
