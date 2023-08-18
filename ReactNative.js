@@ -21,7 +21,7 @@
 // expo-navigation-bar  // 네비바 속성들 바꾸기
 // npm i react-native-size-matters  // 반응형
 // expo start -c  // 캐시 삭제 후 시작
-
+// expo start --force-manifest-type=classic  // ?
 // ############## 
 <TouchableWithoutFeedback // 이 공간안 클릭했을때 키보드 사라지게
   onPress={Keyboard.dismiss}
