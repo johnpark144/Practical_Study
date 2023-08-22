@@ -3429,4 +3429,69 @@ const grammar = () => {
 
 export default grammar;
 
-// ######### #################################################################################################################################################
+// ######### SVG, 애니메이션 무한회전 #################################################################################################################################################
+// npm install react-native-svg
+
+// ############## 
+import { Text, TouchableOpacity, Animated, Easing, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Path, Svg } from 'react-native-svg';
+import { ms } from 'react-native-size-matters';
+
+const LoadingSavingButton = () => {
+  const [rotateValue] = useState(new Animated.Value(0)); // 애니메이션 값을 저장
+
+  useEffect(() => {
+    // 무한반복
+    const animation = Animated.loop(  // loop은 애니메이션 반복횟수를 정하거나 무한반복시킴
+      Animated.timing(rotateValue, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+    animation.start();
+    return () => {
+      animation.stop();
+    };
+  }, []);
+
+  // 애니메이션 값의 변화 (값이 0~1 변화 하면서 0도에서 360도로 변함)
+  const loadingRotation = rotateValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  return (
+    <TouchableOpacity
+      disabled={true}
+      style={{ width: ms(130, 1) }}
+      className='h-full py-3 bg-[#6366f1aa] rounded-lg'
+    >
+      <View className='flex-row justify-center items-center'>
+        {/* 애니메이션 주기 */}
+        <Animated.View
+          style={{
+            transform: [{ rotate: loadingRotation }],  // transform에 애니메이션 변화를 줌
+            width: ms(18, 0.7),
+            height: ms(18, 0.7),
+          }}
+        >
+          <Svg
+            style={{ width: ms(18, 0.7), height: ms(18, 0.7) }}
+            className='text-white'
+            fill='currentColor'
+            viewBox='0 0 1792 1792'
+          >
+            <Path d='M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z'></Path>
+          </Svg>
+        </Animated.View>
+        <Text style={{ fontSize: ms(12, 0.7) }} className='text-white ml-4'>
+          saving
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+export default LoadingSavingButton;
