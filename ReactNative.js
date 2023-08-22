@@ -3,7 +3,6 @@
 
 
 // ############## 
-// npm install @react-native-picker/picker  // Picker (select, option)
 // npm i expo-checkbox   // 체크박스
 // npx expo install expo-av  // 오디오
 // npm install react-native-webview // 웹뷰
