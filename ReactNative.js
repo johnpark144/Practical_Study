@@ -3362,4 +3362,32 @@ const GradientBtnForModal = ({ btnName, setSeeModal }) => {
 
 export default GradientBtnForModal;
 
-// ######### #################################################################################################################################################
+// ######### Picker (select, option) #################################################################################################################################################
+// npm install @react-native-picker/picker  // Picker
+
+// ################ 
+import { Picker } from '@react-native-picker/picker';
+
+const CreateWordModal = () => {
+const [selectedValue, setSelectedValue] = useState('Day');
+const days = [1,2,3,4,5,6,7,8]
+  return (
+    <View className='flex-1'>
+      <Picker
+        selectedValue={selectedValue}
+        onValueChange={(itemValue) => setSelectedValue(itemValue)}
+      >
+        <Picker.Item label='Day' value='Day' />
+        {days?.map((day) => (
+          <Picker.Item
+            key={day?.day}
+            label={String(day?.day)} // 문자열만 들어갈 수 있음
+            value={String(day?.day)}
+          />
+        ))}
+      </Picker>
+    </View>
+  )
+}
+
+// #########  #################################################################################################################################################
