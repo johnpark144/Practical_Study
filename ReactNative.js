@@ -25,23 +25,7 @@
 // expo start -c  // 캐시 삭제 후 시작
 // expo start --force-manifest-type=classic  // ?
 
-// ############## 
-<TouchableWithoutFeedback // 이 공간안 클릭했을때 키보드 사라지게
-  onPress={Keyboard.dismiss}
->
-    
-// ############## 
-// // 공통으로 동일한 폰트주기
-// import { Text } from 'react-native';
-// import { VariableFontWght } from '../commonStyles';
-// const FontText = (props) => {
-//   return (
-//     <Text {...props} style={[VariableFontWght, ...props.style]}>
-//       {props.children}
-//     </Text>
-//   );
-// };
-// export default FontText;
+
 
 // ############## 일반 리마인더
 // mongoDB 같이쓰기 (express 배우고 나서)
@@ -3188,7 +3172,51 @@ export const AuthProvider = ({ children }) => {
 // Facebook Login --> Settings --> Valid OAuth Redirect URIs에 URI입력 (continue with facebook 클릭 할 때 나오는 웹 주소)
 
 
+// ######### 터치시 키보드 사라지게, 비밀번호 형태 TextInput ############################################################################################################################
+import { View, Text, TextInput, Keyboard } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-// #####################################################################################################################################################  ############
+const logIn = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  return (
+      <TouchableWithoutFeedback  // 터치 스타일 효과 X, 이벤트만 O 
+        onPress={Keyboard.dismiss} // TextInput 이외에 이 공간 안 클릭했을때 키보드 사라짐
+      >
+            {/* 이메일, 패스워드 */}
+            <TextInput  // 텍스트 입력시 키보드 나타남
+              value={email}
+              className='border border-solid border-gray-400 rounded w-full pl-2'
+              onChangeText={(text) => setEmail(text)}
+              placeholder='Email'
+              placeholderTextColor='gray'
+            />
+            <TextInput
+              value={password}
+              className='border border-solid border-gray-400 rounded w-full pl-2'
+              onChangeText={(text) => setPassword(text)}
+              placeholder='Password'
+              placeholderTextColor='gray'
+              secureTextEntry={true} //  비밀번호 형태로
+            />
+      </TouchableWithoutFeedback>
+  );
+};
 
+export default logIn;
 
+// ######### 공통으로 동일한 폰트 주기 ##################################################################################################################################
+// ######### props가 무조건 들어가 있지않으면 무조건 에러떠서 더 나은 방법 찾으면 교체
+import { Text } from 'react-native';
+import { VariableFontWght } from '../commonStyles';
+const FontText = (props) => {
+  return (
+    <Text {...props} style={[VariableFontWght, ...props.style]}>
+      {props.children}
+    </Text>
+  );
+};
+export default FontText;
+
+// #########  ##################################################################################################################################
