@@ -16,7 +16,7 @@
 // Tailwind 
 // styled-components
 // eslint, prettier
-// -------------- React Navigation --------------------
+// ---------------------------- React Navigation ----------------------------
 // 기본 컴포넌트 -- View, Text, SafeAreaView, StyleSheet
 // 버튼 -- TouchableOpacity, Button, numberOfLines, 몇 줄까지
 // 아이콘
@@ -35,7 +35,7 @@
 // progress, 로딩중
 // 그림자 효과
 // Map -- 주소 찾기, 길찾기, 걸리시는 시간 및 거리
-// --------------- Expo-router -------------------
+// ------------------------------- Expo-router ------------------------------
 // 기본세팅, 네비게이션, 라우팅 -- _layout, Stack, headerStyle, headerShadowVisible, 헤더와 컨텐츠 구분하는 선, headerLeft, 왼쪽부분,  headerRight, 오른쪽부분, headerTitle, 
 // -->, 헤더 가운데 들어갈 말, headerShown, 헤더를 보일지, ScrollView, showsVerticalScrollIndicator, 세로 스크롤 보일지, showsHorizontalScrollIndicator
 // Redirect, useRouter -- 발견했을 때 href에 링크로 이동, router.push
@@ -48,7 +48,7 @@
 // FlatList -- ListHeaderComponent, 헤더로써, ListFooterComponent, 푸터로써
 // 페이지 네이션
 // deploy -- expo-cli 버전, publish, 배포, eas-cli 버전
-// ------------------ 유용 ----------------------
+// ------------------------------- 그외 유용 -------------------------------
 // 카메라 -- 카메라 여부
 // splash screen -- 비디오, lottie, 애니메이션 종료시 
 // KeyboardAvoidingView, Platform
