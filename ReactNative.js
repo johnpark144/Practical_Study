@@ -2921,7 +2921,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // 구글 로그인
-  const [req, res, promptAsync] = Google.useAuthRequest({
+  const [req, res, promptAsync] = Google.useAuthRequest({  // 버튼 만들어서 onPress시 promptAsync()가 작동하게 해야 res를 받을 수 있음
     expoClientId: process.env.EXPOCLIENT_ID,
     iosClientId: process.env.IOSCLIENT_ID,
     androidClientId: process.env.ANDROIDCLIENT_ID,
@@ -3142,7 +3142,32 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-
+// ################ AuthContext.js
+//  ... 생략 ...
+  const MakeOAuthButton = () => {
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          InitCapitalName === 'Google'
+            ? promptAsync({ showInRecents: true })  // 구글 promptAsync
+            : InitCapitalName === 'Github'
+            ? gh_promptAsync({ showInRecents: true })
+            : fb_promptAsync({ showInRecents: true })
+        }
+        className='w-full flex-row justify-center items-center shadow-sm
+        shadow-slate-500'
+      >
+        <AntDesign name={iconName} size={ms(25, 0.3)} color='black' />
+        <FontText
+          style={{ fontSize: ms(15, 0.3) }}
+          className={`text-center ml-3`}
+        >
+          Continue with {InitCapitalName}
+        </FontText>
+      </TouchableOpacity>
+    );
+  };
+//  ... 생략 ...
 
 // ##################################################################################################################################################### (페이스북 API)  ############
 // https://developers.facebook.com/apps  // 메타 개발자 사이트
@@ -3172,19 +3197,19 @@ export const AuthProvider = ({ children }) => {
 // Facebook Login --> Settings --> Valid OAuth Redirect URIs에 URI입력 (continue with facebook 클릭 할 때 나오는 웹 주소)
 
 
-// ######### 터치시 키보드 사라지게, 비밀번호 형태 TextInput ############################################################################################################################
+// ######### 터치시 키보드 사라지게, 비밀번호 형태 TextInput, 키보드 엔터시 작동 및 쓸말 ####################################################################################################################
 import { View, Text, TextInput, Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const logIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [word, setWord] = useState('');
   return (
       <TouchableWithoutFeedback  // 터치 스타일 효과 X, 이벤트만 O 
         onPress={Keyboard.dismiss} // TextInput 이외에 이 공간 안 클릭했을때 키보드 사라짐
       >
-            {/* 이메일, 패스워드 */}
+            {/* 이메일, 패스워드, 검색 예 */}
             <TextInput  // 텍스트 입력시 키보드 나타남
               value={email}
               className='border border-solid border-gray-400 rounded w-full pl-2'
@@ -3200,6 +3225,13 @@ const logIn = () => {
               placeholderTextColor='gray'
               secureTextEntry={true} //  비밀번호 형태로
             />
+            <TextInput
+              value={word}
+              className='pl-2 w-full bg-slate-50 shadow-sm shadow-black'
+              onChangeText={(text) => setWord(text)}
+              onSubmitEditing={searchWord} // 엔터칠 때 작동
+              returnKeyType='search' // 엔터키에 쓸말
+            />
       </TouchableWithoutFeedback>
   );
 };
@@ -3207,7 +3239,7 @@ const logIn = () => {
 export default logIn;
 
 // ######### 공통으로 동일한 폰트 주기 ##################################################################################################################################
-// ######### props가 무조건 들어가 있지않으면 무조건 에러떠서 더 나은 방법 찾으면 교체
+// ################ props가 무조건 들어가 있지않으면 무조건 에러떠서 더 나은 방법 찾으면 교체
 import { Text } from 'react-native';
 import { VariableFontWght } from '../commonStyles';
 const FontText = (props) => {
@@ -3219,4 +3251,81 @@ const FontText = (props) => {
 };
 export default FontText;
 
-// #########  ##################################################################################################################################
+// ######### 캐러셀 만들기 ##################################################################################################################################
+// ################
+import { View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import Greeting from '../../../components/home/Greeting';
+import Mem from '../../../components/home/Mem';
+import Dic from '../../../components/home/Dic';
+import Vid from '../../../components/home/Vid';
+import Gram from '../../../components/home/Gram';
+
+const home = () => {
+  return (
+      <View>
+        {/* 캐러셀 */}
+        <ScrollView
+          horizontal
+          pagingEnabled // 페이지 단위로 스크롤
+          scrollEventThrottle={200} // 스크롤시 이벤트가 발생하는데 성능문제 해결
+          decelerationRate='fast' // 스크롤 속도
+        >
+          {/* 페이지 들 */}
+          <Greeting />
+          <Mem />
+          <Dic />
+          <Vid />
+          <Gram />
+        </ScrollView>
+      </View>
+  );
+};
+
+export default home;
+
+// ################ Greeting, Mem, Dic, Vid, Gram
+import { View} from 'react-native';
+const Greeting = () => {
+  return (
+      <View className='w-screen h-screen'>  // 캐러샐에 들어갈 부분의 크기를 동일하게
+        //  ... 생략 ...
+      </View>
+  );
+};
+
+export default Greeting;
+
+// ######### 클릭시 진동 ##################################################################################################################################
+import { Vibration } from 'react-native';
+
+<TouchableOpacity
+  onPress={() => {
+    Vibration.vibrate(20);  // 진동 기능 (진동 강도)
+  }}
+>
+ // ... 생략 ...
+</TouchableOpacity>
+
+// ######### 밑에 네비바 색 변경 (안드로이드 만) #############################################################################################################################
+import * as NavigationBar from 'expo-navigation-bar';
+import { Platform } from 'react-native';
+
+const StartPage = () => {
+  Platform.OS !== 'ios' && NavigationBar.setBackgroundColorAsync('black'); // 밑에 네비바 색 변경
+  
+  // ... 생략 ...
+};
+
+export default StartPage;
+
+// ######### Alert 창 #################################################################################################################################################
+import { Alert } from 'react-native';
+const onSubmit = async () => {
+      Alert.alert('Alert!', 'Please check the forms', [{ text: 'OK' }], {  // 타이틀, 내용, 확인버튼
+        cancelable: false,  // 취소 가능한지
+      });
+  };
+
+
+// ######### #############################################################################################################################
