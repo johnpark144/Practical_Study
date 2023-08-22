@@ -3,14 +3,10 @@
 
 
 // ############## 
-// npm install expo-linear-gradient // 그라데이션 주기
 // npm install @react-native-picker/picker  // Picker (select, option)
 // npm i expo-checkbox   // 체크박스
 // npx expo install expo-av  // 오디오
 // npm install react-native-webview // 웹뷰
-// expo-navigation-bar  // 네비바 속성들 바꾸기
-// npm i react-native-size-matters  // 반응형
-
 
 // ############## 일반 리마인더
 // mongoDB 같이쓰기 (express 배우고 나서)
@@ -2324,8 +2320,8 @@ const MyScrollComponent = () => {
 
 export default MyScrollComponent;
 
-// ######## 애니메이션 Animated, 반응형, 임의값 faker ##########################################################################################################################################################
-// npm i react-native-responsive-screen  // 반응형 앱 만들때 사용
+// ######## 애니메이션 Animated, 반응형(react-native-responsive-screen), 임의값 faker ##########################################################################################################################
+// npm i react-native-responsive-screen  // 반응형 앱 만들때 사용 (react-native-size-matters이 유용)
 // npm i @faker-js/faker    // 주로 테스트 데이터를 만들거나, 모의 데이터를 생성하는데 유용
 
 // https://www.npmjs.com/package/react-native-responsive-screen
@@ -3194,7 +3190,7 @@ export const AuthProvider = ({ children }) => {
 // Facebook Login --> Settings --> Valid OAuth Redirect URIs에 URI입력 (continue with facebook 클릭 할 때 나오는 웹 주소)
 
 
-// ######### 터치시 키보드 사라지게, 비밀번호 형태 TextInput, 키보드 엔터시 작동 및 쓸말 ####################################################################################################################
+// ######### 터치시 키보드 사라지게, 비밀번호 형태 TextInput, 키보드 엔터시 작동 및 키보드 엔터 쓸말 ##############################################################################################################
 import { View, Text, TextInput, Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
@@ -3305,6 +3301,9 @@ import { Vibration } from 'react-native';
 </TouchableOpacity>
 
 // ######### 밑에 네비바 색 변경 (안드로이드 만) #############################################################################################################################
+// expo-navigation-bar  // 네비바 속성들 바꾸기
+
+// ################ 
 import * as NavigationBar from 'expo-navigation-bar';
 import { Platform } from 'react-native';
 
@@ -3325,4 +3324,42 @@ const onSubmit = async () => {
   };
 
 
-// ######### #############################################################################################################################
+// ######### 그라데이션 주기, 반응형(react-native-size-matters) #######################################################################################################################
+// npm install expo-linear-gradient // 그라데이션 주기
+// npm i react-native-size-matters  // 반응형
+
+// ################ 
+import { LinearGradient } from 'expo-linear-gradient';
+import { Text, TouchableOpacity } from 'react-native';
+import { s, vs, ms } from 'react-native-size-matters';  // s : width 크기대비 // vs : height 크기대비 // ms : 전반적으로 크기대비 (두번째 파라미터로 디테일 조정 가능)
+
+const GradientBtnForModal = ({ btnName, setSeeModal }) => {
+  return (
+    <LinearGradient
+      style={{
+        marginHorizontal: ms(10, 0.2),  // 둘쨰 인수 크기가 높으면 사이즈가 커질수록 커지는 정도가 가파름
+        marginVertical: ms(10, 0.2),
+        width: ms(90, 0.3),
+        height: ms(40, 0.3),
+      }}
+      className='flex-1 rounded-xl shadow-xl shadow-black'
+      start={{ x: 0, y: 1 }}
+      end={{ x: 1, y: 0 }}
+      colors={['#a5b4fc', '#818cf8']}
+    >
+      <TouchableOpacity
+        activeOpacity={0.6}  // 터치시 투명도
+        className='w-full h-full flex-row justify-center items-center'
+        onPress={() => {
+          setSeeModal(true);
+        }}
+      >
+        <Text className='text-center'>{btnName}</Text>
+      </TouchableOpacity>
+    </LinearGradient>
+  );
+};
+
+export default GradientBtnForModal;
+
+// ######### #################################################################################################################################################
