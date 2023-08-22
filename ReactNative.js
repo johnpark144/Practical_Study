@@ -10,7 +10,6 @@
 // ############## 
 // useLocalSearchParams
 
-// TouchableOpacity는 react-native보다 react-native-gesture-handler꺼 사용할것 (IOS에서 가끔 안먹히는 문제 해결)
 // ############## 
 // 무한스핀 에니메이션
 
@@ -22,9 +21,6 @@
 // npm install react-native-webview // 웹뷰
 // expo-navigation-bar  // 네비바 속성들 바꾸기
 // npm i react-native-size-matters  // 반응형
-// expo start -c  // 캐시 삭제 후 시작
-// expo start --force-manifest-type=classic  // ?
-
 
 
 // ############## 일반 리마인더
@@ -37,6 +33,7 @@
 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
 // 기본 세팅
+// Expo 작동 오류시
 // Tailwind 
 // styled-components
 // eslint, prettier
@@ -122,6 +119,13 @@
 // npx create-expo-app@latest // 다른 라우터(React Navigation 등)용으로 네이티브 앱 만들기
 // npx create-expo-app@latest -e with-router  // Expo-router용으로 리액트 네이티브 앱 만들기
 // npx create-expo-app@latest --template tabs@49  // Expo-router용으로 탭 네비게이션과 함께 기본 설정된 애플리케이션 구조
+
+
+// ######## Expo 작동 오류시 시도 ############################################################################################################################
+// expo start --force-manifest-type=classic    //  Expo의 버전 간 호환성이나 업그레이드 시의 문제를 해결
+// expo start -c    // 캐시 삭제 후 시작
+
+
 
 // ######## Tailwind css ##################################################################################################################################
 // 타입스크립트 사용하려면 홈페이지 참고
@@ -292,6 +296,9 @@ const styles = StyleSheet.create({
 
 export default App;
 // ######## 버튼(TouchableOpacity, Button) ##################################################################################################################################
+// react-native-gesture-handler의 TouchableOpacity를 쓰는게 Ios에도 문제없이 호환 더 잘되서 추천
+// import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import React from 'react';
 import { Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 
