@@ -6,9 +6,6 @@
 // ############# 다른 영상에서 본 유용한 것 (엑스포라우터, 리액트 네비게이션 둘다 지원)
 // useRootNavigationState
 // useSegments 
-  
-// ############## 
-// useLocalSearchParams
 
 // ############## 
 // 무한스핀 에니메이션
@@ -63,7 +60,7 @@
 // onChangeText, resizeMode -- TextInput, 텍스트 작성, 웹의 event.target.value와 같이, horizontal, contentContainerStyle, ScrollView와 FlatList의 스타일, 수평으로 정렬
 // 폰트
 // useFetch -- 커스텀훅
-// 다이나믹 라우팅, 스크롤 내려서 새로고침, 탭에 따라 다르게 컴포넌트 렌더링 -- RefreshControl, 스크롤 새로고침, useSearchParams, 뒤로가기 버튼 존재 여부, 
+// 다이나믹 라우팅, 스크롤 내려서 새로고침, 탭에 따라 다르게 컴포넌트 렌더링 -- RefreshControl, 스크롤 새로고침, useSearchParams, useLocalSearchParams, 뒤로가기 버튼 존재 여부, 
 // url 연결 -- Linking.openURL
 // 정규표현식 -- 정규표현식에 인한 결과를 불린 값
 // FlatList -- ListHeaderComponent, 헤더로써, ListFooterComponent, 푸터로써
@@ -1650,7 +1647,7 @@ const Popularjobs = () => {
 
 export default Popularjobs;
 
-// ######## 다이나믹 라우팅, useSearchParams, 스크롤 내려서 새로고침, 탭에 따라 다르게 컴포넌트 렌더링  #############################################################################################
+// ######## 다이나믹 라우팅, useSearchParams, useLocalSearchParams, 스크롤 내려서 새로고침, 탭에 따라 다르게 컴포넌트 렌더링  #####################################################################################
 // ################ PopularJobCard.jsx
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -1672,7 +1669,7 @@ const PopularJobCard = ({ item, selectedJob, setSelectedJob }) => {
 export default PopularJobCard;
 
 // ################ app/job-details/[id].js
-import { Stack, useRouter, useSearchParams } from 'expo-router';
+import { Stack, useRouter, useSearchParams, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import {
   View,
@@ -1698,6 +1695,7 @@ const tabs = ['About', 'Qualifications', 'Responsibilities'];
 
 const JobDetails = () => {
   const params = useSearchParams(); // id SearchParams 값을 가지고있음
+  // const params = useLocalSearchParams(); // useSearchParams 대신 사용해도됨
   const router = useRouter();
 
   const { data, isLoading, error, refetch } = useFetch('job-details', {
