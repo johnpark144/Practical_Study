@@ -1,10 +1,16 @@
-####### URL과 뷰 ######################################################################
+####### 리마인더 ######################################################################
+# Htmx에 대해 알아보고 장고와 같이 써보기
+
+
+
+####### 기본 설정 ######################################################################
 # python -m venv mysite // 가상환경 (Scripts -> activate)
 # django-admin startproject mysite
 # django-admin startapp pybo
 # pip install django
 # py manage.py runserver
 
+####### URL과 뷰 ######################################################################
 # from django.http import HttpResponse
 # def index(request):
 #    return HttpResponse("하이") 
