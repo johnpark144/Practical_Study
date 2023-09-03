@@ -88,7 +88,7 @@ import '../styles/globals.css'  // globals.css에있는 TailwindCSS 전역 적�
 import Header from "./Header";
 import { Metadata } from 'next';
 
-export const metadata: Metadata = {  // metadata로 favicon 변경
+export const metadata: Metadata = {  // metadata로 favicon 변경 (head.tsx에서 안되는 경우)
   icons: {
     icon: {
       url: '/favicon.png',
