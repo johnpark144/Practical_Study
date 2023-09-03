@@ -90,6 +90,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {  // metadata로 favicon 변경 (head.tsx에서 안되는 경우)
   icons: {
+    title: 'ToDOList',
     icon: {
       url: '/favicon.png',
       type: 'image/png',
