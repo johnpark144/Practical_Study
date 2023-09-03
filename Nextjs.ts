@@ -6,7 +6,7 @@
 
 // ######### 인덱스 (Ctrl + F) ########################################################### (-> 인덱스에 있는데 찾기 안되면 찾아서 인덱스 변경) ##################
 // 터보팩 -- tailwind를 위한,  
-// 기본 세팅 -- 프레임워크 파일 예약어, 타입스크립트 에러무시
+// 기본 세팅 -- 프레임워크 파일 예약어, 타입스크립트 에러무시, Metadata
 // 다이나믹 라우팅 -- params, NotFound, 서버사이드렌더링, SSR, SSG, ISR
 // 클라이언트 사이드 렌더링 -- CSR
 // Params에 단어 구글검색하는 API
@@ -86,6 +86,17 @@ module.exports = {
 // ############ app/layout.tsx
 import '../styles/globals.css'  // globals.css에있는 TailwindCSS 전역 적용
 import Header from "./Header";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {  // metadata로 favicon 변경
+  icons: {
+    icon: {
+      url: '/favicon.png',
+      type: 'image/png',
+    },
+    shortcut: { url: '/favicon.png', type: 'image/png' },
+  },
+};
 
 export default function RootLayout({
   children,
