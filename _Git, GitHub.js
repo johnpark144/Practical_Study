@@ -103,7 +103,7 @@ git branch -m (기존 브랜치명) (새 브랜치명) // 브랜치 이름 수�
 git branch -d (삭제할 브랜치명)	// 브랜치 제거
 git branch -D (강제삭제할 브랜치명) // 강제 삭제
 
-git switch (브랜치명) 	// (브랜치명)을 가진 브랜치로 이동
+git switch (브랜치명) 	// (브랜치명)을 가진 브랜치로 이동 // 이전 버전이지만 git checkout 도 여전히 사용가능
 git switch -c (브랜치명) // (브랜치명)의 생성과 이동을 동시에
 
 git log --all --decorate --oneline --graph	// 브랜치 상태들을 보기 쉽게 확인 (그래도 소스트리가 더 나음)
