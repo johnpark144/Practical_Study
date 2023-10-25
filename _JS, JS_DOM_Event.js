@@ -3,6 +3,8 @@
 // window 스크롤, 사이즈 정리
 // Intl 에대해 정리 (DateTimeFormat, NumberFormat 등), 밑에 단위변환기랑 같이둠
 // Object.entries
+// Object.hasOwn()과 Object.hasOwnProperty()차이 정리
+// array.at() (음수 인덱싱)
 // for 대신 쓸만한거 foreach랑 같이놓기
 // Reflect 내장 객체
 // Array.from()
